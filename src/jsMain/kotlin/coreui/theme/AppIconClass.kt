@@ -1,0 +1,8 @@
+package coreui.theme
+
+sealed class AppIconClass(val value: String) {
+    object Edit : AppIconClass(value = "fas fa-pen")
+    object LightColorScheme : AppIconClass(value = "fas fa-sun")
+    object DarkColorScheme : AppIconClass(value = "fas fa-moon")
+    object LogOut : AppIconClass(value = "fa fa-sign-out")
+}
