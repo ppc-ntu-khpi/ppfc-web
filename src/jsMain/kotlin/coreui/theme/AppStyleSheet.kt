@@ -36,6 +36,7 @@ object AppStyleSheet : StyleSheet() {
 
     init {
         "body" style {
+            height(100.vh)
             margin(0.px)
             fontFamily("Sans-Serif")
         }

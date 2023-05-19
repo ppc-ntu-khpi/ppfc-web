@@ -15,7 +15,7 @@ import org.jetbrains.compose.web.dom.CheckboxInput
 @Composable
 fun Checkbox(
     checked: Boolean,
-    onCheckChange: (Boolean) -> Unit
+    onCheckChange: (isChecked: Boolean) -> Unit
 ) {
     CheckboxInput(
         checked = checked

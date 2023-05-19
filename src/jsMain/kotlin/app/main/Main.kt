@@ -44,10 +44,9 @@ fun Main() {
                 style {
                     width(100.percent)
                     height(100.vh)
-                    overflow(Overflow.Auto)
+                    overflow(Overflow.Hidden)
                     backgroundColor(AppTheme.colors.background)
                 }
-
 
                 "::-webkit-scrollbar" style {
                     width(16.px)

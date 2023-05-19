@@ -32,5 +32,9 @@ val uaStringResources = StringResources(
     navigationSubjects = "Предмети",
     navigationGroups = "Групи",
     navigationTeachers = "Викладачі",
-    navigationUsers = "Користувачі"
+    navigationUsers = "Користувачі",
+
+    tableYouHaveNotCreatedAnyRecordsYet = "Ви ще не створили жодного запису.",
+
+    classroomsName = "Назва",
 )

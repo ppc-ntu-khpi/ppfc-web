@@ -3,8 +3,10 @@ package tables.presentation.screen.tables
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import coreui.compose.LengthKeyword
 import coreui.compose.base.Box
 import coreui.compose.base.Column
+import coreui.compose.height
 import coreui.util.rememberNavController
 import org.jetbrains.compose.web.css.*
 import org.koin.compose.getKoin
@@ -16,7 +18,7 @@ import tables.presentation.navigation.TablesScreen
 fun Tables() {
     val viewModel: TablesViewModel = getKoin().get()
     val viewState by viewModel.state.collectAsState()
-    val navController by rememberNavController(root = TablesScreen.Changes)
+    val navController by rememberNavController(root = TablesScreen.Classrooms)
 
     Box(
         attrs = {
@@ -30,8 +32,9 @@ fun Tables() {
             attrs = {
                 style {
                     width(100.percent)
-                    paddingLeft(16.px)
-                    paddingRight(16.px)
+                    height(100.percent)
+                    marginLeft(16.px)
+                    marginRight(16.px)
                 }
             }
         ) {
@@ -39,6 +42,7 @@ fun Tables() {
                 attrs = {
                     style {
                         width(100.percent)
+                        height(LengthKeyword.Auto)
                     }
                 },
                 selectedScreen = navController.currentScreen.value,

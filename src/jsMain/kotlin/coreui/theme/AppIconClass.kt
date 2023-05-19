@@ -5,4 +5,5 @@ sealed class AppIconClass(val value: String) {
     object LightColorScheme : AppIconClass(value = "fas fa-sun")
     object DarkColorScheme : AppIconClass(value = "fas fa-moon")
     object LogOut : AppIconClass(value = "fa fa-sign-out")
+    object EmptyTable : AppIconClass(value = "fa-solid fa-file-lines")
 }

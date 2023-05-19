@@ -22,7 +22,6 @@ fun Table(
             style {
                 width(LengthKeyword.Auto)
                 borderCollapse(BorderCollapse.Collapse)
-                tableLayout(TableLayout.Fixed)
             }
 
             "tbody tr:nth-of-type(odd)" style {
@@ -64,6 +63,7 @@ fun TableHeaderItem(
     Th(
         attrs = {
             style {
+                width(1.percent)
                 paddingTop(10.px)
                 paddingBottom(10.px)
                 paddingLeft(16.px)
@@ -89,6 +89,7 @@ fun TableBodyItem(
     Td(
         attrs = {
             style {
+                width(1.percent)
                 paddingTop(10.px)
                 paddingBottom(10.px)
                 paddingLeft(16.px)

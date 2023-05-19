@@ -12,8 +12,8 @@ import kotlin.random.Random
 @Composable
 fun <T> CollectUiEvents(
     event: UiEvent<T>?,
-    onClear: (Long) -> Unit,
-    onEvent: (T) -> Unit
+    onClear: (id: Long) -> Unit,
+    onEvent: (event: T) -> Unit
 ) {
     LaunchedEffect(event?.id) {
         event?.let { event ->

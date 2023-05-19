@@ -40,5 +40,9 @@ data class StringResources(
     val navigationSubjects: String,
     val navigationGroups: String,
     val navigationTeachers: String,
-    val navigationUsers: String
+    val navigationUsers: String,
+
+    val tableYouHaveNotCreatedAnyRecordsYet: String,
+
+    val classroomsName: String,
 )

@@ -25,7 +25,7 @@ fun OutlinedTextField(
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
     error: String? = null,
-    onValueChange: (String) -> Unit
+    onValueChange: (text: String) -> Unit
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val isLabelElevated = isFocused || value.isNotEmpty()

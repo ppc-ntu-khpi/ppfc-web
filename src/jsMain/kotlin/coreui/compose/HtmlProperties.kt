@@ -21,6 +21,18 @@ fun StyleScope.boxShadow(
     )
 }
 
+fun StyleScope.dropShadow(
+    offsetX: CSSLengthValue,
+    offsetY: CSSLengthValue,
+    blurRadius: CSSLengthValue,
+    color: CSSColorValue
+) {
+    property(
+        "drop-shadow",
+        "${offsetX.value}${offsetX.unit} ${offsetY.value}${offsetY.unit} ${blurRadius.value}${blurRadius.unit} $color"
+    )
+}
+
 fun StyleScope.accentColor(value: CSSColorValue) {
     property("accent-color", value)
 }

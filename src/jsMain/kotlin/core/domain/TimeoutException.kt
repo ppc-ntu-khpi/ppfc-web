@@ -4,4 +4,4 @@
 
 package core.domain
 
-class TimeoutException : Exception(message = "Timeout.")
+class TimeoutException : ApiException(message = "Timeout.")

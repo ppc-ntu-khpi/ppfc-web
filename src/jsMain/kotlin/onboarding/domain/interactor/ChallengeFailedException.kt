@@ -4,4 +4,6 @@
 
 package onboarding.domain.interactor
 
-class ChallengeFailedException : Exception(message = "Current authentication challenge is failed.")
+import core.domain.ApiException
+
+class ChallengeFailedException : ApiException(message = "Current authentication challenge is failed.")

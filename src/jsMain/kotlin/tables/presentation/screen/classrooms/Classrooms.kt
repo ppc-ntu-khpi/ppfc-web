@@ -1,20 +1,15 @@
 package tables.presentation.screen.classrooms
 
 import androidx.compose.runtime.*
-import app.cash.paging.LoadStateLoading
-import coreui.compose.*
+import coreui.compose.Overflow
+import coreui.compose.UiMessageHost
+import coreui.compose.overflowY
 import coreui.theme.AppTheme
-import coreui.util.CollectUiEvents
-import coreui.util.UiMessage
-import coreui.util.collectAsLazyPagingItems
-import coreui.util.rememberGet
-import org.jetbrains.compose.web.css.height
-import org.jetbrains.compose.web.css.marginBottom
-import org.jetbrains.compose.web.css.marginTop
-import org.jetbrains.compose.web.css.px
+import coreui.util.*
+import org.jetbrains.compose.web.css.*
 import tables.presentation.compose.InteractiveTable
-import tables.presentation.compose.InteractiveTableBodyRow
-import tables.presentation.compose.InteractiveTableHeaderRow
+import tables.presentation.compose.tableBodyRow
+import tables.presentation.compose.tableHeaderRow
 
 @Composable
 fun Classrooms() {
@@ -23,16 +18,8 @@ fun Classrooms() {
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
     val classrooms = viewModel.pagedClassrooms.collectAsLazyPagingItems()
 
-    val isListAppending by remember {
-        derivedStateOf {
-            classrooms.loadState.append == LoadStateLoading
-        }
-    }
-
-    val isListRefreshing by remember {
-        derivedStateOf {
-            classrooms.loadState.refresh == LoadStateLoading
-        }
+    CollectPagingError(combinedLoadStates = classrooms.loadState) { cause ->
+        viewModel.handlePagingError(cause = cause)
     }
 
     CollectUiEvents(
@@ -46,42 +33,30 @@ fun Classrooms() {
         }
     }
 
+    UiMessageHost(message = uiMessage)
+
     InteractiveTable(
         attrs = {
             style {
+                width(100.percent)
                 marginTop(16.px)
                 marginBottom(16.px)
-                height(500.px)
-                overflowY(Overflow.Auto)
+                overflowY(Overflow.Scroll)
             }
         },
-        isRefreshing = isListRefreshing,
-        isAppending = isListAppending,
-        header = {
-            InteractiveTableHeaderRow {
-                TableHeaderItem {
-                    Text(text = AppTheme.stringResources.navigationClassrooms)
-                }
-            }
-        },
-        body = {
-            (0 until classrooms.itemCount).forEach { index ->
-                val item = classrooms[index]
+        lazyPagingItems = classrooms,
+        header = tableHeaderRow(AppTheme.stringResources.classroomsName),
+        bodyItem = { item ->
+            tableBodyRow(
+                isSelected = false,
+                onSelectionChanged = {
 
-                InteractiveTableBodyRow(
-                    onEdit = {
-                        println("EDIT $index")
-                    },
-                    onSelectionChanged = {
-                        println("SELECTED $it $index")
-                    },
-                    isSelected = false
-                ) {
-                    TableBodyItem {
-                        Text(text = item?.name.toString())
-                    }
-                }
-            }
-        }
+                },
+                onEdit = {
+
+                },
+                item.name
+            )
+        },
     )
 }

@@ -41,9 +41,9 @@ class ApiClient {
                 Logger.error(tag = tag, message = message)
 
                 when (cause) {
-                    is RedirectResponseException  -> Unit
-                    is ClientRequestException -> Unit
-                    is ServerResponseException -> Unit
+                    is RedirectResponseException  -> throw UnexpectedErrorException()
+                    is ClientRequestException -> throw UnexpectedErrorException()
+                    is ServerResponseException -> throw UnexpectedErrorException()
                     is NoTransformationFoundException -> throw UnexpectedErrorException()
                     is TimeoutCancellationException -> throw TimeoutException()
                     else -> throw NetworkException()

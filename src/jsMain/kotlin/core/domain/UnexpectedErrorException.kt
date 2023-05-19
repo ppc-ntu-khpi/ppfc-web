@@ -4,4 +4,4 @@
 
 package core.domain
 
-class UnexpectedErrorException : Exception(message = "Unexpected error.")
+class UnexpectedErrorException : ApiException(message = "Unexpected error.")

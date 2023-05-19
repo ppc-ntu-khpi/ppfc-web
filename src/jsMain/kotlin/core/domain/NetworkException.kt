@@ -4,4 +4,4 @@
 
 package core.domain
 
-class NetworkException : Exception(message = "Network error.")
+class NetworkException : ApiException(message = "Network error.")

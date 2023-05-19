@@ -1,10 +1,10 @@
 package onboarding.data.repository
 
 import api.ApiException
-import onboarding.domain.model.AuthCredentials
+import core.data.mapper.toDomain
 import onboarding.data.dao.AuthDao
-import core.data.mapper.rethrowDomain
 import onboarding.data.mapper.toDto
+import onboarding.domain.model.AuthCredentials
 import onboarding.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(
@@ -15,7 +15,7 @@ class AuthRepositoryImpl(
         try {
             authDao.logIn(credentials = credentials.toDto())
         } catch (e: ApiException) {
-            e.rethrowDomain()
+            throw e.toDomain()
         }
     }
 
@@ -27,7 +27,7 @@ class AuthRepositoryImpl(
         try {
             authDao.passNewPasswordRequiredChallenge(password = password)
         } catch (e: ApiException) {
-            e.rethrowDomain()
+            throw e.toDomain()
         }
     }
 }

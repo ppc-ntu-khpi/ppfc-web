@@ -22,8 +22,8 @@ fun TableTopBar(
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
     selectedScreen: TablesScreen,
     colorSchemeMode: ColorSchemeMode,
-    onScreenSelected: (TablesScreen) -> Unit,
-    onColorSchemeModeChanged: (ColorSchemeMode) -> Unit,
+    onScreenSelected: (screen: TablesScreen) -> Unit,
+    onColorSchemeModeChanged: (colorSchemeMode: ColorSchemeMode) -> Unit,
     onLogOut: () -> Unit
 ) {
     Surface(
@@ -31,7 +31,6 @@ fun TableTopBar(
             style {
                 borderTopLeftRadius(0.percent)
                 borderTopRightRadius(0.percent)
-                overflow(Overflow.Hidden)
             }
 
             applyAttrs(attrs)

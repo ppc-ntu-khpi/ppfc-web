@@ -36,7 +36,8 @@ fun UiMessageHost(
             style {
                 width(100.percent)
                 height(100.percent)
-                backgroundColor(Color.transparent)
+                top(0.px)
+                left(0.px)
             }
         },
         overlapElevation = 1000,
@@ -93,7 +94,7 @@ private fun Message(
         attrs = {
             style {
                 width(400.px)
-                margin(10.px)
+                margin(16.px)
                 borderRadius(Shape.medium)
                 color(AppTheme.colors.inverseOnSurface)
                 backgroundColor(AppTheme.colors.inverseSurface)
