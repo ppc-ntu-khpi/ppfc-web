@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.presentation.navigation
 
 import coreui.theme.AppTheme

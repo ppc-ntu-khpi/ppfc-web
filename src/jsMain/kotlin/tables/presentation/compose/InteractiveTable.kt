@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.presentation.compose
 
 import androidx.compose.runtime.*
@@ -12,11 +16,11 @@ import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.util.LazyPagingItems
 import coreui.util.ScrollState
+import coreui.util.elementContext
 import coreui.util.getScrollState
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Tr
-import org.w3c.dom.Element
 import org.w3c.dom.HTMLDivElement
 
 @Composable
@@ -35,31 +39,28 @@ fun <T : Any> InteractiveTable(
 
     var listScrollState by remember { mutableStateOf(ScrollState.TOP) }
 
-    LaunchedEffect(listScrollState) {
-        if (listScrollState == ScrollState.BOTTOM) {
-            try {
-                lazyPagingItems[lazyPagingItems.itemCount]
-            } catch (_: Exception) {
-            }
+    LaunchedEffect(listScrollState == ScrollState.BOTTOM) {
+        try {
+            lazyPagingItems[lazyPagingItems.itemCount]
+        } catch (_: Exception) {
         }
     }
 
     Surface(
         attrs = {
-            var thisElement: Element? = null
-
-            ref { element ->
-                thisElement = element
-                onDispose { }
-            }
-
-            onScroll {
-                listScrollState = thisElement?.getScrollState(deviation = 50.0) ?: return@onScroll
+            elementContext { element->
+                element.addEventListener(
+                    type = "scroll",
+                    callback = {
+                        listScrollState = element.getScrollState(deviation = 50.0)
+                    }
+                )
             }
 
             style {
-                borderRadius(Shape.extraLarge)
                 height(100.percent)
+                borderRadius(Shape.extraLarge)
+                overflowY(Overflow.Auto)
             }
 
             applyAttrs(attrs)
@@ -186,8 +187,6 @@ fun <T : Any> InteractiveTable(
                     CircularProgressIndicator(
                         attrs = {
                             style {
-                                width(40.px)
-                                height(40.px)
                                 margin(5.px)
                             }
                         }

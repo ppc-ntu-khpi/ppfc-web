@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.presentation.screen.tables
 
 import androidx.compose.runtime.Composable
@@ -10,7 +14,7 @@ import coreui.compose.height
 import coreui.util.rememberNavController
 import org.jetbrains.compose.web.css.*
 import org.koin.compose.getKoin
-import tables.presentation.compose.TableTopBar
+import tables.presentation.compose.TablesTopBar
 import tables.presentation.navigation.TablesNavHost
 import tables.presentation.navigation.TablesScreen
 
@@ -38,7 +42,7 @@ fun Tables() {
                 }
             }
         ) {
-            TableTopBar(
+            TablesTopBar(
                 attrs = {
                     style {
                         width(100.percent)

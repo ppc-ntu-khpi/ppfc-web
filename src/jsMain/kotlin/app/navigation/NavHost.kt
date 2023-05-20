@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package app.navigation
 
 import androidx.compose.runtime.Composable

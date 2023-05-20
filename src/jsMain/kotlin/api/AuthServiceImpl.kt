@@ -16,6 +16,8 @@ import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import onboarding.domain.interactor.AuthenticationException
+import onboarding.domain.interactor.ChallengeFailedException
 
 class AuthServiceImpl(
     private val apiClient: ApiClient,

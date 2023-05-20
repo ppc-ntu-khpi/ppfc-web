@@ -1,9 +1,11 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.presentation.screen.classrooms
 
 import androidx.compose.runtime.*
-import coreui.compose.Overflow
 import coreui.compose.UiMessageHost
-import coreui.compose.overflowY
 import coreui.theme.AppTheme
 import coreui.util.*
 import org.jetbrains.compose.web.css.*
@@ -24,14 +26,15 @@ fun Classrooms() {
 
     CollectUiEvents(
         event = viewState.event,
+        onEvent = { event ->
+            when (event) {
+                is ClassroomsViewEvent.Message -> uiMessage = event.message
+            }
+        },
         onClear = { id ->
             viewModel.clearEvent(id = id)
         }
-    ) { event ->
-        when (event) {
-            is ClassroomsViewEvent.Message -> uiMessage = event.message
-        }
-    }
+    )
 
     UiMessageHost(message = uiMessage)
 
@@ -41,14 +44,13 @@ fun Classrooms() {
                 width(100.percent)
                 marginTop(16.px)
                 marginBottom(16.px)
-                overflowY(Overflow.Scroll)
             }
         },
         lazyPagingItems = classrooms,
         header = tableHeaderRow(AppTheme.stringResources.classroomsName),
         bodyItem = { item ->
             tableBodyRow(
-                isSelected = false,
+                isSelected = true,
                 onSelectionChanged = {
 
                 },

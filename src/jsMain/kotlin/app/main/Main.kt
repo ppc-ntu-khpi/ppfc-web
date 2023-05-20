@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package app.main
 
 import androidx.compose.runtime.Composable
@@ -26,14 +30,15 @@ fun Main() {
 
     CollectUiEvents(
         event = viewState.event,
+        onEvent = { event ->
+            when (event) {
+                is MainViewEvent.Navigate -> navController.navigate(screen = event.screen)
+            }
+        },
         onClear = { id ->
             viewModel.clearEvent(id = id)
         }
-    ) { event ->
-        when (event) {
-            is MainViewEvent.Navigate -> navController.navigate(screen = event.screen)
-        }
-    }
+    )
 
     AppTheme(
         locale = viewState.preferences.locale,

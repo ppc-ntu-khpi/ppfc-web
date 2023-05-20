@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.data.repository
 
 import androidx.paging.PagingState
-import api.ApiException
 import app.cash.paging.PagingSource
-import core.data.mapper.toDomain
+import core.domain.ApiException
 import tables.data.dao.ClassroomsDao
 import tables.data.mapper.toDomain
 import tables.data.mapper.toRequest
@@ -35,7 +38,7 @@ class ClassroomsRepositoryImpl(
                     searchQuery = searchQuery
                 )
             } catch (e: ApiException) {
-                return LoadResult.Error(e.toDomain())
+                return LoadResult.Error(e)
             }
 
             return LoadResult.Page(

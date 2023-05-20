@@ -4,6 +4,9 @@
 
 package api
 
+import core.domain.NetworkException
+import core.domain.TimeoutException
+import core.domain.UnexpectedErrorException
 import core.infrastructure.Logger
 import io.ktor.client.*
 import io.ktor.client.call.*

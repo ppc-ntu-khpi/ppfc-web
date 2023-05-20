@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package core.infrastructure
 
 import kotlinx.coroutines.flow.Flow

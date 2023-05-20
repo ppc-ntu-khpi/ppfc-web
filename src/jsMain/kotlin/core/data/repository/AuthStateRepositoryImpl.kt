@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package core.data.repository
 
 import core.data.dao.AuthStateDao

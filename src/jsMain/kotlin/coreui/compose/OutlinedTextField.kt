@@ -9,9 +9,14 @@ import coreui.compose.base.*
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
+import coreui.util.elementContext
+import coreui.util.getActualBackgroundColor
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
+import org.jetbrains.compose.web.attributes.builders.InputAttrsScope
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
+import org.jetbrains.compose.web.dom.EmailInput
+import org.jetbrains.compose.web.dom.PasswordInput
 import org.jetbrains.compose.web.dom.TextInput
 import org.w3c.dom.HTMLDivElement
 
@@ -24,6 +29,7 @@ fun OutlinedTextField(
     value: String,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
+    textFieldType: TextFieldType = TextFieldType.TEXT,
     error: String? = null,
     onValueChange: (text: String) -> Unit
 ) {
@@ -52,9 +58,7 @@ fun OutlinedTextField(
             },
             contentAlignment = Alignment.Box.CenterStart
         ) {
-            TextInput(
-                value = value
-            ) {
+            val inputContent: InputAttrsScope<String>.() -> Unit = {
                 style {
                     width(100.percent)
                     height(100.percent)
@@ -97,13 +101,44 @@ fun OutlinedTextField(
                 }
             }
 
+            when (textFieldType) {
+                TextFieldType.TEXT -> {
+                    TextInput(
+                        value = value
+                    ) {
+                        inputContent()
+                    }
+                }
+
+                TextFieldType.PASSWORD -> {
+                    PasswordInput(
+                        value = value
+                    ) {
+                        inputContent()
+                    }
+                }
+
+                TextFieldType.EMAIL -> {
+                    EmailInput(
+                        value = value
+                    ) {
+                        inputContent()
+                    }
+                }
+            }
+
+            var labelBackgroundColor by remember { mutableStateOf(Color.transparent.toString()) }
+
             Text(
                 attrs = {
+                    elementContext { element ->
+                        labelBackgroundColor = element.getActualBackgroundColor()
+                    }
+
                     style {
                         marginLeft(14.px)
                         paddingLeft(3.px)
                         paddingRight(3.px)
-                        borderRadius(Shape.medium)
                         position(Position.Absolute)
                         pointerEvents(PointerEvents.None)
                         transitions {
@@ -112,6 +147,8 @@ fun OutlinedTextField(
                                 timingFunction = AnimationTimingFunction.EaseOut
                             }
                         }
+                        borderRadius(Shape.extraSmall)
+                        backgroundColor(labelBackgroundColor)
 
                         if (error != null) {
                             color(AppTheme.colors.error)
@@ -127,7 +164,6 @@ fun OutlinedTextField(
                             }
                             fontSize(Typography.bodyMedium)
                         } else {
-                            backgroundColor(Color.transparent)
                             color(AppTheme.colors.onSurfaceVariant)
                             fontSize(Typography.bodyLarge)
                         }

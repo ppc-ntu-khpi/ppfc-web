@@ -22,7 +22,7 @@ fun OutlinedButton(
     onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    var isHover by remember { mutableStateOf(false) }
+    var isHovered by remember { mutableStateOf(false) }
     var isPressed by remember { mutableStateOf(false) }
 
     org.jetbrains.compose.web.dom.Button(
@@ -34,7 +34,7 @@ fun OutlinedButton(
                 backgroundColor(
                     when {
                         isPressed && enabled -> AppTheme.colors.primary.alpha(0.1f)
-                        isHover && enabled -> AppTheme.colors.primary.alpha(0.05f)
+                        isHovered && enabled -> AppTheme.colors.primary.alpha(0.05f)
                         else -> Color.transparent
                     }
                 )
@@ -66,11 +66,11 @@ fun OutlinedButton(
             }
 
             onMouseOver {
-                isHover = true
+                isHovered = true
             }
 
             onMouseOut {
-                isHover = false
+                isHovered = false
                 isPressed = false
             }
 

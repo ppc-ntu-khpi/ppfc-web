@@ -22,8 +22,8 @@ fun CircularProgressIndicator(
     Box(
         attrs = {
             style {
-                width(60.px)
-                height(60.px)
+                width(50.px)
+                height(50.px)
                 padding(strokeWidth)
                 background("$color")
                 borderRadius(Shape.round)

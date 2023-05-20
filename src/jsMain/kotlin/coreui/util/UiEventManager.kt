@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package coreui.util
 
 import androidx.compose.runtime.Composable
@@ -12,8 +16,8 @@ import kotlin.random.Random
 @Composable
 fun <T> CollectUiEvents(
     event: UiEvent<T>?,
-    onClear: (id: Long) -> Unit,
-    onEvent: (event: T) -> Unit
+    onEvent: (event: T) -> Unit,
+    onClear: (id: Long) -> Unit
 ) {
     LaunchedEffect(event?.id) {
         event?.let { event ->

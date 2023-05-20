@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.presentation.screen.classrooms
 
 import app.cash.paging.PagingConfig

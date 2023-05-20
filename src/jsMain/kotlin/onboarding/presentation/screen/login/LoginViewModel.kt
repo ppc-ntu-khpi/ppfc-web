@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package onboarding.presentation.screen.login
 
 import core.domain.NetworkException

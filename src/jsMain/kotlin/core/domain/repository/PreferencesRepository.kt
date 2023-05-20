@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package core.domain.repository
 
 import core.domain.model.Preferences

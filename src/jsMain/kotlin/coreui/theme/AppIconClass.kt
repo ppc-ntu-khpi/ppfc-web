@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package coreui.theme
 
 sealed class AppIconClass(val value: String) {
@@ -6,4 +10,5 @@ sealed class AppIconClass(val value: String) {
     object DarkColorScheme : AppIconClass(value = "fas fa-moon")
     object LogOut : AppIconClass(value = "fa fa-sign-out")
     object EmptyTable : AppIconClass(value = "fa-solid fa-file-lines")
+    object Check : AppIconClass(value = "fa-solid fa-check")
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Vladyslava Vasylieva
+ * Copyright (c) 2023. Vitalii Kozyr
  */
 
 package coreui.model

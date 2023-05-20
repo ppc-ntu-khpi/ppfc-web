@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.presentation.compose
 
 import androidx.compose.runtime.*
@@ -18,7 +22,7 @@ import tables.presentation.navigation.TablesScreen
 import tables.presentation.navigation.getName
 
 @Composable
-fun TableTopBar(
+fun TablesTopBar(
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
     selectedScreen: TablesScreen,
     colorSchemeMode: ColorSchemeMode,

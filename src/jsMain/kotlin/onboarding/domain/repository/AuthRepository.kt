@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package onboarding.domain.repository
 
 import onboarding.domain.model.AuthCredentials

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 package tables.data.mapper
 
 import tables.data.model.ClassroomRequest

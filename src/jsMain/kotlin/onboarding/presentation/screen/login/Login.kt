@@ -25,14 +25,15 @@ fun Login() {
 
     CollectUiEvents(
         event = viewState.event,
+        onEvent =  { event ->
+            when(event) {
+                is LoginViewEvent.Message -> uiMessage = event.message
+            }
+        },
         onClear = { id ->
             viewModel.clearEvent(id = id)
         }
-    ) { event ->
-        when(event) {
-            is LoginViewEvent.Message -> uiMessage = event.message
-        }
-    }
+    )
 
     UiMessageHost(message = uiMessage)
 
@@ -93,6 +94,7 @@ fun Login() {
                             width(100.percent)
                         }
                     },
+                    textFieldType = TextFieldType.PASSWORD,
                     value = viewState.password.text,
                     error = viewState.password.error,
                     label = AppTheme.stringResources.loginPasswordFieldLabel
