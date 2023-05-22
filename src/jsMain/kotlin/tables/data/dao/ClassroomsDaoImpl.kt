@@ -22,6 +22,17 @@ class ClassroomsDaoImpl(
         }
     }
 
+    override suspend fun updateClassroom(classroomRequest: ClassroomRequest, id: Long) {
+        apiClient.client.put("$PATH/$id") {
+            contentType(ContentType.Application.Json)
+            setBody(classroomRequest)
+        }
+    }
+
+    override suspend fun deleteClassrooms(ids: Set<Long>) {
+        apiClient.client.delete("$PATH/${ids.joinToString(",")}")
+    }
+
     override suspend fun getClassrooms(
         limit: Long,
         offset: Long,

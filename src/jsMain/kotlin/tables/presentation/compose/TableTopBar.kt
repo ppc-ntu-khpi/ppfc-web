@@ -35,6 +35,7 @@ fun TablesTopBar(
             style {
                 borderTopLeftRadius(0.percent)
                 borderTopRightRadius(0.percent)
+                overflow(Overflow.Hidden)
             }
 
             applyAttrs(attrs)
@@ -47,7 +48,7 @@ fun TablesTopBar(
                 style {
                     width(100.percent)
                     height(100.percent)
-                    overflow(Overflow.Auto)
+                    overflowY(Overflow.Auto)
                 }
             },
             verticalAlignment = Alignment.Vertical.CenterVertically,
@@ -56,7 +57,7 @@ fun TablesTopBar(
             Row(
                 attrs = {
                     style {
-                        height(50.px)
+                        height(100.percent)
                     }
                 }
             ) {

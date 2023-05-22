@@ -42,7 +42,15 @@ data class StringResources(
     val navigationTeachers: String,
     val navigationUsers: String,
 
-    val tableYouHaveNotCreatedAnyRecordsYet: String,
+    val tableDialogDeleteTitle: String,
+    val tableDialogEditTitle: String,
+    val tableRecordsNotFound: String,
+    val tableAdd: String,
+    val tableDelete: String,
+    val tableDeleteRowsWarning: String,
+    val tableDeleteRowsConfirm: String,
+    val tableDeleteRowsCancel: String,
 
     val classroomsName: String,
+    val classroomsSearchLabel: String,
 )

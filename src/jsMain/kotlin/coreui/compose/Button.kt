@@ -5,6 +5,8 @@
 package coreui.compose
 
 import androidx.compose.runtime.*
+import coreui.compose.base.Alignment
+import coreui.compose.base.Box
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
@@ -85,6 +87,16 @@ fun Button(
             applyAttrs(attrs)
         }
     ) {
-        content()
+        Box(
+            attrs = {
+                style {
+                    width(100.percent)
+                    height(100.percent)
+                }
+            },
+            contentAlignment = Alignment.Box.Center
+        ) {
+            content()
+        }
     }
 }

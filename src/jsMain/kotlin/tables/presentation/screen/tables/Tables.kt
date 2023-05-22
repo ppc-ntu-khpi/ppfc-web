@@ -7,10 +7,8 @@ package tables.presentation.screen.tables
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import coreui.compose.LengthKeyword
 import coreui.compose.base.Box
 import coreui.compose.base.Column
-import coreui.compose.height
 import coreui.util.rememberNavController
 import org.jetbrains.compose.web.css.*
 import org.koin.compose.getKoin
@@ -37,8 +35,8 @@ fun Tables() {
                 style {
                     width(100.percent)
                     height(100.percent)
-                    marginLeft(16.px)
-                    marginRight(16.px)
+                    paddingLeft(16.px)
+                    paddingRight(16.px)
                 }
             }
         ) {
@@ -46,7 +44,8 @@ fun Tables() {
                 attrs = {
                     style {
                         width(100.percent)
-                        height(LengthKeyword.Auto)
+                        height(50.px)
+                        maxHeight(50.px)
                     }
                 },
                 selectedScreen = navController.currentScreen.value,
@@ -62,7 +61,17 @@ fun Tables() {
                 }
             )
 
-            TablesNavHost(navController = navController)
+            Box(
+                attrs = {
+                    style {
+                        width(100.percent)
+                        height(100.percent)
+                        maxHeight(100.percent - 50.px)
+                    }
+                }
+            ) {
+                TablesNavHost(navController = navController)
+            }
         }
     }
 }

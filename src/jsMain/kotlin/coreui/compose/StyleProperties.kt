@@ -122,6 +122,19 @@ fun StyleScope.borderBottomRightRadius(value: CSSNumeric) {
     property("border-bottom-right-radius", value)
 }
 
+fun StyleScope.zIndex(value: Long) {
+    property("z-index", value)
+}
+
+fun StyleScope.boxSizing(value: BoxSizing) {
+    property("box-sizing", value.value)
+}
+
+sealed class BoxSizing(val value: String) {
+    object BorderBox : BoxSizing(value = "border-box")
+    object ContentBox : BoxSizing(value = "content-box")
+}
+
 sealed class BackgroundClip(val value: String) {
     object BorderBox : BackgroundClip(value = "border-box")
     object PaddingBox : BackgroundClip(value = "padding-box")

@@ -35,7 +35,7 @@ fun <R> Flow<InvokeStatus<out R>>.onSuccess(
 fun <R> Flow<InvokeStatus<out R>>.onError(
     onError: (Throwable) -> Unit
 ) = onEach { status ->
-    if(status is InvokeStatus.InvokeError) {
+    if (status is InvokeStatus.InvokeError) {
         onError(status.cause)
     }
 }

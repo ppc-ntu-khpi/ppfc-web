@@ -34,7 +34,15 @@ val uaStringResources = StringResources(
     navigationTeachers = "Викладачі",
     navigationUsers = "Користувачі",
 
-    tableYouHaveNotCreatedAnyRecordsYet = "Ви ще не створили жодного запису.",
+    tableDialogDeleteTitle = "Видалення",
+    tableDialogEditTitle = "Редагування",
+    tableRecordsNotFound = "Записів не знайдено.",
+    tableAdd = "Додати",
+    tableDelete = "Видалити",
+    tableDeleteRowsWarning = "Ви збираєтесь видалити {1} запис(ів). Це призведе до видалення пов'язаних записів.",
+    tableDeleteRowsConfirm = "Підтвердити",
+    tableDeleteRowsCancel = "Скасувати",
 
     classroomsName = "Назва",
+    classroomsSearchLabel = "Пошук за назвою",
 )

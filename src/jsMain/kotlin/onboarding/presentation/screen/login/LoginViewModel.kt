@@ -48,17 +48,19 @@ class LoginViewModel(
         initialValue = LoginViewState.Empty,
     )
 
-    fun setUsername(username: TextFieldState) {
+    fun setUsername(username: String) {
         _username.update {
-            username.copy(
+            it.copy(
+                text = username,
                 error = null
             )
         }
     }
 
-    fun setPassword(password: TextFieldState) {
+    fun setPassword(password: String) {
         _password.update {
-            password.copy(
+            it.copy(
+                text = password,
                 error = null
             )
         }

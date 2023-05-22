@@ -7,10 +7,7 @@ package tables.presentation.compose
 import androidx.compose.runtime.*
 import app.cash.paging.LoadStateLoading
 import coreui.compose.*
-import coreui.compose.base.Alignment
-import coreui.compose.base.Arrangement
-import coreui.compose.base.Column
-import coreui.compose.base.Spacer
+import coreui.compose.base.*
 import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
 import coreui.theme.Shape
@@ -24,18 +21,14 @@ import org.jetbrains.compose.web.dom.Tr
 import org.w3c.dom.HTMLDivElement
 
 @Composable
-fun <T : Any> InteractiveTable(
+fun <T : Any> PagingTable(
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
     lazyPagingItems: LazyPagingItems<T>,
     header: TableHeaderRow,
     bodyItem: (item: T) -> TableBodyRow
 ) {
-    val isLoading by remember {
-        derivedStateOf {
-            lazyPagingItems.loadState.refresh == LoadStateLoading ||
-                    lazyPagingItems.loadState.append == LoadStateLoading
-        }
-    }
+    val isRefreshing = lazyPagingItems.loadState.refresh == LoadStateLoading
+    val isAppending = lazyPagingItems.loadState.append == LoadStateLoading
 
     var listScrollState by remember { mutableStateOf(ScrollState.TOP) }
 
@@ -48,19 +41,19 @@ fun <T : Any> InteractiveTable(
 
     Surface(
         attrs = {
-            elementContext { element->
+            elementContext { element ->
                 element.addEventListener(
                     type = "scroll",
                     callback = {
-                        listScrollState = element.getScrollState(deviation = 50.0)
+                        listScrollState = element.getScrollState(deviation = 0.0)
+                        println(listScrollState.name)
                     }
                 )
             }
 
             style {
-                height(100.percent)
                 borderRadius(Shape.extraLarge)
-                overflowY(Overflow.Auto)
+                overflow(Overflow.Auto)
             }
 
             applyAttrs(attrs)
@@ -68,7 +61,19 @@ fun <T : Any> InteractiveTable(
         shadowElevation = ShadowElevation.Level3,
         tonalElevation = TonalElevation.Level3
     ) {
-        if (lazyPagingItems.itemCount == 0 && !isLoading) {
+        if (isRefreshing) {
+            Box(
+                attrs = {
+                    style {
+                        width(100.percent)
+                        height(100.percent)
+                    }
+                },
+                contentAlignment = Alignment.Box.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (lazyPagingItems.itemCount == 0 && !isRefreshing) {
             Column(
                 attrs = {
                     style {
@@ -87,7 +92,7 @@ fun <T : Any> InteractiveTable(
 
                 Spacer(height = 10.px)
 
-                Text(text = AppTheme.stringResources.tableYouHaveNotCreatedAnyRecordsYet)
+                Text(text = AppTheme.stringResources.tableRecordsNotFound)
             }
         } else {
             Column(
@@ -110,7 +115,7 @@ fun <T : Any> InteractiveTable(
                                 style {
                                     position(Position.Sticky)
                                     top(0.px)
-                                    property("z-index", 10)
+                                    zIndex(10)
                                 }
                             }
                         ) {
@@ -183,11 +188,12 @@ fun <T : Any> InteractiveTable(
                     }
                 )
 
-                if (isLoading) {
+                if (isAppending) {
                     CircularProgressIndicator(
                         attrs = {
                             style {
-                                margin(5.px)
+                                marginTop(10.px)
+                                marginBottom(10.px)
                             }
                         }
                     )

@@ -5,5 +5,10 @@
 package tables.domain.model
 
 data class Classroom(
-    val name: String
-)
+    val id: Id = Id.Empty,
+    val name: String = ""
+) {
+    companion object {
+        val Empty = Classroom()
+    }
+}

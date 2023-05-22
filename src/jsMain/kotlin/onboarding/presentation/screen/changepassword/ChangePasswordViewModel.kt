@@ -46,9 +46,10 @@ class ChangePasswordViewModel(
         initialValue = ChangePasswordViewState.Empty,
     )
 
-    fun setPassword(password: TextFieldState) {
+    fun setPassword(password: String) {
         _password.update {
-            password.copy(
+            it.copy(
+                text = password,
                 error = null
             )
         }

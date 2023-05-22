@@ -11,19 +11,36 @@ import tables.data.dao.ClassroomsDao
 import tables.data.mapper.toDomain
 import tables.data.mapper.toRequest
 import tables.domain.model.Classroom
+import tables.domain.model.Id
 import tables.domain.repository.ClassroomsRepository
 
 class ClassroomsRepositoryImpl(
     private val classroomsDao: ClassroomsDao
 ) : ClassroomsRepository {
 
+    private var classroomsPagingSource: PagingSource<Long, Classroom>? = null
+
     override suspend fun saveClassroom(classroom: Classroom) {
-        classroomsDao.saveClassroom(classroomRequest = classroom.toRequest())
+        if (classroom.id is Id.Value) {
+            classroomsDao.updateClassroom(classroomRequest = classroom.toRequest(), id = classroom.id.value)
+        } else {
+            classroomsDao.saveClassroom(classroomRequest = classroom.toRequest())
+        }
+        classroomsPagingSource?.invalidate()
+    }
+
+    override suspend fun deleteClassrooms(ids: Set<Id>) {
+        classroomsDao.deleteClassrooms(ids = ids.map { it.value }.toSet())
+        classroomsPagingSource?.invalidate()
     }
 
     override fun getClassroomsPagingSource(
         searchQuery: String
     ) = object : PagingSource<Long, Classroom>() {
+
+        init {
+            classroomsPagingSource = this
+        }
 
         override fun getRefreshKey(state: PagingState<Long, Classroom>) = null
 
@@ -43,7 +60,7 @@ class ClassroomsRepositoryImpl(
 
             return LoadResult.Page(
                 data = result.map { it.toDomain() },
-                prevKey = null,
+                prevKey = if (offset == 0L) null else offset - limit,
                 nextKey = if (result.isEmpty()) null else offset + limit,
             )
         }

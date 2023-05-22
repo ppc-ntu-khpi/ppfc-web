@@ -29,6 +29,7 @@ fun OutlinedTextField(
     value: String,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
+    symmetricLayout: Boolean = false,
     textFieldType: TextFieldType = TextFieldType.TEXT,
     error: String? = null,
     onValueChange: (text: String) -> Unit
@@ -53,6 +54,9 @@ fun OutlinedTextField(
                     width(100.percent)
                     height(outlinedTextFieldHeight)
                     marginTop(8.px)
+                    if(symmetricLayout) {
+                        marginBottom(8.px)
+                    }
                     backgroundColor(Color.transparent)
                 }
             },

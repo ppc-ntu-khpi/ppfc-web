@@ -38,8 +38,8 @@ fun UiMessageHost(
     Box(
         attrs = {
             style {
-                width(100.percent)
-                height(100.percent)
+                width(100.vw)
+                height(100.vh)
                 top(0.px)
                 left(0.px)
             }

@@ -82,7 +82,7 @@ fun Login() {
                     label = AppTheme.stringResources.loginUsernameFieldLabel
                 ) { text ->
                     viewModel.setUsername(
-                        username = viewState.password.copy(text = text)
+                        username = text
                     )
                 }
 
@@ -100,7 +100,7 @@ fun Login() {
                     label = AppTheme.stringResources.loginPasswordFieldLabel
                 ) { text ->
                     viewModel.setPassword(
-                        password = viewState.password.copy(text = text)
+                        password = text
                     )
                 }
 

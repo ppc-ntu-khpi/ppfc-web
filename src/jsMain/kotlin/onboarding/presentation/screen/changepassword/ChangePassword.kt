@@ -85,7 +85,7 @@ fun ChangePassword() {
                         label = AppTheme.stringResources.changePasswordPasswordFieldLabel
                     ) { text ->
                         viewModel.setPassword(
-                            password = viewState.password.copy(text = text)
+                            password = text
                         )
                     }
 

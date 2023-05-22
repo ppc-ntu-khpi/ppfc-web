@@ -5,7 +5,9 @@
 package coreui.compose.base
 
 import androidx.compose.runtime.Composable
+import coreui.compose.BoxSizing
 import coreui.compose.applyAttrs
+import coreui.compose.boxSizing
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Div
@@ -25,6 +27,7 @@ fun Column(
                 flexDirection(FlexDirection.Column)
                 justifyContent(verticalArrangement.justifyContent)
                 alignItems(horizontalAlignment.alignItems)
+                boxSizing(BoxSizing.BorderBox)
             }
 
             applyAttrs(attrs)

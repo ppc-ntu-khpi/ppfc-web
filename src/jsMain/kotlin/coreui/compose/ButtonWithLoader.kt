@@ -11,7 +11,10 @@ import coreui.compose.base.Row
 import coreui.compose.base.Spacer
 import coreui.theme.AppTheme
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
-import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.css.AnimationTimingFunction
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.s
+import org.jetbrains.compose.web.css.transitions
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.HTMLButtonElement
 
@@ -47,13 +50,7 @@ fun ButtonWithLoader(
         ) {
             if (loader) {
                 CircularProgressIndicator(
-                    attrs = {
-                        style {
-                            width(18.px)
-                            height(18.px)
-                        }
-                    },
-                    strokeWidth = 3.px,
+                    size = 18.px,
                     color = AppTheme.colors.onPrimary
                 )
 

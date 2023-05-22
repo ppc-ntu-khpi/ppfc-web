@@ -5,9 +5,7 @@
 package coreui.compose.base
 
 import androidx.compose.runtime.Composable
-import coreui.compose.PointerEvents
-import coreui.compose.applyAttrs
-import coreui.compose.pointerEvents
+import coreui.compose.*
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Div
@@ -26,11 +24,11 @@ fun Box(
                 display(DisplayStyle.Flex)
                 justifyContent(contentAlignment.justifyContent)
                 alignItems(contentAlignment.alignItems)
-                position(Position.Relative)
+                boxSizing(BoxSizing.BorderBox)
                 if(overlapElevation != null) {
                     position(Position.Absolute)
                     pointerEvents(PointerEvents.None)
-                    property("z-index", overlapElevation)
+                    zIndex(overlapElevation)
                 }
             }
 
