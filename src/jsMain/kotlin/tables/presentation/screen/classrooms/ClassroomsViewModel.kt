@@ -114,7 +114,7 @@ class ClassroomsViewModel(
             params = DeleteClassrooms.Params(ids = idsToDelete)
         ).onSuccess {
             sendEvent(
-                event = ClassroomsViewEvent.ClassroomsDeleted
+                event = ClassroomsViewEvent.ClassroomDeleted
             )
         }.onError { cause ->
             val message = when (cause) {

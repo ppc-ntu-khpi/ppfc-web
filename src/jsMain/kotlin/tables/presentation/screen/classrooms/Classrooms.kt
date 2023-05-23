@@ -41,7 +41,7 @@ fun Classrooms() {
         onEvent = { event ->
             when (event) {
                 is ClassroomsViewEvent.Message -> uiMessage = event.message
-                is ClassroomsViewEvent.ClassroomsDeleted -> viewModel.dialog(dialog = null)
+                is ClassroomsViewEvent.ClassroomDeleted -> viewModel.dialog(dialog = null)
             }
         },
         onClear = { id ->

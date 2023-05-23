@@ -34,8 +34,12 @@ fun <T : Any> PagingTable(
 
     LaunchedEffect(listScrollState == ScrollState.BOTTOM) {
         try {
-            lazyPagingItems[lazyPagingItems.itemCount]
-        } catch (_: Exception) {
+            val size = lazyPagingItems.itemCount
+            if(size <= 1) return@LaunchedEffect
+
+            lazyPagingItems[size - 1]
+        } catch (e: Exception) {
+            println("LOL ${e}")
         }
     }
 
@@ -46,7 +50,6 @@ fun <T : Any> PagingTable(
                     type = "scroll",
                     callback = {
                         listScrollState = element.getScrollState(deviation = 0.0)
-                        println(listScrollState.name)
                     }
                 )
             }
@@ -145,8 +148,8 @@ fun <T : Any> PagingTable(
                         }
                     },
                     body = {
-                        (0 until lazyPagingItems.itemCount).forEach { index ->
-                            val item = lazyPagingItems.peek(index) ?: return@forEach
+                        lazyPagingItems.itemSnapshotList.forEach { item ->
+                            item ?: return@forEach
                             val bodyRow = bodyItem(item)
 
                             Tr {

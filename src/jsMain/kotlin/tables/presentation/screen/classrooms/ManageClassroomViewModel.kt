@@ -69,8 +69,7 @@ class ManageClassroomViewModel(
         }
 
         saveClassroom(
-            params =
-            SaveClassroom.Params(
+            params = SaveClassroom.Params(
                 classroom = classroom
             )
         ).onSuccess {

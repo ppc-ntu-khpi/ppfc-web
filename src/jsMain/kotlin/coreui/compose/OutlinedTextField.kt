@@ -18,6 +18,7 @@ import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.EmailInput
 import org.jetbrains.compose.web.dom.PasswordInput
 import org.jetbrains.compose.web.dom.TextInput
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLDivElement
 
 private val outlinedTextFieldWidth = 240.px
@@ -131,12 +132,16 @@ fun OutlinedTextField(
                 }
             }
 
+            var labelElement by remember { mutableStateOf<Element?>(null) }
             var labelBackgroundColor by remember { mutableStateOf(Color.transparent.toString()) }
+            LaunchedEffect(AppTheme.colors) {
+                labelBackgroundColor = labelElement?.getActualBackgroundColor() ?: return@LaunchedEffect
+            }
 
             Text(
                 attrs = {
                     elementContext { element ->
-                        labelBackgroundColor = element.getActualBackgroundColor()
+                        labelElement = element
                     }
 
                     style {
@@ -152,7 +157,6 @@ fun OutlinedTextField(
                             }
                         }
                         borderRadius(Shape.extraSmall)
-                        backgroundColor(labelBackgroundColor)
 
                         if (error != null) {
                             color(AppTheme.colors.error)
@@ -171,6 +175,8 @@ fun OutlinedTextField(
                             color(AppTheme.colors.onSurfaceVariant)
                             fontSize(Typography.bodyLarge)
                         }
+
+                        backgroundColor(labelBackgroundColor)
                     }
                 },
                 text = label

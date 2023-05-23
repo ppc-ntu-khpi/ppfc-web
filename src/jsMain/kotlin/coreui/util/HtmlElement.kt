@@ -19,7 +19,7 @@ fun AttrsScope<Element>.elementContext(
 }
 
 fun Element.getActualBackgroundColor(searchDepth: Int = 25): String {
-    var currentElement: Element = this
+    var currentElement: Element = this.parentElement ?: return Color.transparent.toString()
 
     repeat(searchDepth) {
         val color = document.defaultView
