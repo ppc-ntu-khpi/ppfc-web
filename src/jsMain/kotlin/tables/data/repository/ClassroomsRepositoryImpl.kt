@@ -35,6 +35,7 @@ class ClassroomsRepositoryImpl(
     }
 
     override fun getClassroomsPagingSource(
+        pageSize: Long,
         searchQuery: String
     ) = object : PagingSource<Long, Classroom>() {
 
@@ -42,15 +43,19 @@ class ClassroomsRepositoryImpl(
             classroomsPagingSource = this
         }
 
-        override fun getRefreshKey(state: PagingState<Long, Classroom>) = null
+        override fun getRefreshKey(state: PagingState<Long, Classroom>): Long? {
+            return state.anchorPosition?.let { anchorPosition ->
+                anchorPosition / pageSize
+            }
+        }
 
         override suspend fun load(params: LoadParams<Long>): LoadResult<Long, Classroom> {
-            val limit = params.loadSize.toLong()
-            val offset = params.key ?: 0L
+            val page = params.key ?: 0L
+            val offset = page * pageSize
 
             val result = try {
                 classroomsDao.getClassrooms(
-                    limit = limit,
+                    limit = pageSize,
                     offset = offset,
                     searchQuery = searchQuery
                 )
@@ -60,8 +65,9 @@ class ClassroomsRepositoryImpl(
 
             return LoadResult.Page(
                 data = result.map { it.toDomain() },
-                prevKey = if (offset == 0L) null else offset - limit,
-                nextKey = if (result.isEmpty()) null else offset + limit,
+                prevKey = if (page <= 0) null else page - 1,
+                nextKey = if (result.size < pageSize) null else page + 1,
+                itemsBefore = offset.toInt()
             )
         }
     }

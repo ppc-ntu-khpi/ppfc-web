@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package coreui.util
+package coreui.extensions
 
 import kotlinx.browser.document
 import org.jetbrains.compose.web.attributes.AttrsScope

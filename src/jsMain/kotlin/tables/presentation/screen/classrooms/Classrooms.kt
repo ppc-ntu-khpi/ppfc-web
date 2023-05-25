@@ -5,17 +5,15 @@
 package tables.presentation.screen.classrooms
 
 import androidx.compose.runtime.*
-import app.cash.paging.LoadStateLoading
 import coreui.compose.*
 import coreui.compose.base.Alignment
 import coreui.compose.base.Column
 import coreui.compose.base.Row
 import coreui.compose.base.Spacer
-import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
 import coreui.util.*
 import org.jetbrains.compose.web.css.*
-import tables.presentation.common.ConfirmDeletionDialog
+import tables.presentation.compose.ConfirmDeletionDialog
 import tables.presentation.compose.PagingTable
 import tables.presentation.compose.tableBodyRow
 import tables.presentation.compose.tableHeaderRow
@@ -98,15 +96,6 @@ fun Classrooms() {
             },
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
-            IconButton(
-                enabled = classrooms.loadState.refresh != LoadStateLoading,
-                icon = AppIconClass.Refresh
-            ) {
-                classrooms.refresh()
-            }
-
-            Spacer(width = 10.px)
-
             Button(
                 onClick = {
                     viewModel.dialog(
@@ -149,7 +138,6 @@ fun Classrooms() {
             attrs = {
                 style {
                     width(100.percent)
-                    height(100.percent)
                 }
             },
             lazyPagingItems = classrooms,

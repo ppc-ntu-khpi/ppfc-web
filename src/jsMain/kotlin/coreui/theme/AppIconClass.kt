@@ -12,4 +12,6 @@ sealed class AppIconClass(val value: String) {
     object EmptyTable : AppIconClass(value = "fa-solid fa-file-lines")
     object Check : AppIconClass(value = "fa-solid fa-check")
     object Refresh : AppIconClass(value = "fa-solid fa-refresh")
+    object ArrowUp : AppIconClass(value = "fa-solid fa-angle-up")
+    object ArrowDown : AppIconClass(value = "fa-solid fa-angle-down")
 }

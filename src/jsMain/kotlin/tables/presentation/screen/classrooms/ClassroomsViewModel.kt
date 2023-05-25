@@ -7,11 +7,10 @@ package tables.presentation.screen.classrooms
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
-import core.domain.NetworkException
-import core.domain.TimeoutException
-import core.util.combine
+import core.extensions.combine
+import coreui.extensions.onSuccess
+import coreui.extensions.withErrorMapper
 import coreui.model.TextFieldState
-import coreui.theme.AppTheme
 import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +20,13 @@ import tables.domain.interactor.DeleteClassrooms
 import tables.domain.model.Classroom
 import tables.domain.model.Id
 import tables.domain.observer.ObservePagedClassrooms
+import tables.presentation.common.TableOperationErrorMapper
 
 @OptIn(FlowPreview::class)
 class ClassroomsViewModel(
     private val observePagedClassrooms: ObservePagedClassrooms,
-    private val deleteClassrooms: DeleteClassrooms
+    private val deleteClassrooms: DeleteClassrooms,
+    private val tableOperationErrorMapper: TableOperationErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
@@ -94,11 +95,7 @@ class ClassroomsViewModel(
     }
 
     fun handlePagingError(cause: Throwable) {
-        val message = when (cause) {
-            is NetworkException -> AppTheme.stringResources.networkException
-            is TimeoutException -> AppTheme.stringResources.timeoutException
-            else -> AppTheme.stringResources.unexpectedErrorException
-        }
+        val message = tableOperationErrorMapper.map(cause = cause)
 
         sendEvent(
             event = ClassroomsViewEvent.Message(
@@ -116,13 +113,7 @@ class ClassroomsViewModel(
             sendEvent(
                 event = ClassroomsViewEvent.ClassroomDeleted
             )
-        }.onError { cause ->
-            val message = when (cause) {
-                is NetworkException -> AppTheme.stringResources.networkException
-                is TimeoutException -> AppTheme.stringResources.timeoutException
-                else -> AppTheme.stringResources.unexpectedErrorException
-            }
-
+        }.withErrorMapper(errorMapper = tableOperationErrorMapper) { message ->
             sendEvent(
                 event = ClassroomsViewEvent.Message(
                     message = UiMessage(message = message)
@@ -150,7 +141,7 @@ class ClassroomsViewModel(
     private companion object {
         val PAGING_CONFIG = PagingConfig(
             pageSize = 10,
-            initialLoadSize = 10
+            prefetchDistance = 20
         )
     }
 }

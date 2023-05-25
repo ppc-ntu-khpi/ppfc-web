@@ -6,6 +6,7 @@ package onboarding.presentation.screen.changepassword
 
 import core.domain.NetworkException
 import core.domain.TimeoutException
+import coreui.extensions.onError
 import coreui.model.TextFieldState
 import coreui.theme.AppTheme
 import coreui.util.*

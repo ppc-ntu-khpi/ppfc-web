@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package tables.presentation.common
+package tables.presentation.compose
 
 import androidx.compose.runtime.Composable
 import coreui.compose.ButtonWithLoader

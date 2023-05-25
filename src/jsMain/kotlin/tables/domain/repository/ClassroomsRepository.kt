@@ -14,6 +14,7 @@ interface ClassroomsRepository {
     suspend fun deleteClassrooms(ids: Set<Id>)
 
     fun getClassroomsPagingSource(
+        pageSize: Long,
         searchQuery: String
     ): PagingSource<Long, Classroom>
 }

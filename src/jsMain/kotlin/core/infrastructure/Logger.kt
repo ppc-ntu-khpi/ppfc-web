@@ -9,7 +9,6 @@ import kotlin.js.Date
 
 object Logger {
     private var logLevel = atomic(Level.ALL)
-    private val date = Date()
 
     fun setLogLevel(logLevel: Level) {
         Logger.logLevel.value = logLevel
@@ -23,7 +22,7 @@ object Logger {
     private fun log(logLevel: Level, tag: String, message: String) {
         if (logLevel.level > Logger.logLevel.value.level) return
 
-        val logMessage = "${date.toTimeString().substring(0, 8)} ${logLevel.name} - $tag: $message"
+        val logMessage = "${Date().toTimeString().substring(0, 8)} ${logLevel.name} - $tag: $message"
 
         when (logLevel) {
             Level.OFF -> {}

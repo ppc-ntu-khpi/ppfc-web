@@ -41,7 +41,6 @@ class UiEventManager<T> {
         synchronized(this) {
             _events.value = _events.value + event
         }
-
     }
 
     fun clearEvent(id: Long) {

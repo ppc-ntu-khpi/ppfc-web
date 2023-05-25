@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 @file:Suppress("UNCHECKED_CAST")
-package core.util
+package core.extensions
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

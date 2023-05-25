@@ -12,51 +12,33 @@ import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.util.LazyPagingItems
-import coreui.util.ScrollState
-import coreui.util.elementContext
-import coreui.util.getScrollState
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Tr
 import org.w3c.dom.HTMLDivElement
+import kotlin.math.min
 
 @Composable
 fun <T : Any> PagingTable(
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
+    itemsPerPage: Long = 10,
     lazyPagingItems: LazyPagingItems<T>,
     header: TableHeaderRow,
     bodyItem: (item: T) -> TableBodyRow
 ) {
     val isRefreshing = lazyPagingItems.loadState.refresh == LoadStateLoading
-    val isAppending = lazyPagingItems.loadState.append == LoadStateLoading
 
-    var listScrollState by remember { mutableStateOf(ScrollState.TOP) }
+    val itemsNumber = lazyPagingItems.itemCount.toLong()
+    var currentPage by remember { mutableStateOf(0L) }
+    val lastPage = (itemsNumber - 1).coerceAtLeast(0) / itemsPerPage
 
-    LaunchedEffect(listScrollState == ScrollState.BOTTOM) {
-        try {
-            val size = lazyPagingItems.itemCount
-            if(size <= 1) return@LaunchedEffect
-
-            lazyPagingItems[size - 1]
-        } catch (e: Exception) {
-            println("LOL ${e}")
-        }
-    }
+    currentPage = min(currentPage, lastPage)
 
     Surface(
         attrs = {
-            elementContext { element ->
-                element.addEventListener(
-                    type = "scroll",
-                    callback = {
-                        listScrollState = element.getScrollState(deviation = 0.0)
-                    }
-                )
-            }
-
             style {
                 borderRadius(Shape.extraLarge)
-                overflow(Overflow.Auto)
+                overflow(Overflow.Hidden)
             }
 
             applyAttrs(attrs)
@@ -64,44 +46,116 @@ fun <T : Any> PagingTable(
         shadowElevation = ShadowElevation.Level3,
         tonalElevation = TonalElevation.Level3
     ) {
-        if (isRefreshing) {
-            Box(
-                attrs = {
-                    style {
-                        width(100.percent)
-                        height(100.percent)
-                    }
-                },
-                contentAlignment = Alignment.Box.Center
-            ) {
-                CircularProgressIndicator()
+        Row(
+            attrs = {
+                style {
+                    width(100.percent)
+                    height(100.percent)
+                }
             }
-        } else if (lazyPagingItems.itemCount == 0 && !isRefreshing) {
+        ) {
             Column(
                 attrs = {
                     style {
-                        width(100.percent)
-                        height(100.percent)
+                        margin(10.px)
                     }
                 },
-                verticalArrangement = Arrangement.Vertical.Center,
                 horizontalAlignment = Alignment.Horizontal.CenterHorizontally
             ) {
-                Icon(
-                    size = 80.px,
-                    icon = AppIconClass.EmptyTable,
-                    tint = AppTheme.colors.onBackground
-                )
+                IconButton(
+                    enabled = !isRefreshing,
+                    icon = AppIconClass.Refresh
+                ) {
+                    currentPage = 0
+                    try {
+                        lazyPagingItems[0]
+                    } catch (_: IndexOutOfBoundsException) {
+                    }
+                    lazyPagingItems.refresh()
+                }
 
                 Spacer(height = 10.px)
 
-                Text(text = AppTheme.stringResources.tableRecordsNotFound)
+                val canMoveUp = currentPage > 0L && !isRefreshing
+                IconButton(
+                    enabled = canMoveUp,
+                    icon = AppIconClass.ArrowUp
+                ) {
+                    if (!canMoveUp) return@IconButton
+                    currentPage--
+                }
+
+                Spacer(height = 10.px)
+
+                Text(text = (currentPage + 1).toString())
+
+                Spacer(height = 10.px)
+
+                val canMoveDown = currentPage < lastPage && !isRefreshing
+                IconButton(
+                    enabled = canMoveDown,
+                    icon = AppIconClass.ArrowDown
+                ) {
+                    if (!canMoveDown) return@IconButton
+                    currentPage++
+                }
             }
-        } else {
+
+            Box(
+                attrs = {
+                    style {
+                        width(1.px)
+                        height(100.percent)
+                        backgroundColor(AppTheme.colors.outline)
+                    }
+                }
+            )
+
+            if (isRefreshing && itemsNumber == 0L) {
+                Box(
+                    attrs = {
+                        style {
+                            width(100.percent)
+                            height(100.percent)
+                        }
+                    },
+                    contentAlignment = Alignment.Box.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+                return@Row
+            }
+
+            if (itemsNumber == 0L && !isRefreshing) {
+                Column(
+                    attrs = {
+                        style {
+                            width(100.percent)
+                            height(100.percent)
+                        }
+                    },
+                    verticalArrangement = Arrangement.Vertical.Center,
+                    horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+                ) {
+                    Icon(
+                        size = 80.px,
+                        icon = AppIconClass.EmptyTable,
+                        tint = AppTheme.colors.onBackground
+                    )
+
+                    Spacer(height = 10.px)
+
+                    Text(text = AppTheme.stringResources.tableRecordsNotFound)
+                }
+                return@Row
+            }
+
             Column(
                 attrs = {
                     style {
                         width(100.percent)
+                        height(100.percent)
+                        overflow(Overflow.Auto)
                     }
                 },
                 horizontalAlignment = Alignment.Horizontal.CenterHorizontally
@@ -148,8 +202,16 @@ fun <T : Any> PagingTable(
                         }
                     },
                     body = {
-                        lazyPagingItems.itemSnapshotList.forEach { item ->
-                            item ?: return@forEach
+                        val start = currentPage * itemsPerPage
+                        val end = (start + itemsPerPage).coerceAtMost(itemsNumber)
+
+                        for (index in start until end) {
+                            val item = try {
+                                lazyPagingItems[index.toInt()]
+                            } catch (e: IndexOutOfBoundsException) {
+                                null
+                            } ?: break
+
                             val bodyRow = bodyItem(item)
 
                             Tr {
@@ -190,17 +252,6 @@ fun <T : Any> PagingTable(
                         }
                     }
                 )
-
-                if (isAppending) {
-                    CircularProgressIndicator(
-                        attrs = {
-                            style {
-                                marginTop(10.px)
-                                marginBottom(10.px)
-                            }
-                        }
-                    )
-                }
             }
         }
     }

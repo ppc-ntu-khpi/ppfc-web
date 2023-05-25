@@ -12,6 +12,7 @@ import tables.domain.interactor.DeleteClassrooms
 import tables.domain.interactor.SaveClassroom
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.repository.ClassroomsRepository
+import tables.presentation.common.TableOperationErrorMapper
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.tables.TablesViewModel
@@ -19,6 +20,10 @@ import tables.presentation.screen.tables.TablesViewModel
 val tablesModule = module {
     factory {
         TablesViewModel(get(), get(), get())
+    }
+
+    single {
+        TableOperationErrorMapper()
     }
 
     /** Classrooms */
@@ -43,10 +48,10 @@ val tablesModule = module {
     }
 
     factory {
-        ClassroomsViewModel(get(), get())
+        ClassroomsViewModel(get(), get(), get())
     }
 
     factory {
-        ManageClassroomViewModel(get())
+        ManageClassroomViewModel(get(), get())
     }
 }

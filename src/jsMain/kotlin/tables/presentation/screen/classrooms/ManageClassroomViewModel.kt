@@ -4,21 +4,22 @@
 
 package tables.presentation.screen.classrooms
 
-import core.domain.NetworkException
-import core.domain.TimeoutException
-import coreui.theme.AppTheme
+import coreui.extensions.onSuccess
+import coreui.extensions.withErrorMapper
 import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.SaveClassroom
 import tables.domain.model.Classroom
+import tables.presentation.common.TableOperationErrorMapper
 import tables.presentation.screen.classrooms.mapper.toDomain
 import tables.presentation.screen.classrooms.mapper.toState
 import tables.presentation.screen.classrooms.model.ClassroomState
 
 class ManageClassroomViewModel(
-    private val saveClassroom: SaveClassroom
+    private val saveClassroom: SaveClassroom,
+    private val tableOperationErrorMapper: TableOperationErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
@@ -76,13 +77,7 @@ class ManageClassroomViewModel(
             sendEvent(
                 event = ManageClassroomViewEvent.ClassroomSaved
             )
-        }.onError { cause ->
-            val message = when (cause) {
-                is NetworkException -> AppTheme.stringResources.networkException
-                is TimeoutException -> AppTheme.stringResources.timeoutException
-                else -> AppTheme.stringResources.unexpectedErrorException
-            }
-
+        }.withErrorMapper(errorMapper = tableOperationErrorMapper) { message ->
             sendEvent(
                 event = ManageClassroomViewEvent.Message(
                     message = UiMessage(message = message)

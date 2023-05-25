@@ -21,6 +21,7 @@ class ObservePagedClassrooms(
     ): Flow<PagingData<Classroom>> {
         return Pager(config = params.pagingConfig) {
             classroomsRepository.getClassroomsPagingSource(
+                pageSize = params.pagingConfig.pageSize.toLong(),
                 searchQuery = params.searchQuery
             )
         }.flow

@@ -151,7 +151,12 @@ fun OutlinedTextField(
                         position(Position.Absolute)
                         pointerEvents(PointerEvents.None)
                         transitions {
-                            all {
+                            "transform" {
+                                duration = 0.15.s
+                                timingFunction = AnimationTimingFunction.EaseOut
+                            }
+
+                            "font-size" {
                                 duration = 0.15.s
                                 timingFunction = AnimationTimingFunction.EaseOut
                             }
