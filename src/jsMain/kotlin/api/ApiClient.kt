@@ -14,6 +14,7 @@ import io.ktor.client.engine.js.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.serialization.json.Json
 import org.ppfc.Web.BuildConfig
@@ -27,6 +28,16 @@ class ApiClient {
 
         HttpResponseValidator {
             handleResponseExceptionWithRequest { cause, request ->
+                val exception = when (cause) {
+                    is RedirectResponseException -> UnexpectedErrorException()
+                    is ClientRequestException -> UnexpectedErrorException()
+                    is ServerResponseException -> UnexpectedErrorException()
+                    is NoTransformationFoundException -> UnexpectedErrorException()
+                    is TimeoutCancellationException -> TimeoutException()
+                    is CancellationException -> null
+                    else -> NetworkException()
+                } ?: return@handleResponseExceptionWithRequest
+
                 val call = try {
                     request.call
                 } catch (_: Exception) {
@@ -43,14 +54,7 @@ class ApiClient {
 
                 Logger.error(tag = tag, message = message)
 
-                when (cause) {
-                    is RedirectResponseException  -> throw UnexpectedErrorException()
-                    is ClientRequestException -> throw UnexpectedErrorException()
-                    is ServerResponseException -> throw UnexpectedErrorException()
-                    is NoTransformationFoundException -> throw UnexpectedErrorException()
-                    is TimeoutCancellationException -> throw TimeoutException()
-                    else -> throw NetworkException()
-                }
+                throw exception
             }
         }
 

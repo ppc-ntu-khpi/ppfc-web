@@ -5,7 +5,6 @@
 package tables
 
 import org.koin.dsl.module
-import tables.common.TableOperationErrorMapper
 import tables.data.dao.ClassroomsDao
 import tables.data.dao.ClassroomsDaoImpl
 import tables.data.repository.ClassroomsRepositoryImpl
@@ -20,10 +19,6 @@ import tables.presentation.screen.tables.TablesViewModel
 val tablesModule = module {
     factory {
         TablesViewModel(get(), get(), get())
-    }
-
-    single {
-        TableOperationErrorMapper()
     }
 
     /** Classrooms */

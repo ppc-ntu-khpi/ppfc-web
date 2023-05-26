@@ -8,6 +8,7 @@ import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
 import core.extensions.combine
+import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
 import coreui.model.TextFieldState
@@ -17,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import tables.common.TableOperationErrorMapper
 import tables.domain.interactor.DeleteClassrooms
 import tables.domain.model.Classroom
 import tables.domain.model.Id
@@ -27,7 +27,7 @@ import tables.domain.observer.ObservePagedClassrooms
 class ClassroomsViewModel(
     private val observePagedClassrooms: ObservePagedClassrooms,
     private val deleteClassrooms: DeleteClassrooms,
-    private val tableOperationErrorMapper: TableOperationErrorMapper
+    private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
@@ -96,7 +96,7 @@ class ClassroomsViewModel(
     }
 
     fun handlePagingError(cause: Throwable) {
-        val message = tableOperationErrorMapper.map(cause = cause)
+        val message = apiCommonErrorMapper.map(cause = cause)
             ?: AppTheme.stringResources.unexpectedErrorException
 
         sendEvent(
@@ -116,7 +116,8 @@ class ClassroomsViewModel(
                 event = ClassroomsViewEvent.ClassroomDeleted
             )
         }.withErrorMapper(
-            errorMapper = tableOperationErrorMapper
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper
         ) { message ->
             sendEvent(
                 event = ClassroomsViewEvent.Message(

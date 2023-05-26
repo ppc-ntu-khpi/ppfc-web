@@ -42,10 +42,10 @@ val onboardingModule = module {
     }
 
     factory {
-        LoginViewModel(get())
+        LoginViewModel(get(), get())
     }
 
     factory {
-        ChangePasswordViewModel(get(), get())
+        ChangePasswordViewModel(get(), get(), get())
     }
 }

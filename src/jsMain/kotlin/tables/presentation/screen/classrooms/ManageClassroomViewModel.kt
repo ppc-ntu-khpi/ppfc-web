@@ -4,13 +4,14 @@
 
 package tables.presentation.screen.classrooms
 
+import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
+import coreui.theme.AppTheme
 import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import tables.common.TableOperationErrorMapper
 import tables.domain.interactor.SaveClassroom
 import tables.domain.model.Classroom
 import tables.presentation.screen.classrooms.mapper.toDomain
@@ -19,7 +20,7 @@ import tables.presentation.screen.classrooms.model.ClassroomState
 
 class ManageClassroomViewModel(
     private val saveClassroom: SaveClassroom,
-    private val tableOperationErrorMapper: TableOperationErrorMapper
+    private val apicCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
@@ -77,7 +78,10 @@ class ManageClassroomViewModel(
             sendEvent(
                 event = ManageClassroomViewEvent.ClassroomSaved
             )
-        }.withErrorMapper(errorMapper = tableOperationErrorMapper) { message ->
+        }.withErrorMapper(
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apicCommonErrorMapper
+        ) { message ->
             sendEvent(
                 event = ManageClassroomViewEvent.Message(
                     message = UiMessage(message = message)

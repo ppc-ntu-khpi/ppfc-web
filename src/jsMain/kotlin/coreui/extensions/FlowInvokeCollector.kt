@@ -9,6 +9,7 @@ import coreui.util.ErrorMapper
 import coreui.util.ObservableLoadingCounter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
+import kotlin.reflect.KClass
 
 fun <R> Flow<InvokeStatus<out R>>.withLoader(
     loadingCounter: ObservableLoadingCounter
@@ -45,12 +46,13 @@ fun <R> Flow<InvokeStatus<out R>>.onError(
 }
 
 fun <R> Flow<InvokeStatus<out R>>.withErrorMapper(
+    defaultMessage: String,
     errorMapper: ErrorMapper,
+    exclude: Set<KClass<out Throwable>> = emptySet(),
     onErrorMessage: (message: String) -> Unit
 ) = onEach { status ->
     if (status is InvokeStatus.InvokeError) {
-        errorMapper.map(cause = status.cause)?.let {
-            onErrorMessage(it)
-        }
+        if(exclude.any { it.isInstance(status.cause) }) return@onEach
+        onErrorMessage(errorMapper.map(cause = status.cause) ?: defaultMessage)
     }
 }

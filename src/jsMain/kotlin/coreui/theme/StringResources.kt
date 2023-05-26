@@ -19,7 +19,7 @@ data class StringResources(
     val timeoutException: String,
     val newPasswordRequiredChallengeFailed: String,
 
-    val passwordIsInvalid: String,
+    val passwordIsNotInvalid: String,
 
     val loginTitle: String,
     val loginUsernameFieldLabel: String,

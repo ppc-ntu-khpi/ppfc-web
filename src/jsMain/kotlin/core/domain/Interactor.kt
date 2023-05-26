@@ -6,7 +6,6 @@ package core.domain
 
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
-import core.infrastructure.Logger
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow

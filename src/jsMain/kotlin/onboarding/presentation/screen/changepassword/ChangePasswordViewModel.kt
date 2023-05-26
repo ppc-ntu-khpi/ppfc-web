@@ -4,8 +4,7 @@
 
 package onboarding.presentation.screen.changepassword
 
-import core.domain.NetworkException
-import core.domain.TimeoutException
+import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onError
 import coreui.extensions.withErrorMapper
 import coreui.model.TextFieldState
@@ -21,7 +20,8 @@ import onboarding.domain.interactor.PasswordIsNotValidException
 
 class ChangePasswordViewModel(
     private val passNewPasswordRequiredChallenge: PassNewPasswordRequiredChallenge,
-    private val logOut: LogOut
+    private val logOut: LogOut,
+    private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
@@ -67,19 +67,20 @@ class ChangePasswordViewModel(
                 is PasswordIsNotValidException -> {
                     _password.update {
                         it.copy(
-                            error = AppTheme.stringResources.passwordIsInvalid
+                            error = AppTheme.stringResources.passwordIsNotInvalid
                         )
                     }
                 }
             }
         }.withErrorMapper(
-            errorMapper = { cause ->
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            exclude = setOf(
+                PasswordIsNotValidException::class
+            ),
+            errorMapper = apiCommonErrorMapper + { cause ->
                 when (cause) {
-                    is NetworkException -> AppTheme.stringResources.networkException
-                    is TimeoutException -> AppTheme.stringResources.timeoutException
                     is ChallengeFailedException -> AppTheme.stringResources.newPasswordRequiredChallengeFailed
-                    is PasswordIsNotValidException -> null
-                    else -> AppTheme.stringResources.unexpectedErrorException
+                    else -> null
                 }
             }
         ) { message ->

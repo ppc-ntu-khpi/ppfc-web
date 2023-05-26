@@ -5,19 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="WIP">
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/CoreUiModule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedTextField.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedTextField.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/api/ApiClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/api/ApiClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/core/domain/Interactor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/core/domain/Interactor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/CoreUiModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/CoreUiModule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/extensions/FlowInvokeCollector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/extensions/FlowInvokeCollector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/util/ErrorMapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/util/ErrorMapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/changepassword/ChangePassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/changepassword/ChangePassword.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/OnboardingModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/OnboardingModule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/changepassword/ChangePasswordViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/changepassword/ChangePasswordViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/login/Login.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/login/Login.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/onboarding/presentation/screen/login/LoginViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/common/TableOperationErrorMapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/common/TableOperationErrorMapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/Classrooms.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/Classrooms.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/common/TableOperationErrorMapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/common/ApiCommonErrorMapper.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewModel.kt" afterDir="false" />
     </list>
@@ -109,9 +109,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/zvaeu/Desktop/Project/Web/src/jsMain/kotlin/tables",
+    "last_opened_file_path": "C:/Users/zvaeu/Desktop/Project/Web/src/jsMain/kotlin/coreui",
     "notification.kotlin.js.compiler.ignored": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
@@ -121,8 +122,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\coreui" />
+      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\common" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\coreui\compose" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\data" />
@@ -246,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685056784443</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="WIP">
+      <created>1685063267660</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1685063267660</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">

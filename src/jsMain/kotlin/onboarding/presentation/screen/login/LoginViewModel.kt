@@ -4,8 +4,7 @@
 
 package onboarding.presentation.screen.login
 
-import core.domain.NetworkException
-import core.domain.TimeoutException
+import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.withErrorMapper
 import coreui.model.TextFieldState
 import coreui.theme.AppTheme
@@ -18,7 +17,8 @@ import onboarding.domain.interactor.LogIn
 import onboarding.domain.model.AuthCredentials
 
 class LoginViewModel(
-    private val logIn: LogIn
+    private val logIn: LogIn,
+    private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
@@ -78,12 +78,11 @@ class LoginViewModel(
                 credentials = credentials
             )
         ).withErrorMapper(
-            errorMapper = { cause ->
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper + { cause ->
                 when (cause) {
-                    is NetworkException -> AppTheme.stringResources.networkException
-                    is TimeoutException -> AppTheme.stringResources.timeoutException
                     is AuthenticationException -> AppTheme.stringResources.authenticationException
-                    else -> AppTheme.stringResources.unexpectedErrorException
+                    else -> null
                 }
             }
         ) { message ->
