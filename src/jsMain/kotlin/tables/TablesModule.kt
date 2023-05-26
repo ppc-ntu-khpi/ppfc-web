@@ -43,10 +43,10 @@ val tablesModule = module {
     }
 
     factory {
-        ClassroomsViewModel(get(), get(), get())
+        ClassroomsViewModel(get(), get(), get(), get())
     }
 
     factory {
-        ManageClassroomViewModel(get(), get())
+        ManageClassroomViewModel()
     }
 }

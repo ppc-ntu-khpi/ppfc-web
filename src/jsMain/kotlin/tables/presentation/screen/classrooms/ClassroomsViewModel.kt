@@ -19,19 +19,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteClassrooms
+import tables.domain.interactor.SaveClassroom
 import tables.domain.model.Classroom
 import tables.domain.model.Id
 import tables.domain.observer.ObservePagedClassrooms
+import tables.presentation.screen.classrooms.mapper.toDomain
+import tables.presentation.screen.classrooms.model.ClassroomState
 
 @OptIn(FlowPreview::class)
 class ClassroomsViewModel(
     private val observePagedClassrooms: ObservePagedClassrooms,
+    private val saveClassroom: SaveClassroom,
     private val deleteClassrooms: DeleteClassrooms,
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
-    private val deletionLoadingState = ObservableLoadingCounter()
+    private val savingLoadingState = ObservableLoadingCounter()
+    private val deletingLoadingState = ObservableLoadingCounter()
     private val uiEventManager = UiEventManager<ClassroomsViewEvent>()
     private val _dialog = MutableStateFlow<ClassroomsDialog?>(null)
     private val _searchQuery = MutableStateFlow(TextFieldState.Empty)
@@ -46,14 +51,16 @@ class ClassroomsViewModel(
         _searchQuery,
         _rowsSelection,
         loadingState.observable,
-        deletionLoadingState.observable,
+        savingLoadingState.observable,
+        deletingLoadingState.observable,
         _dialog,
         uiEventManager.event
-    ) { searchQuery, rowsSelection, isLoading, isDeleting, dialog, event ->
+    ) { searchQuery, rowsSelection, isLoading, isSaving, isDeleting, dialog, event ->
         ClassroomsViewState(
             searchQuery = searchQuery,
             rowsSelection = rowsSelection,
             isLoading = isLoading,
+            isSaving = isSaving,
             isDeleting = isDeleting,
             dialog = dialog,
             event = event
@@ -106,7 +113,34 @@ class ClassroomsViewModel(
         )
     }
 
-    fun deleteClassrooms() = launchWithLoader(deletionLoadingState) {
+    fun saveClassroom(classroomState: ClassroomState) = launchWithLoader(savingLoadingState) {
+        val classroom = classroomState.toDomain().let {
+            it.copy(
+                name = it.name.trim()
+            )
+        }
+
+        saveClassroom(
+            params = SaveClassroom.Params(
+                classroom = classroom
+            )
+        ).onSuccess {
+            sendEvent(
+                event = ClassroomsViewEvent.ClassroomSaved
+            )
+        }.withErrorMapper(
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper
+        ) { message ->
+            sendEvent(
+                event = ClassroomsViewEvent.Message(
+                    message = UiMessage(message = message)
+                )
+            )
+        }.collect()
+    }
+
+    fun deleteClassrooms() = launchWithLoader(deletingLoadingState) {
         val idsToDelete = _rowsSelection.value.filter { it.value }.map { it.key }.toSet()
 
         deleteClassrooms(

@@ -12,6 +12,7 @@ data class ClassroomsViewState(
     val searchQuery: TextFieldState = TextFieldState.Empty,
     val rowsSelection: Map<Id, Boolean> = emptyMap(),
     val isLoading: Boolean = false,
+    val isSaving: Boolean = false,
     val isDeleting: Boolean = false,
     val dialog: ClassroomsDialog? = null,
     val event: UiEvent<ClassroomsViewEvent>? = null

@@ -24,11 +24,7 @@ fun Classrooms() {
     val viewState by viewModel.state.collectAsState()
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
     val classrooms = viewModel.pagedClassrooms.collectAsLazyPagingItems()
-    val selectedRowsNumber by remember {
-        derivedStateOf {
-            viewState.rowsSelection.count { it.value }.toLong()
-        }
-    }
+    val selectedRowsNumber = viewState.rowsSelection.count { it.value }.toLong()
 
     CollectPagingError(combinedLoadStates = classrooms.loadState) { cause ->
         viewModel.handlePagingError(cause = cause)
@@ -39,6 +35,7 @@ fun Classrooms() {
         onEvent = { event ->
             when (event) {
                 is ClassroomsViewEvent.Message -> uiMessage = event.message
+                is ClassroomsViewEvent.ClassroomSaved -> viewModel.dialog(dialog = null)
                 is ClassroomsViewEvent.ClassroomDeleted -> viewModel.dialog(dialog = null)
             }
         },
@@ -55,9 +52,10 @@ fun Classrooms() {
         when (dialog) {
             is ClassroomsDialog.ManageClassroom -> {
                 ManageClassroomDialog(
+                    isLoading = viewState.isSaving,
                     classroom = dialog.classroom,
-                    onUiMessage = { message ->
-                        uiMessage = message
+                    onSave = { classroomState ->
+                        viewModel.saveClassroom(classroomState = classroomState)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)

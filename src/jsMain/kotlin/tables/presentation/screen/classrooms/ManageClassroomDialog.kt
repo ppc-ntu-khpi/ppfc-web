@@ -18,19 +18,19 @@ import coreui.compose.base.Column
 import coreui.compose.base.Spacer
 import coreui.theme.AppTheme
 import coreui.theme.Typography
-import coreui.util.CollectUiEvents
-import coreui.util.UiMessage
 import coreui.util.rememberGet
 import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
 import tables.domain.model.Classroom
+import tables.presentation.screen.classrooms.model.ClassroomState
 
 @Composable
 fun ManageClassroomDialog(
+    isLoading: Boolean,
     classroom: Classroom? = null,
-    onUiMessage: (uiMessage: UiMessage) -> Unit,
+    onSave: (classroomState: ClassroomState) -> Unit,
     onClose: () -> Unit
 ) {
     val viewModel: ManageClassroomViewModel by rememberGet()
@@ -40,19 +40,6 @@ fun ManageClassroomDialog(
         classroom ?: return@LaunchedEffect
         viewModel.loadClassroom(classroom = classroom)
     }
-
-    CollectUiEvents(
-        event = viewState.event,
-        onEvent = { event ->
-            when (event) {
-                is ManageClassroomViewEvent.Message -> onUiMessage(event.message)
-                is ManageClassroomViewEvent.ClassroomSaved -> onClose()
-            }
-        },
-        onClear = { id ->
-            viewModel.clearEvent(id = id)
-        }
-    )
 
     Column(
         attrs = {
@@ -110,10 +97,10 @@ fun ManageClassroomDialog(
                         width(100.percent)
                     }
                 },
-                enabled = !(viewState.isFormBlank || viewState.isLoading),
-                loader = viewState.isLoading,
+                enabled = !(viewState.isFormBlank || isLoading),
+                loader = isLoading,
                 onClick = {
-                    viewModel.saveClassroom()
+                    onSave(viewState.classroomState)
                 }
             ) {
                 Text("Зберегти")

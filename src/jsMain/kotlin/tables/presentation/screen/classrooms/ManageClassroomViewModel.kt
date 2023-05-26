@@ -4,27 +4,15 @@
 
 package tables.presentation.screen.classrooms
 
-import coreui.common.ApiCommonErrorMapper
-import coreui.extensions.onSuccess
-import coreui.extensions.withErrorMapper
-import coreui.theme.AppTheme
-import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import tables.domain.interactor.SaveClassroom
 import tables.domain.model.Classroom
-import tables.presentation.screen.classrooms.mapper.toDomain
 import tables.presentation.screen.classrooms.mapper.toState
 import tables.presentation.screen.classrooms.model.ClassroomState
 
-class ManageClassroomViewModel(
-    private val saveClassroom: SaveClassroom,
-    private val apicCommonErrorMapper: ApiCommonErrorMapper
-) {
+class ManageClassroomViewModel {
 
-    private val loadingState = ObservableLoadingCounter()
-    private val uiEventManager = UiEventManager<ManageClassroomViewEvent>()
     private val _classroomState = MutableStateFlow(ClassroomState.Empty)
     private val _isFormBlank = _classroomState.map { classroomState ->
         classroomState.name.text.isBlank()
@@ -32,15 +20,11 @@ class ManageClassroomViewModel(
 
     val state: StateFlow<ManageClassroomViewState> = combine(
         _classroomState,
-        _isFormBlank,
-        loadingState.observable,
-        uiEventManager.event
-    ) { classroomState, isFormBlank, isLoading, event ->
+        _isFormBlank
+    ) { classroomState, isFormBlank ->
         ManageClassroomViewState(
             classroomState = classroomState,
-            isFormBlank = isFormBlank,
-            isLoading = isLoading,
-            event = event
+            isFormBlank = isFormBlank
         )
     }.stateIn(
         scope = CoroutineScope(Dispatchers.Default),
@@ -61,44 +45,5 @@ class ManageClassroomViewModel(
                 ),
             )
         }
-    }
-
-    fun saveClassroom() = launchWithLoader(loadingState) {
-        val classroom = _classroomState.value.toDomain().let {
-            it.copy(
-                name = it.name.trim()
-            )
-        }
-
-        saveClassroom(
-            params = SaveClassroom.Params(
-                classroom = classroom
-            )
-        ).onSuccess {
-            sendEvent(
-                event = ManageClassroomViewEvent.ClassroomSaved
-            )
-        }.withErrorMapper(
-            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
-            errorMapper = apicCommonErrorMapper
-        ) { message ->
-            sendEvent(
-                event = ManageClassroomViewEvent.Message(
-                    message = UiMessage(message = message)
-                )
-            )
-        }.collect()
-    }
-
-    private fun sendEvent(event: ManageClassroomViewEvent) {
-        uiEventManager.emitEvent(
-            event = UiEvent(
-                event = event
-            )
-        )
-    }
-
-    fun clearEvent(id: Long) {
-        uiEventManager.clearEvent(id = id)
     }
 }
