@@ -17,9 +17,11 @@ fun <R> Flow<InvokeStatus<out R>>.withLoader(
         InvokeStatus.InvokeStarted -> {
             loadingCounter.addLoader()
         }
+
         is InvokeStatus.InvokeSuccess -> {
             loadingCounter.removeLoader()
         }
+
         is InvokeStatus.InvokeError -> {
             loadingCounter.removeLoader()
         }
@@ -29,7 +31,7 @@ fun <R> Flow<InvokeStatus<out R>>.withLoader(
 fun <R> Flow<InvokeStatus<out R>>.onSuccess(
     onSuccess: (result: R) -> Unit
 ) = onEach { status ->
-    if(status is InvokeStatus.InvokeSuccess) {
+    if (status is InvokeStatus.InvokeSuccess) {
         onSuccess(status.result)
     }
 }
@@ -47,6 +49,8 @@ fun <R> Flow<InvokeStatus<out R>>.withErrorMapper(
     onErrorMessage: (message: String) -> Unit
 ) = onEach { status ->
     if (status is InvokeStatus.InvokeError) {
-        onErrorMessage(errorMapper.map(cause = status.cause))
+        errorMapper.map(cause = status.cause)?.let {
+            onErrorMessage(it)
+        }
     }
 }

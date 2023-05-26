@@ -6,11 +6,11 @@ package coreui.compose
 
 import androidx.compose.runtime.*
 import coreui.compose.base.*
+import coreui.extensions.elementContext
+import coreui.extensions.getActualBackgroundColor
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
-import coreui.util.elementContext
-import coreui.util.getActualBackgroundColor
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.attributes.builders.InputAttrsScope
 import org.jetbrains.compose.web.css.*

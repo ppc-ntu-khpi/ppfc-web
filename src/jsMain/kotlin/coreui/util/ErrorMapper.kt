@@ -5,9 +5,5 @@
 package coreui.util
 
 fun interface ErrorMapper {
-    fun map(cause: Throwable): String
-}
-
-fun A(errorMapper: ErrorMapper) {
-    errorMapper.map(Exception())
+    fun map(cause: Throwable): String?
 }

@@ -49,7 +49,9 @@ fun Classrooms() {
 
     UiMessageHost(message = uiMessage)
 
-    DialogHost(dialog = viewState.dialog) { dialog ->
+    DialogHost(
+        dialog = viewState.dialog
+    ) { dialog ->
         when (dialog) {
             is ClassroomsDialog.ManageClassroom -> {
                 ManageClassroomDialog(

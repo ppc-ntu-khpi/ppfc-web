@@ -48,19 +48,14 @@ fun ChangePassword() {
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
             Surface(
-                attrs = {
-                    style {
-                        width(250.px)
-                        padding(20.px)
-                    }
-                },
                 shadowElevation = ShadowElevation.Level3,
                 tonalElevation = TonalElevation.Level3
             ) {
                 Column(
                     attrs = {
                         style {
-                            width(100.percent)
+                            width(250.px)
+                            margin(20.px)
                         }
                     },
                 ) {

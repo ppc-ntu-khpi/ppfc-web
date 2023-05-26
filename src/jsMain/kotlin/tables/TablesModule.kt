@@ -5,6 +5,7 @@
 package tables
 
 import org.koin.dsl.module
+import tables.common.TableOperationErrorMapper
 import tables.data.dao.ClassroomsDao
 import tables.data.dao.ClassroomsDaoImpl
 import tables.data.repository.ClassroomsRepositoryImpl
@@ -12,7 +13,6 @@ import tables.domain.interactor.DeleteClassrooms
 import tables.domain.interactor.SaveClassroom
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.repository.ClassroomsRepository
-import tables.presentation.common.TableOperationErrorMapper
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.tables.TablesViewModel

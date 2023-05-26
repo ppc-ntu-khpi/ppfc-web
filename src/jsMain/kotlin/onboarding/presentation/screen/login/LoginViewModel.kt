@@ -6,7 +6,7 @@ package onboarding.presentation.screen.login
 
 import core.domain.NetworkException
 import core.domain.TimeoutException
-import coreui.extensions.onError
+import coreui.extensions.withErrorMapper
 import coreui.model.TextFieldState
 import coreui.theme.AppTheme
 import coreui.util.*
@@ -77,14 +77,16 @@ class LoginViewModel(
             params = LogIn.Params(
                 credentials = credentials
             )
-        ).onError { cause ->
-            val message = when (cause) {
-                is NetworkException -> AppTheme.stringResources.networkException
-                is TimeoutException -> AppTheme.stringResources.timeoutException
-                is AuthenticationException -> AppTheme.stringResources.authenticationException
-                else -> AppTheme.stringResources.unexpectedErrorException
+        ).withErrorMapper(
+            errorMapper = { cause ->
+                when (cause) {
+                    is NetworkException -> AppTheme.stringResources.networkException
+                    is TimeoutException -> AppTheme.stringResources.timeoutException
+                    is AuthenticationException -> AppTheme.stringResources.authenticationException
+                    else -> AppTheme.stringResources.unexpectedErrorException
+                }
             }
-
+        ) { message ->
             sendEvent(
                 event = LoginViewEvent.Message(
                     message = UiMessage(message = message)

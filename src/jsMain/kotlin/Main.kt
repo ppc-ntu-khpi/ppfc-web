@@ -7,6 +7,7 @@ import app.appModule
 import app.main.Main
 import core.coreModule
 import core.infrastructure.Logger
+import coreui.coreUiModule
 import coreui.theme.AppStyleSheet
 import infrastructure.infrastructureModule
 import onboarding.onboardingModule
@@ -25,6 +26,7 @@ fun main() {
             apiModule,
             appModule,
             coreModule,
+            coreUiModule,
             onboardingModule,
             tablesModule
         )

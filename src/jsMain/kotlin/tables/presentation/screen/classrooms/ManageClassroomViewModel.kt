@@ -10,9 +10,9 @@ import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import tables.common.TableOperationErrorMapper
 import tables.domain.interactor.SaveClassroom
 import tables.domain.model.Classroom
-import tables.presentation.common.TableOperationErrorMapper
 import tables.presentation.screen.classrooms.mapper.toDomain
 import tables.presentation.screen.classrooms.mapper.toState
 import tables.presentation.screen.classrooms.model.ClassroomState

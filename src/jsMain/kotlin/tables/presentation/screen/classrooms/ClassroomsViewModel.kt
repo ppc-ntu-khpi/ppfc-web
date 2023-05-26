@@ -11,16 +11,17 @@ import core.extensions.combine
 import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
 import coreui.model.TextFieldState
+import coreui.theme.AppTheme
 import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import tables.common.TableOperationErrorMapper
 import tables.domain.interactor.DeleteClassrooms
 import tables.domain.model.Classroom
 import tables.domain.model.Id
 import tables.domain.observer.ObservePagedClassrooms
-import tables.presentation.common.TableOperationErrorMapper
 
 @OptIn(FlowPreview::class)
 class ClassroomsViewModel(
@@ -96,6 +97,7 @@ class ClassroomsViewModel(
 
     fun handlePagingError(cause: Throwable) {
         val message = tableOperationErrorMapper.map(cause = cause)
+            ?: AppTheme.stringResources.unexpectedErrorException
 
         sendEvent(
             event = ClassroomsViewEvent.Message(
@@ -113,7 +115,9 @@ class ClassroomsViewModel(
             sendEvent(
                 event = ClassroomsViewEvent.ClassroomDeleted
             )
-        }.withErrorMapper(errorMapper = tableOperationErrorMapper) { message ->
+        }.withErrorMapper(
+            errorMapper = tableOperationErrorMapper
+        ) { message ->
             sendEvent(
                 event = ClassroomsViewEvent.Message(
                     message = UiMessage(message = message)
