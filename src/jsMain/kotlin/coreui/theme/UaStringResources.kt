@@ -42,7 +42,12 @@ val uaStringResources = StringResources(
     tableDeleteRowsWarning = "Ви збираєтесь видалити {1} запис(ів). Це призведе до видалення пов'язаних записів.",
     tableDeleteRowsConfirm = "Підтвердити",
     tableDeleteRowsCancel = "Скасувати",
+    tableManageItemDialogSave = "Зберегти",
+    tableManageItemDialogCancel = "Скасувати",
 
     classroomsName = "Назва",
     classroomsSearchLabel = "Пошук за назвою",
+
+    coursesNumber = "Номер",
+    coursesSearchLabel = "Пошук за номером",
 )

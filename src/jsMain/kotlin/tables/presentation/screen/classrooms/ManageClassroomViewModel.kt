@@ -7,8 +7,6 @@ package tables.presentation.screen.classrooms
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import tables.domain.model.Classroom
-import tables.presentation.screen.classrooms.mapper.toState
 import tables.presentation.screen.classrooms.model.ClassroomState
 
 class ManageClassroomViewModel {
@@ -32,8 +30,8 @@ class ManageClassroomViewModel {
         initialValue = ManageClassroomViewState.Empty,
     )
 
-    fun loadClassroom(classroom: Classroom) {
-        _classroomState.value = classroom.toState()
+    fun loadClassroomState(classroomState: ClassroomState) {
+        _classroomState.value = classroomState
     }
 
     fun setName(name: String) {

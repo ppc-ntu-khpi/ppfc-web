@@ -55,7 +55,7 @@ fun OutlinedTextField(
                     width(100.percent)
                     height(outlinedTextFieldHeight)
                     marginTop(8.px)
-                    if(symmetricLayout) {
+                    if (symmetricLayout) {
                         marginBottom(8.px)
                     }
                     backgroundColor(Color.transparent)

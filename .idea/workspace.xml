@@ -5,16 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="WIP">
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedNumberField.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/model/NumberFieldState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/CoursesDao.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/CoursesDaoImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/CourseMappers.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/CoursesRepositoryImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/DeleteCourses.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveCourses.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Course.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/observer/ObservePagedCourses.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/CoursesRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/CoursesDialog.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/CoursesViewEvent.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/CoursesViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/CoursesViewState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/ManageCourseDialog.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/ManageCourseViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/ManageCourseViewState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/mapper/CourseMappers.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/model/CourseState.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedTextField.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedTextField.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/Classrooms.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/Classrooms.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ClassroomsViewState.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewEvent.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/ManageClassroomViewState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/mapper/ClassroomMappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/mapper/ClassroomMappers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/model/ClassroomState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/classrooms/model/ClassroomState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/Courses.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/courses/Courses.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,9 +91,9 @@
       <list>
         <option value="Kotlin Enum" />
         <option value="Kotlin Data Class" />
-        <option value="Kotlin File" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -107,7 +130,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/zvaeu/Desktop/Project/Web/src/jsMain/kotlin/coreui",
+    "last_opened_file_path": "C:/Users/zvaeu/Desktop/Project/Web/src/jsMain/kotlin/tables/presentation/screen/courses",
     "notification.kotlin.js.compiler.ignored": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
@@ -117,11 +140,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\screen\courses" />
+      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\screen\courses\mapper" />
+      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\data\mapper" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\coreui" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables" />
-      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\common" />
-      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\coreui\compose" />
-      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\coreui\extensions" />
@@ -138,11 +161,11 @@
       <recent name="infrastructure" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
-      <recent name="coreui.common" />
-      <recent name="onboarding.presentation.screen.login" />
-      <recent name="tables.presentation.screen.classrooms" />
+      <recent name="coreui.model" />
+      <recent name="tables.presentation.screen.courses" />
+      <recent name="tables.domain.observer" />
       <recent name="tables.domain.interactor" />
-      <recent name="tables.domain.repository" />
+      <recent name="tables.data.repository" />
     </key>
   </component>
   <component name="RunManager">
@@ -256,7 +279,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685109859236</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="WIP">
+      <created>1685111154966</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1685111154966</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">

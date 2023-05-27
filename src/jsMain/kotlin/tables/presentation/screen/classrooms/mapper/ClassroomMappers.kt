@@ -13,10 +13,7 @@ fun ClassroomState.toDomain() = Classroom(
     name = name.text
 )
 
-fun Classroom.toState(
-    isSelected: Boolean = false
-) = ClassroomState(
+fun Classroom.toState() = ClassroomState(
     id = id,
-    isSelected = isSelected,
     name = TextFieldState.Empty.copy(text = name)
 )

@@ -50,7 +50,12 @@ data class StringResources(
     val tableDeleteRowsWarning: String,
     val tableDeleteRowsConfirm: String,
     val tableDeleteRowsCancel: String,
+    val tableManageItemDialogSave: String,
+    val tableManageItemDialogCancel: String,
 
     val classroomsName: String,
     val classroomsSearchLabel: String,
+
+    val coursesNumber: String,
+    val coursesSearchLabel: String,
 )

@@ -9,7 +9,6 @@ import tables.domain.model.Id
 
 data class ClassroomState(
     val id: Id = Id.Empty,
-    val isSelected: Boolean = false,
     val name: TextFieldState = TextFieldState.Empty
 ) {
     companion object {

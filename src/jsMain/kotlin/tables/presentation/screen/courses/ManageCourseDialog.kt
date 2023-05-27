@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package tables.presentation.screen.classrooms
+package tables.presentation.screen.courses
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,7 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import coreui.compose.ButtonWithLoader
 import coreui.compose.OutlinedButton
-import coreui.compose.OutlinedTextField
+import coreui.compose.OutlinedNumberField
 import coreui.compose.Text
 import coreui.compose.base.Alignment
 import coreui.compose.base.Arrangement
@@ -23,21 +23,21 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
-import tables.presentation.screen.classrooms.model.ClassroomState
+import tables.presentation.screen.courses.model.CourseState
 
 @Composable
-fun ManageClassroomDialog(
+fun ManageCourseDialog(
     isLoading: Boolean,
-    classroomState: ClassroomState? = null,
-    onSave: (classroomState: ClassroomState) -> Unit,
+    courseState: CourseState? = null,
+    onSave: (courseState: CourseState) -> Unit,
     onClose: () -> Unit
 ) {
-    val viewModel: ManageClassroomViewModel by rememberGet()
+    val viewModel: ManageCourseViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
 
-    LaunchedEffect(classroomState) {
-        classroomState ?: return@LaunchedEffect
-        viewModel.loadClassroomState(classroomState = classroomState)
+    LaunchedEffect(courseState) {
+        courseState ?: return@LaunchedEffect
+        viewModel.loadCourseState(courseState = courseState)
     }
 
     Column(
@@ -55,12 +55,12 @@ fun ManageClassroomDialog(
 
         Spacer(height = 10.px)
 
-        OutlinedTextField(
-            value = viewState.classroomState.name.text,
-            label = AppTheme.stringResources.classroomsName
-        ) { text ->
-            viewModel.setName(
-                name = text
+        OutlinedNumberField(
+            value = viewState.courseState.number.number,
+            label = AppTheme.stringResources.coursesNumber
+        ) { number ->
+            viewModel.setNumber(
+                number = number
             )
         }
 
@@ -99,7 +99,7 @@ fun ManageClassroomDialog(
                 enabled = !(viewState.isFormBlank || isLoading),
                 loader = isLoading,
                 onClick = {
-                    onSave(viewState.classroomState)
+                    onSave(viewState.courseState)
                 }
             ) {
                 Text(text = AppTheme.stringResources.tableManageItemDialogSave)

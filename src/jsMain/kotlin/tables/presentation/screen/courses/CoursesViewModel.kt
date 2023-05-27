@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package tables.presentation.screen.classrooms
+package tables.presentation.screen.courses
 
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
@@ -19,32 +19,32 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import tables.domain.interactor.DeleteClassrooms
-import tables.domain.interactor.SaveClassroom
+import tables.domain.interactor.DeleteCourses
+import tables.domain.interactor.SaveCourse
 import tables.domain.model.Id
-import tables.domain.observer.ObservePagedClassrooms
-import tables.presentation.screen.classrooms.mapper.toDomain
-import tables.presentation.screen.classrooms.mapper.toState
-import tables.presentation.screen.classrooms.model.ClassroomState
+import tables.domain.observer.ObservePagedCourses
+import tables.presentation.screen.courses.mapper.toDomain
+import tables.presentation.screen.courses.mapper.toState
+import tables.presentation.screen.courses.model.CourseState
 
 @OptIn(FlowPreview::class)
-class ClassroomsViewModel(
-    private val observePagedClassrooms: ObservePagedClassrooms,
-    private val saveClassroom: SaveClassroom,
-    private val deleteClassrooms: DeleteClassrooms,
+class CoursesViewModel(
+    private val observePagedCourses: ObservePagedCourses,
+    private val saveCourse: SaveCourse,
+    private val deleteCourses: DeleteCourses,
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
     private val savingLoadingState = ObservableLoadingCounter()
     private val deletingLoadingState = ObservableLoadingCounter()
-    private val uiEventManager = UiEventManager<ClassroomsViewEvent>()
-    private val _dialog = MutableStateFlow<ClassroomsDialog?>(null)
+    private val uiEventManager = UiEventManager<CoursesViewEvent>()
+    private val _dialog = MutableStateFlow<CoursesDialog?>(null)
     private val _searchQuery = MutableStateFlow(TextFieldState.Empty)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
 
-    val pagedClassrooms: Flow<PagingData<ClassroomState>> =
-        observePagedClassrooms.flow.onEach {
+    val pagedCourses: Flow<PagingData<CourseState>> =
+        observePagedCourses.flow.onEach {
             _rowsSelection.value = emptyMap()
         }.map { pagingData ->
             pagingData.map {
@@ -52,7 +52,7 @@ class ClassroomsViewModel(
             }
         }.cachedIn(CoroutineScope(Dispatchers.Default))
 
-    val state: StateFlow<ClassroomsViewState> = combine(
+    val state: StateFlow<CoursesViewState> = combine(
         _searchQuery,
         _rowsSelection,
         loadingState.observable,
@@ -61,7 +61,7 @@ class ClassroomsViewModel(
         _dialog,
         uiEventManager.event
     ) { searchQuery, rowsSelection, isLoading, isSaving, isDeleting, dialog, event ->
-        ClassroomsViewState(
+        CoursesViewState(
             searchQuery = searchQuery,
             rowsSelection = rowsSelection,
             isLoading = isLoading,
@@ -73,20 +73,20 @@ class ClassroomsViewModel(
     }.stateIn(
         scope = CoroutineScope(Dispatchers.Default),
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-        initialValue = ClassroomsViewState.Empty,
+        initialValue = CoursesViewState.Empty,
     )
 
     init {
         _searchQuery.debounce(100).onEach { searchQuery ->
-            observePagedClassrooms(searchQuery = searchQuery.text)
+            observePagedCourses(searchQuery = searchQuery.text)
         }.launchIn(CoroutineScope(Dispatchers.Default))
     }
 
-    private fun observePagedClassrooms(
+    private fun observePagedCourses(
         searchQuery: String = ""
     ) {
-        observePagedClassrooms(
-            params = ObservePagedClassrooms.Params(
+        observePagedCourses(
+            params = ObservePagedCourses.Params(
                 searchQuery = searchQuery,
                 pagingConfig = PAGING_CONFIG
             )
@@ -112,61 +112,61 @@ class ClassroomsViewModel(
             ?: AppTheme.stringResources.unexpectedErrorException
 
         sendEvent(
-            event = ClassroomsViewEvent.Message(
+            event = CoursesViewEvent.Message(
                 message = UiMessage(message = message)
             )
         )
     }
 
-    fun saveClassroom(classroomState: ClassroomState) = launchWithLoader(savingLoadingState) {
-        val classroom = classroomState.toDomain().let {
+    fun saveCourse(courseState: CourseState) = launchWithLoader(savingLoadingState) {
+        val course = courseState.toDomain().let {
             it.copy(
-                name = it.name.trim()
+                number = it.number
             )
         }
 
-        saveClassroom(
-            params = SaveClassroom.Params(
-                classroom = classroom
+        saveCourse(
+            params = SaveCourse.Params(
+                course = course
             )
         ).onSuccess {
             sendEvent(
-                event = ClassroomsViewEvent.ClassroomSaved
+                event = CoursesViewEvent.CourseSaved
             )
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
             errorMapper = apiCommonErrorMapper
         ) { message ->
             sendEvent(
-                event = ClassroomsViewEvent.Message(
+                event = CoursesViewEvent.Message(
                     message = UiMessage(message = message)
                 )
             )
         }.collect()
     }
 
-    fun deleteClassrooms() = launchWithLoader(deletingLoadingState) {
+    fun deleteCourses() = launchWithLoader(deletingLoadingState) {
         val idsToDelete = _rowsSelection.value.filter { it.value }.map { it.key }.toSet()
 
-        deleteClassrooms(
-            params = DeleteClassrooms.Params(ids = idsToDelete)
+        deleteCourses(
+            params = DeleteCourses.Params(ids = idsToDelete)
         ).onSuccess {
             sendEvent(
-                event = ClassroomsViewEvent.ClassroomDeleted
+                event = CoursesViewEvent.CourseDeleted
             )
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
             errorMapper = apiCommonErrorMapper
         ) { message ->
             sendEvent(
-                event = ClassroomsViewEvent.Message(
+                event = CoursesViewEvent.Message(
                     message = UiMessage(message = message)
                 )
             )
         }.collect()
     }
 
-    private fun sendEvent(event: ClassroomsViewEvent) {
+    private fun sendEvent(event: CoursesViewEvent) {
         uiEventManager.emitEvent(
             event = UiEvent(
                 event = event
@@ -174,7 +174,7 @@ class ClassroomsViewModel(
         )
     }
 
-    fun dialog(dialog: ClassroomsDialog?) {
+    fun dialog(dialog: CoursesDialog?) {
         _dialog.value = dialog
     }
 

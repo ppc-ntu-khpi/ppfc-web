@@ -53,7 +53,7 @@ fun Classrooms() {
             is ClassroomsDialog.ManageClassroom -> {
                 ManageClassroomDialog(
                     isLoading = viewState.isSaving,
-                    classroom = dialog.classroom,
+                    classroomState = dialog.classroomState,
                     onSave = { classroomState ->
                         viewModel.saveClassroom(classroomState = classroomState)
                     },
@@ -99,7 +99,7 @@ fun Classrooms() {
             Button(
                 onClick = {
                     viewModel.dialog(
-                        dialog = ClassroomsDialog.ManageClassroom(classroom = null)
+                        dialog = ClassroomsDialog.ManageClassroom(classroomState = null)
                     )
                 }
             ) {
@@ -149,9 +149,9 @@ fun Classrooms() {
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
-                        viewModel.dialog(dialog = ClassroomsDialog.ManageClassroom(classroom = item))
+                        viewModel.dialog(dialog = ClassroomsDialog.ManageClassroom(classroomState = item))
                     },
-                    item.name
+                    item.name.text
                 )
             }
         )
