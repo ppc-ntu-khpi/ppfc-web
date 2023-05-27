@@ -58,4 +58,7 @@ data class StringResources(
 
     val coursesNumber: String,
     val coursesSearchLabel: String,
+
+    val disciplinesName: String,
+    val disciplinesSearchLabel: String,
 )

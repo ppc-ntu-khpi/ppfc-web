@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package tables.presentation.screen.courses
+package tables.presentation.screen.disciplines
 
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
@@ -12,39 +12,39 @@ import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
-import coreui.model.NumberFieldState
+import coreui.model.TextFieldState
 import coreui.theme.AppTheme
 import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import tables.domain.interactor.DeleteCourses
-import tables.domain.interactor.SaveCourse
+import tables.domain.interactor.DeleteDisciplines
+import tables.domain.interactor.SaveDiscipline
 import tables.domain.model.Id
-import tables.domain.observer.ObservePagedCourses
-import tables.presentation.screen.courses.mapper.toDomain
-import tables.presentation.screen.courses.mapper.toState
-import tables.presentation.screen.courses.model.CourseState
+import tables.domain.observer.ObservePagedDisciplines
+import tables.presentation.screen.disciplines.mapper.toDomain
+import tables.presentation.screen.disciplines.mapper.toState
+import tables.presentation.screen.disciplines.model.DisciplineState
 
 @OptIn(FlowPreview::class)
-class CoursesViewModel(
-    private val observePagedCourses: ObservePagedCourses,
-    private val saveCourse: SaveCourse,
-    private val deleteCourses: DeleteCourses,
+class DisciplinesViewModel(
+    private val observePagedDisciplines: ObservePagedDisciplines,
+    private val saveDiscipline: SaveDiscipline,
+    private val deleteDisciplines: DeleteDisciplines,
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
     private val loadingState = ObservableLoadingCounter()
     private val savingLoadingState = ObservableLoadingCounter()
     private val deletingLoadingState = ObservableLoadingCounter()
-    private val uiEventManager = UiEventManager<CoursesViewEvent>()
-    private val _dialog = MutableStateFlow<CoursesDialog?>(null)
-    private val _searchQuery = MutableStateFlow(NumberFieldState.Empty)
+    private val uiEventManager = UiEventManager<DisciplinesViewEvent>()
+    private val _dialog = MutableStateFlow<DisciplinesDialog?>(null)
+    private val _searchQuery = MutableStateFlow(TextFieldState.Empty)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
 
-    val pagedCourses: Flow<PagingData<CourseState>> =
-        observePagedCourses.flow.onEach {
+    val pagedDisciplines: Flow<PagingData<DisciplineState>> =
+        observePagedDisciplines.flow.onEach {
             _rowsSelection.value = emptyMap()
         }.map { pagingData ->
             pagingData.map {
@@ -52,7 +52,7 @@ class CoursesViewModel(
             }
         }.cachedIn(CoroutineScope(Dispatchers.Default))
 
-    val state: StateFlow<CoursesViewState> = combine(
+    val state: StateFlow<DisciplinesViewState> = combine(
         _searchQuery,
         _rowsSelection,
         loadingState.observable,
@@ -61,7 +61,7 @@ class CoursesViewModel(
         _dialog,
         uiEventManager.event
     ) { searchQuery, rowsSelection, isLoading, isSaving, isDeleting, dialog, event ->
-        CoursesViewState(
+        DisciplinesViewState(
             searchQuery = searchQuery,
             rowsSelection = rowsSelection,
             isLoading = isLoading,
@@ -73,29 +73,29 @@ class CoursesViewModel(
     }.stateIn(
         scope = CoroutineScope(Dispatchers.Default),
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-        initialValue = CoursesViewState.Empty,
+        initialValue = DisciplinesViewState.Empty,
     )
 
     init {
         _searchQuery.debounce(100).onEach { searchQuery ->
-            observePagedCourses(searchQuery = searchQuery.number?.toString() ?: "")
+            observePagedDisciplines(searchQuery = searchQuery.text)
         }.launchIn(CoroutineScope(Dispatchers.Default))
     }
 
-    private fun observePagedCourses(
+    private fun observePagedDisciplines(
         searchQuery: String = ""
     ) {
-        observePagedCourses(
-            params = ObservePagedCourses.Params(
+        observePagedDisciplines(
+            params = ObservePagedDisciplines.Params(
                 searchQuery = searchQuery,
                 pagingConfig = PAGING_CONFIG
             )
         )
     }
 
-    fun setSearchQuery(searchQuery: Long?) {
+    fun setSearchQuery(searchQuery: String) {
         _searchQuery.update {
-            it.copy(number = searchQuery)
+            it.copy(text = searchQuery)
         }
     }
 
@@ -112,61 +112,61 @@ class CoursesViewModel(
             ?: AppTheme.stringResources.unexpectedErrorException
 
         sendEvent(
-            event = CoursesViewEvent.Message(
+            event = DisciplinesViewEvent.Message(
                 message = UiMessage(message = message)
             )
         )
     }
 
-    fun saveCourse(courseState: CourseState) = launchWithLoader(savingLoadingState) {
-        val course = courseState.toDomain().let {
+    fun saveDiscipline(disciplineState: DisciplineState) = launchWithLoader(savingLoadingState) {
+        val discipline = disciplineState.toDomain().let {
             it.copy(
-                number = it.number
+                name = it.name.trim()
             )
         }
 
-        saveCourse(
-            params = SaveCourse.Params(
-                course = course
+        saveDiscipline(
+            params = SaveDiscipline.Params(
+                discipline = discipline
             )
         ).onSuccess {
             sendEvent(
-                event = CoursesViewEvent.CourseSaved
+                event = DisciplinesViewEvent.DisciplineSaved
             )
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
             errorMapper = apiCommonErrorMapper
         ) { message ->
             sendEvent(
-                event = CoursesViewEvent.Message(
+                event = DisciplinesViewEvent.Message(
                     message = UiMessage(message = message)
                 )
             )
         }.collect()
     }
 
-    fun deleteCourses() = launchWithLoader(deletingLoadingState) {
+    fun deleteDisciplines() = launchWithLoader(deletingLoadingState) {
         val idsToDelete = _rowsSelection.value.filter { it.value }.map { it.key }.toSet()
 
-        deleteCourses(
-            params = DeleteCourses.Params(ids = idsToDelete)
+        deleteDisciplines(
+            params = DeleteDisciplines.Params(ids = idsToDelete)
         ).onSuccess {
             sendEvent(
-                event = CoursesViewEvent.CourseDeleted
+                event = DisciplinesViewEvent.DisciplineDeleted
             )
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
             errorMapper = apiCommonErrorMapper
         ) { message ->
             sendEvent(
-                event = CoursesViewEvent.Message(
+                event = DisciplinesViewEvent.Message(
                     message = UiMessage(message = message)
                 )
             )
         }.collect()
     }
 
-    private fun sendEvent(event: CoursesViewEvent) {
+    private fun sendEvent(event: DisciplinesViewEvent) {
         uiEventManager.emitEvent(
             event = UiEvent(
                 event = event
@@ -174,7 +174,7 @@ class CoursesViewModel(
         )
     }
 
-    fun dialog(dialog: CoursesDialog?) {
+    fun dialog(dialog: DisciplinesDialog?) {
         _dialog.value = dialog
     }
 

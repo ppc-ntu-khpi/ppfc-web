@@ -5,24 +5,23 @@
 package tables
 
 import org.koin.dsl.module
-import tables.data.dao.ClassroomsDao
-import tables.data.dao.ClassroomsDaoImpl
-import tables.data.dao.CoursesDao
-import tables.data.dao.CoursesDaoImpl
+import tables.data.dao.*
 import tables.data.repository.ClassroomsRepositoryImpl
 import tables.data.repository.CoursesRepositoryImpl
-import tables.domain.interactor.DeleteClassrooms
-import tables.domain.interactor.DeleteCourses
-import tables.domain.interactor.SaveClassroom
-import tables.domain.interactor.SaveCourse
+import tables.data.repository.DisciplinesRepositoryImpl
+import tables.domain.interactor.*
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedCourses
+import tables.domain.observer.ObservePagedDisciplines
 import tables.domain.repository.ClassroomsRepository
 import tables.domain.repository.CoursesRepository
+import tables.domain.repository.DisciplinesRepository
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.courses.CoursesViewModel
 import tables.presentation.screen.courses.ManageCourseViewModel
+import tables.presentation.screen.disciplines.DisciplinesViewModel
+import tables.presentation.screen.disciplines.ManageDisciplineViewModel
 import tables.presentation.screen.tables.TablesViewModel
 
 val tablesModule = module {
@@ -86,5 +85,34 @@ val tablesModule = module {
 
     factory {
         ManageCourseViewModel()
+    }
+
+    /* Disciplines */
+    single<DisciplinesDao> {
+        DisciplinesDaoImpl(get())
+    }
+
+    single<DisciplinesRepository> {
+        DisciplinesRepositoryImpl(get())
+    }
+
+    single {
+        SaveDiscipline(get())
+    }
+
+    single {
+        DeleteDisciplines(get())
+    }
+
+    single {
+        ObservePagedDisciplines(get())
+    }
+
+    factory {
+        DisciplinesViewModel(get(), get(), get(), get())
+    }
+
+    factory {
+        ManageDisciplineViewModel()
     }
 }

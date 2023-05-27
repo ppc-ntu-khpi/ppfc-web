@@ -4,12 +4,12 @@
 
 package tables.presentation.screen.courses
 
-import coreui.model.TextFieldState
+import coreui.model.NumberFieldState
 import coreui.util.UiEvent
 import tables.domain.model.Id
 
 data class CoursesViewState(
-    val searchQuery: TextFieldState = TextFieldState.Empty,
+    val searchQuery: NumberFieldState = NumberFieldState.Empty,
     val rowsSelection: Map<Id, Boolean> = emptyMap(),
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,

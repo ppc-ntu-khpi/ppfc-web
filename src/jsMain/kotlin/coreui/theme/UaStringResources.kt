@@ -50,4 +50,7 @@ val uaStringResources = StringResources(
 
     coursesNumber = "Номер",
     coursesSearchLabel = "Пошук за номером",
+
+    disciplinesName = "Назва",
+    disciplinesSearchLabel = "Пошук за назвою",
 )

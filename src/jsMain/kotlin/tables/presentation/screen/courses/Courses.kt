@@ -123,12 +123,12 @@ fun Courses() {
 
             Spacer(width = 10.px)
 
-            OutlinedTextField(
-                value = viewState.searchQuery.text,
+            OutlinedNumberField(
+                value = viewState.searchQuery.number,
                 label = AppTheme.stringResources.coursesSearchLabel,
                 symmetricLayout = true
-            ) { text ->
-                viewModel.setSearchQuery(searchQuery = text)
+            ) { number ->
+                viewModel.setSearchQuery(searchQuery = number)
             }
         }
 
