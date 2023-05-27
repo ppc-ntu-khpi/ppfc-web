@@ -61,4 +61,7 @@ data class StringResources(
 
     val disciplinesName: String,
     val disciplinesSearchLabel: String,
+
+    val subjectsName: String,
+    val subjectsSearchLabel: String,
 )

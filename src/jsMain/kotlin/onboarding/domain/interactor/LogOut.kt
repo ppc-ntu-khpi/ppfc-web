@@ -5,9 +5,9 @@
 package onboarding.domain.interactor
 
 import core.domain.Interactor
-import onboarding.domain.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import onboarding.domain.repository.AuthRepository
 
 class LogOut(
     private val authRepository: AuthRepository
