@@ -4,9 +4,9 @@
 
 package tables.presentation.screen.disciplines
 
-import tables.presentation.screen.disciplines.model.DisciplineState
+import tables.domain.model.Discipline
 
 sealed interface DisciplinesDialog {
-    class ManageDiscipline(val disciplineState: DisciplineState?) : DisciplinesDialog
+    class ManageDiscipline(val discipline: Discipline?) : DisciplinesDialog
     class ConfirmDeletion(val itemsNumber: Long) : DisciplinesDialog
 }

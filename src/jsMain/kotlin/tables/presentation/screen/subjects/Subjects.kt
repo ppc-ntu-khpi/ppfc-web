@@ -23,10 +23,10 @@ fun Subjects() {
     val viewModel: SubjectsViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
-    val subjects = viewModel.pagedSubjects.collectAsLazyPagingItems()
+    val pagedSubjects = viewModel.pagedSubjects.collectAsLazyPagingItems()
     val selectedRowsNumber = viewState.rowsSelection.count { it.value }.toLong()
 
-    CollectPagingError(combinedLoadStates = subjects.loadState) { cause ->
+    CollectPagingError(combinedLoadStates = pagedSubjects.loadState) { cause ->
         viewModel.handlePagingError(cause = cause)
     }
 
@@ -53,9 +53,9 @@ fun Subjects() {
             is SubjectsDialog.ManageSubject -> {
                 ManageSubjectDialog(
                     isLoading = viewState.isSaving,
-                    subjectState = dialog.subjectState,
-                    onSave = { subjectState ->
-                        viewModel.saveSubject(subjectState = subjectState)
+                    subject = dialog.subject,
+                    onSave = { subject ->
+                        viewModel.saveSubject(subject = subject)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
@@ -99,7 +99,7 @@ fun Subjects() {
             Button(
                 onClick = {
                     viewModel.dialog(
-                        dialog = SubjectsDialog.ManageSubject(subjectState = null)
+                        dialog = SubjectsDialog.ManageSubject(subject = null)
                     )
                 }
             ) {
@@ -125,8 +125,7 @@ fun Subjects() {
 
             OutlinedTextField(
                 value = viewState.searchQuery.text,
-                label = AppTheme.stringResources.subjectsSearchLabel,
-                symmetricLayout = true
+                label = AppTheme.stringResources.subjectsSearchLabel
             ) { text ->
                 viewModel.setSearchQuery(searchQuery = text)
             }
@@ -140,7 +139,7 @@ fun Subjects() {
                     width(100.percent)
                 }
             },
-            lazyPagingItems = subjects,
+            lazyPagingItems = pagedSubjects,
             header = tableHeaderRow(AppTheme.stringResources.subjectsName),
             bodyItem = { item ->
                 tableBodyRow(
@@ -149,9 +148,9 @@ fun Subjects() {
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
-                        viewModel.dialog(dialog = SubjectsDialog.ManageSubject(subjectState = item))
+                        viewModel.dialog(dialog = SubjectsDialog.ManageSubject(subject = item))
                     },
-                    item.name.text
+                    item.name
                 )
             }
         )

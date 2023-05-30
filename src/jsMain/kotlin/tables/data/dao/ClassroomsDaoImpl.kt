@@ -36,18 +36,12 @@ class ClassroomsDaoImpl(
     override suspend fun getClassrooms(
         limit: Long,
         offset: Long,
-        searchQuery: String
+        searchQuery: String?
     ): List<ClassroomResponse> {
         return apiClient.client.get(PATH) {
-            if(limit > 0) {
-                parameter("limit", limit)
-            }
-            if(offset > 0) {
-                parameter("offset", offset)
-            }
-            if(searchQuery.isNotBlank()) {
-                parameter("query", searchQuery)
-            }
+            if (limit > 0) parameter("limit", limit)
+            if (offset > 0) parameter("offset", offset)
+            if (searchQuery != null) parameter("query", searchQuery)
         }.body()
     }
 

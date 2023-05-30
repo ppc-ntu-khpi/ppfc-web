@@ -36,7 +36,7 @@ class SubjectsRepositoryImpl(
 
     override fun getSubjectsPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ) = object : PagingSource<Long, Subject>() {
 
         init {

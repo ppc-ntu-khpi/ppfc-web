@@ -17,6 +17,6 @@ interface ClassroomsDao {
     suspend fun getClassrooms(
         limit: Long,
         offset: Long,
-        searchQuery: String
+        searchQuery: String?
     ): List<ClassroomResponse>
 }

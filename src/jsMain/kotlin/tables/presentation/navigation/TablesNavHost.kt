@@ -12,6 +12,7 @@ import tables.presentation.screen.courses.Courses
 import tables.presentation.screen.disciplines.Disciplines
 import tables.presentation.screen.groups.Groups
 import tables.presentation.screen.schedule.Schedule
+
 import tables.presentation.screen.subjects.Subjects
 import tables.presentation.screen.teachers.Teachers
 import tables.presentation.screen.users.Users

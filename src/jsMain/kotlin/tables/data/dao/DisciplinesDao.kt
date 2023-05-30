@@ -17,6 +17,6 @@ interface DisciplinesDao {
     suspend fun getDisciplines(
         limit: Long,
         offset: Long,
-        searchQuery: String
+        searchQuery: String?
     ): List<DisciplineResponse>
 }

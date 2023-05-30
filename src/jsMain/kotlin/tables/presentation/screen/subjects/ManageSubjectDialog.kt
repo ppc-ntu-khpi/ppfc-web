@@ -23,21 +23,23 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
-import tables.presentation.screen.subjects.model.SubjectState
+import tables.domain.model.Subject
+import tables.presentation.screen.subjects.mapper.toDomain
+import tables.presentation.screen.subjects.mapper.toState
 
 @Composable
 fun ManageSubjectDialog(
     isLoading: Boolean,
-    subjectState: SubjectState? = null,
-    onSave: (subjectState: SubjectState) -> Unit,
+    subject: Subject? = null,
+    onSave: (subject: Subject) -> Unit,
     onClose: () -> Unit
 ) {
     val viewModel: ManageSubjectViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
 
-    LaunchedEffect(subjectState) {
-        subjectState ?: return@LaunchedEffect
-        viewModel.loadSubjectState(subjectState = subjectState)
+    LaunchedEffect(subject) {
+        subject ?: return@LaunchedEffect
+        viewModel.loadSubjectState(subjectState = subject.toState())
     }
 
     Column(
@@ -53,7 +55,7 @@ fun ManageSubjectDialog(
             fontSize = Typography.headlineSmall
         )
 
-        Spacer(height = 10.px)
+        Spacer(height = 16.px)
 
         OutlinedTextField(
             value = viewState.subjectState.name.text,
@@ -64,7 +66,7 @@ fun ManageSubjectDialog(
             )
         }
 
-        Spacer(height = 18.px)
+        Spacer(height = 16.px)
 
         Column(
             attrs = {
@@ -99,7 +101,7 @@ fun ManageSubjectDialog(
                 enabled = !(viewState.isFormBlank || isLoading),
                 loader = isLoading,
                 onClick = {
-                    onSave(viewState.subjectState)
+                    onSave(viewState.subjectState.toDomain())
                 }
             ) {
                 Text(text = AppTheme.stringResources.tableManageItemDialogSave)

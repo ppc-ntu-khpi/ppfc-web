@@ -6,28 +6,25 @@ package tables
 
 import org.koin.dsl.module
 import tables.data.dao.*
-import tables.data.repository.ClassroomsRepositoryImpl
-import tables.data.repository.CoursesRepositoryImpl
-import tables.data.repository.DisciplinesRepositoryImpl
-import tables.data.repository.SubjectsRepositoryImpl
+import tables.data.repository.*
 import tables.domain.interactor.*
-import tables.domain.observer.ObservePagedClassrooms
-import tables.domain.observer.ObservePagedCourses
-import tables.domain.observer.ObservePagedDisciplines
-import tables.domain.observer.ObservePagedSubjects
-import tables.domain.repository.ClassroomsRepository
-import tables.domain.repository.CoursesRepository
-import tables.domain.repository.DisciplinesRepository
-import tables.domain.repository.SubjectsRepository
+import tables.domain.observer.*
+import tables.domain.repository.*
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.courses.CoursesViewModel
 import tables.presentation.screen.courses.ManageCourseViewModel
 import tables.presentation.screen.disciplines.DisciplinesViewModel
 import tables.presentation.screen.disciplines.ManageDisciplineViewModel
+import tables.presentation.screen.groups.GroupsViewModel
+import tables.presentation.screen.groups.ManageGroupViewModel
+import tables.presentation.screen.schedule.ScheduleViewModel
 import tables.presentation.screen.subjects.ManageSubjectViewModel
 import tables.presentation.screen.subjects.SubjectsViewModel
 import tables.presentation.screen.tables.TablesViewModel
+import tables.presentation.screen.teachers.ManageTeacherViewModel
+import tables.presentation.screen.teachers.TeachersViewModel
+import tables.presentation.screen.users.UsersViewModel
 
 val tablesModule = module {
     factory {
@@ -148,5 +145,109 @@ val tablesModule = module {
 
     factory {
         ManageSubjectViewModel()
+    }
+
+    /* Teachers */
+    single<TeachersDao> {
+        TeachersDaoImpl(get())
+    }
+
+    single<TeachersRepository> {
+        TeachersRepositoryImpl(get())
+    }
+
+    single {
+        SaveTeacher(get())
+    }
+
+    single {
+        DeleteTeachers(get())
+    }
+
+    single {
+        ObservePagedTeachers(get())
+    }
+
+    factory {
+        TeachersViewModel(get(), get(), get(), get(), get())
+    }
+
+    factory {
+        ManageTeacherViewModel(get())
+    }
+
+    /* Groups */
+    single<GroupsDao> {
+        GroupsDaoImpl(get())
+    }
+
+    single<GroupsRepository> {
+        GroupsRepositoryImpl(get())
+    }
+
+    single {
+        SaveGroup(get())
+    }
+
+    single {
+        DeleteGroups(get())
+    }
+
+    single {
+        ObservePagedGroups(get())
+    }
+
+    factory {
+        GroupsViewModel(get(), get(), get(), get(), get())
+    }
+
+    factory {
+        ManageGroupViewModel(get())
+    }
+
+    /* Users */
+    single<UsersDao> {
+        UsersDaoImpl(get())
+    }
+
+    single<UsersRepository> {
+        UsersRepositoryImpl(get())
+    }
+
+    single {
+        DeleteUsers(get())
+    }
+
+    single {
+        ObservePagedUsers(get())
+    }
+
+    factory {
+        UsersViewModel(get(), get(), get())
+    }
+
+    /* Schedule */
+    single<ScheduleDao> {
+        ScheduleDaoImpl(get())
+    }
+
+    single<ScheduleRepository> {
+        ScheduleRepositoryImpl(get())
+    }
+
+    single {
+        SaveScheduleItem(get())
+    }
+
+    single {
+        DeleteScheduleItems(get())
+    }
+
+    single {
+        ObservePagedSchedule(get())
+    }
+
+    factory {
+        ScheduleViewModel(get(), get(), get(), get(), get(), get())
     }
 }

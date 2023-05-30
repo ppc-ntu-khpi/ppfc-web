@@ -13,6 +13,9 @@ fun getStringResources(locale: Locale): StringResources {
 }
 
 data class StringResources(
+    val yes: String,
+    val no: String,
+
     val unexpectedErrorException: String,
     val authenticationException: String,
     val networkException: String,
@@ -31,6 +34,7 @@ data class StringResources(
     val changePasswordChangePasswordButton: String,
     val changePasswordLogIn: String,
     val changePasswordInAccount: String,
+    val changePasswordShowPassword: String,
 
     val navigationChanges: String,
     val navigationSchedule: String,
@@ -64,4 +68,43 @@ data class StringResources(
 
     val subjectsName: String,
     val subjectsSearchLabel: String,
+
+    val teachersFirstName: String,
+    val teachersLastName: String,
+    val teacherMiddleName: String,
+    val teachersDiscipline: String,
+    val teachersIsHeadTeacher: String,
+    val teachersSearchLabel: String,
+    val teachersFilterByDisciplineLabel: String,
+
+    val groupsNumber: String,
+    val groupsCourseNumber: String,
+    val groupsSearchLabel: String,
+    val groupsFilterByCourseLabel: String,
+
+    val usersId: String,
+    val usersUser: String,
+    val usersGroup: String,
+    val usersSearchLabel: String,
+
+    val scheduleGroupNumber: String,
+    val scheduleClassroomName: String,
+    val scheduleTeacher: String,
+    val scheduleSubjectOrEventName: String,
+    val scheduleLessonNumber: String,
+    val scheduleDayNumber: String,
+    val scheduleIsNumerator: String,
+    val scheduleFilterByGroupLabel: String,
+    val scheduleFilterByTeacherLabel: String,
+
+    val monday: String,
+    val tuesday: String,
+    val wednesday: String,
+    val thursday: String,
+    val friday: String,
+    val saturday: String,
+    val sunday: String,
+
+    val numerator: String,
+    val denominator: String,
 )

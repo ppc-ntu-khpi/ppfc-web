@@ -20,7 +20,7 @@ import tables.presentation.navigation.TablesScreen
 fun Tables() {
     val viewModel: TablesViewModel = getKoin().get()
     val viewState by viewModel.state.collectAsState()
-    val navController by rememberNavController(root = TablesScreen.Teachers)
+    val navController by rememberNavController(root = TablesScreen.Schedule)
 
     Box(
         attrs = {

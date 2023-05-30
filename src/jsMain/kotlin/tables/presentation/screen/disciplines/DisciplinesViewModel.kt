@@ -7,7 +7,6 @@ package tables.presentation.screen.disciplines
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
-import app.cash.paging.map
 import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
@@ -21,11 +20,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteDisciplines
 import tables.domain.interactor.SaveDiscipline
+import tables.domain.model.Discipline
 import tables.domain.model.Id
 import tables.domain.observer.ObservePagedDisciplines
-import tables.presentation.screen.disciplines.mapper.toDomain
-import tables.presentation.screen.disciplines.mapper.toState
-import tables.presentation.screen.disciplines.model.DisciplineState
 
 @OptIn(FlowPreview::class)
 class DisciplinesViewModel(
@@ -35,6 +32,8 @@ class DisciplinesViewModel(
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val loadingState = ObservableLoadingCounter()
     private val savingLoadingState = ObservableLoadingCounter()
     private val deletingLoadingState = ObservableLoadingCounter()
@@ -43,14 +42,10 @@ class DisciplinesViewModel(
     private val _searchQuery = MutableStateFlow(TextFieldState.Empty)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
 
-    val pagedDisciplines: Flow<PagingData<DisciplineState>> =
+    val pagedDisciplines: Flow<PagingData<Discipline>> =
         observePagedDisciplines.flow.onEach {
             _rowsSelection.value = emptyMap()
-        }.map { pagingData ->
-            pagingData.map {
-                it.toState()
-            }
-        }.cachedIn(CoroutineScope(Dispatchers.Default))
+        }.cachedIn(coroutineScope)
 
     val state: StateFlow<DisciplinesViewState> = combine(
         _searchQuery,
@@ -71,7 +66,7 @@ class DisciplinesViewModel(
             event = event
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = DisciplinesViewState.Empty,
     )
@@ -79,11 +74,11 @@ class DisciplinesViewModel(
     init {
         _searchQuery.debounce(100).onEach { searchQuery ->
             observePagedDisciplines(searchQuery = searchQuery.text)
-        }.launchIn(CoroutineScope(Dispatchers.Default))
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedDisciplines(
-        searchQuery: String = ""
+        searchQuery: String? = null
     ) {
         observePagedDisciplines(
             params = ObservePagedDisciplines.Params(
@@ -118,16 +113,14 @@ class DisciplinesViewModel(
         )
     }
 
-    fun saveDiscipline(disciplineState: DisciplineState) = launchWithLoader(savingLoadingState) {
-        val discipline = disciplineState.toDomain().let {
-            it.copy(
-                name = it.name.trim()
-            )
-        }
+    fun saveDiscipline(discipline: Discipline) = launchWithLoader(savingLoadingState) {
+        val disciplineToSave = discipline.copy(
+            name = discipline.name.trim()
+        )
 
         saveDiscipline(
             params = SaveDiscipline.Params(
-                discipline = discipline
+                discipline = disciplineToSave
             )
         ).onSuccess {
             sendEvent(

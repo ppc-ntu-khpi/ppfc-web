@@ -23,10 +23,10 @@ fun Courses() {
     val viewModel: CoursesViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
-    val courses = viewModel.pagedCourses.collectAsLazyPagingItems()
+    val pagedCourses = viewModel.pagedCourses.collectAsLazyPagingItems()
     val selectedRowsNumber = viewState.rowsSelection.count { it.value }.toLong()
 
-    CollectPagingError(combinedLoadStates = courses.loadState) { cause ->
+    CollectPagingError(combinedLoadStates = pagedCourses.loadState) { cause ->
         viewModel.handlePagingError(cause = cause)
     }
 
@@ -53,9 +53,9 @@ fun Courses() {
             is CoursesDialog.ManageCourse -> {
                 ManageCourseDialog(
                     isLoading = viewState.isSaving,
-                    courseState = dialog.courseState,
-                    onSave = { courseState ->
-                        viewModel.saveCourse(courseState = courseState)
+                    course = dialog.course,
+                    onSave = { course ->
+                        viewModel.saveCourse(course = course)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
@@ -99,7 +99,7 @@ fun Courses() {
             Button(
                 onClick = {
                     viewModel.dialog(
-                        dialog = CoursesDialog.ManageCourse(courseState = null)
+                        dialog = CoursesDialog.ManageCourse(course = null)
                     )
                 }
             ) {
@@ -126,7 +126,7 @@ fun Courses() {
             OutlinedNumberField(
                 value = viewState.searchQuery.number,
                 label = AppTheme.stringResources.coursesSearchLabel,
-                symmetricLayout = true
+                
             ) { number ->
                 viewModel.setSearchQuery(searchQuery = number)
             }
@@ -140,7 +140,7 @@ fun Courses() {
                     width(100.percent)
                 }
             },
-            lazyPagingItems = courses,
+            lazyPagingItems = pagedCourses,
             header = tableHeaderRow(AppTheme.stringResources.coursesNumber),
             bodyItem = { item ->
                 tableBodyRow(
@@ -149,9 +149,9 @@ fun Courses() {
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
-                        viewModel.dialog(dialog = CoursesDialog.ManageCourse(courseState = item))
+                        viewModel.dialog(dialog = CoursesDialog.ManageCourse(course = item))
                     },
-                    item.number.number.toString()
+                    item.number.toString()
                 )
             }
         )

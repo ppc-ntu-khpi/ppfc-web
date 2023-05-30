@@ -23,21 +23,23 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
-import tables.presentation.screen.courses.model.CourseState
+import tables.domain.model.Course
+import tables.presentation.screen.courses.mapper.toDomain
+import tables.presentation.screen.courses.mapper.toState
 
 @Composable
 fun ManageCourseDialog(
     isLoading: Boolean,
-    courseState: CourseState? = null,
-    onSave: (courseState: CourseState) -> Unit,
+    course: Course? = null,
+    onSave: (course: Course) -> Unit,
     onClose: () -> Unit
 ) {
     val viewModel: ManageCourseViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
 
-    LaunchedEffect(courseState) {
-        courseState ?: return@LaunchedEffect
-        viewModel.loadCourseState(courseState = courseState)
+    LaunchedEffect(course) {
+        course ?: return@LaunchedEffect
+        viewModel.loadCourseState(courseState = course.toState())
     }
 
     Column(
@@ -53,7 +55,7 @@ fun ManageCourseDialog(
             fontSize = Typography.headlineSmall
         )
 
-        Spacer(height = 10.px)
+        Spacer(height = 16.px)
 
         OutlinedNumberField(
             value = viewState.courseState.number.number,
@@ -64,7 +66,7 @@ fun ManageCourseDialog(
             )
         }
 
-        Spacer(height = 18.px)
+        Spacer(height = 16.px)
 
         Column(
             attrs = {
@@ -99,7 +101,7 @@ fun ManageCourseDialog(
                 enabled = !(viewState.isFormBlank || isLoading),
                 loader = isLoading,
                 onClick = {
-                    onSave(viewState.courseState)
+                    onSave(viewState.courseState.toDomain())
                 }
             ) {
                 Text(text = AppTheme.stringResources.tableManageItemDialogSave)

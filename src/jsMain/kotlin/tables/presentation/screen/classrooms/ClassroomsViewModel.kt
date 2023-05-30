@@ -7,7 +7,6 @@ package tables.presentation.screen.classrooms
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
-import app.cash.paging.map
 import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
@@ -21,11 +20,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteClassrooms
 import tables.domain.interactor.SaveClassroom
+import tables.domain.model.Classroom
 import tables.domain.model.Id
 import tables.domain.observer.ObservePagedClassrooms
-import tables.presentation.screen.classrooms.mapper.toDomain
-import tables.presentation.screen.classrooms.mapper.toState
-import tables.presentation.screen.classrooms.model.ClassroomState
 
 @OptIn(FlowPreview::class)
 class ClassroomsViewModel(
@@ -35,6 +32,8 @@ class ClassroomsViewModel(
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val loadingState = ObservableLoadingCounter()
     private val savingLoadingState = ObservableLoadingCounter()
     private val deletingLoadingState = ObservableLoadingCounter()
@@ -43,14 +42,10 @@ class ClassroomsViewModel(
     private val _searchQuery = MutableStateFlow(TextFieldState.Empty)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
 
-    val pagedClassrooms: Flow<PagingData<ClassroomState>> =
+    val pagedClassrooms: Flow<PagingData<Classroom>> =
         observePagedClassrooms.flow.onEach {
             _rowsSelection.value = emptyMap()
-        }.map { pagingData ->
-            pagingData.map {
-                it.toState()
-            }
-        }.cachedIn(CoroutineScope(Dispatchers.Default))
+        }.cachedIn(coroutineScope)
 
     val state: StateFlow<ClassroomsViewState> = combine(
         _searchQuery,
@@ -71,7 +66,7 @@ class ClassroomsViewModel(
             event = event
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = ClassroomsViewState.Empty,
     )
@@ -79,11 +74,11 @@ class ClassroomsViewModel(
     init {
         _searchQuery.debounce(100).onEach { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery.text)
-        }.launchIn(CoroutineScope(Dispatchers.Default))
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedClassrooms(
-        searchQuery: String = ""
+        searchQuery: String? = null
     ) {
         observePagedClassrooms(
             params = ObservePagedClassrooms.Params(
@@ -118,16 +113,14 @@ class ClassroomsViewModel(
         )
     }
 
-    fun saveClassroom(classroomState: ClassroomState) = launchWithLoader(savingLoadingState) {
-        val classroom = classroomState.toDomain().let {
-            it.copy(
-                name = it.name.trim()
-            )
-        }
+    fun saveClassroom(classroom: Classroom) = launchWithLoader(savingLoadingState) {
+        val classroomToSave = classroom.copy(
+            name = classroom.name.trim()
+        )
 
         saveClassroom(
             params = SaveClassroom.Params(
-                classroom = classroom
+                classroom = classroomToSave
             )
         ).onSuccess {
             sendEvent(

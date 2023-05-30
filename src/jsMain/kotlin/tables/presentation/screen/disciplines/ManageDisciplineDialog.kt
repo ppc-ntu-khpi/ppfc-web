@@ -23,21 +23,23 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
-import tables.presentation.screen.disciplines.model.DisciplineState
+import tables.domain.model.Discipline
+import tables.presentation.screen.disciplines.mapper.toDomain
+import tables.presentation.screen.disciplines.mapper.toState
 
 @Composable
 fun ManageDisciplineDialog(
     isLoading: Boolean,
-    disciplineState: DisciplineState? = null,
-    onSave: (disciplineState: DisciplineState) -> Unit,
+    discipline: Discipline? = null,
+    onSave: (discipline: Discipline) -> Unit,
     onClose: () -> Unit
 ) {
     val viewModel: ManageDisciplineViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
 
-    LaunchedEffect(disciplineState) {
-        disciplineState ?: return@LaunchedEffect
-        viewModel.loadDisciplineState(disciplineState = disciplineState)
+    LaunchedEffect(discipline) {
+        discipline ?: return@LaunchedEffect
+        viewModel.loadDisciplineState(disciplineState = discipline.toState())
     }
 
     Column(
@@ -53,7 +55,7 @@ fun ManageDisciplineDialog(
             fontSize = Typography.headlineSmall
         )
 
-        Spacer(height = 10.px)
+        Spacer(height = 16.px)
 
         OutlinedTextField(
             value = viewState.disciplineState.name.text,
@@ -64,7 +66,7 @@ fun ManageDisciplineDialog(
             )
         }
 
-        Spacer(height = 18.px)
+        Spacer(height = 16.px)
 
         Column(
             attrs = {
@@ -99,7 +101,7 @@ fun ManageDisciplineDialog(
                 enabled = !(viewState.isFormBlank || isLoading),
                 loader = isLoading,
                 onClick = {
-                    onSave(viewState.disciplineState)
+                    onSave(viewState.disciplineState.toDomain())
                 }
             ) {
                 Text(text = AppTheme.stringResources.tableManageItemDialogSave)

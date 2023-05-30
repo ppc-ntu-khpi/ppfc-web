@@ -17,6 +17,6 @@ interface SubjectsDao {
     suspend fun getSubjects(
         limit: Long,
         offset: Long,
-        searchQuery: String
+        searchQuery: String?
     ): List<SubjectResponse>
 }

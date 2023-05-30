@@ -28,7 +28,7 @@ class ObservePagedClassrooms(
     }
 
     data class Params(
-        val searchQuery: String,
-        override val pagingConfig: PagingConfig
+        override val pagingConfig: PagingConfig,
+        val searchQuery: String? = null
     ) : PagingInteractor.Params<Classroom>
 }

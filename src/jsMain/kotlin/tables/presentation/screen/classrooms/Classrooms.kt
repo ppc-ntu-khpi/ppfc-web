@@ -23,10 +23,10 @@ fun Classrooms() {
     val viewModel: ClassroomsViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
-    val classrooms = viewModel.pagedClassrooms.collectAsLazyPagingItems()
+    val pagedClassrooms = viewModel.pagedClassrooms.collectAsLazyPagingItems()
     val selectedRowsNumber = viewState.rowsSelection.count { it.value }.toLong()
 
-    CollectPagingError(combinedLoadStates = classrooms.loadState) { cause ->
+    CollectPagingError(combinedLoadStates = pagedClassrooms.loadState) { cause ->
         viewModel.handlePagingError(cause = cause)
     }
 
@@ -53,9 +53,9 @@ fun Classrooms() {
             is ClassroomsDialog.ManageClassroom -> {
                 ManageClassroomDialog(
                     isLoading = viewState.isSaving,
-                    classroomState = dialog.classroomState,
+                    classroom = dialog.classroom,
                     onSave = { classroomState ->
-                        viewModel.saveClassroom(classroomState = classroomState)
+                        viewModel.saveClassroom(classroom = classroomState)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
@@ -99,7 +99,7 @@ fun Classrooms() {
             Button(
                 onClick = {
                     viewModel.dialog(
-                        dialog = ClassroomsDialog.ManageClassroom(classroomState = null)
+                        dialog = ClassroomsDialog.ManageClassroom(classroom = null)
                     )
                 }
             ) {
@@ -125,8 +125,7 @@ fun Classrooms() {
 
             OutlinedTextField(
                 value = viewState.searchQuery.text,
-                label = AppTheme.stringResources.classroomsSearchLabel,
-                symmetricLayout = true
+                label = AppTheme.stringResources.classroomsSearchLabel
             ) { text ->
                 viewModel.setSearchQuery(searchQuery = text)
             }
@@ -140,7 +139,7 @@ fun Classrooms() {
                     width(100.percent)
                 }
             },
-            lazyPagingItems = classrooms,
+            lazyPagingItems = pagedClassrooms,
             header = tableHeaderRow(AppTheme.stringResources.classroomsName),
             bodyItem = { item ->
                 tableBodyRow(
@@ -149,9 +148,9 @@ fun Classrooms() {
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
-                        viewModel.dialog(dialog = ClassroomsDialog.ManageClassroom(classroomState = item))
+                        viewModel.dialog(dialog = ClassroomsDialog.ManageClassroom(classroom = item))
                     },
-                    item.name.text
+                    item.name
                 )
             }
         )

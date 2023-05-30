@@ -23,10 +23,10 @@ fun Disciplines() {
     val viewModel: DisciplinesViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
-    val disciplines = viewModel.pagedDisciplines.collectAsLazyPagingItems()
+    val pagedDisciplines = viewModel.pagedDisciplines.collectAsLazyPagingItems()
     val selectedRowsNumber = viewState.rowsSelection.count { it.value }.toLong()
 
-    CollectPagingError(combinedLoadStates = disciplines.loadState) { cause ->
+    CollectPagingError(combinedLoadStates = pagedDisciplines.loadState) { cause ->
         viewModel.handlePagingError(cause = cause)
     }
 
@@ -53,9 +53,9 @@ fun Disciplines() {
             is DisciplinesDialog.ManageDiscipline -> {
                 ManageDisciplineDialog(
                     isLoading = viewState.isSaving,
-                    disciplineState = dialog.disciplineState,
-                    onSave = { disciplineState ->
-                        viewModel.saveDiscipline(disciplineState = disciplineState)
+                    discipline = dialog.discipline,
+                    onSave = { discipline ->
+                        viewModel.saveDiscipline(discipline = discipline)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
@@ -99,7 +99,7 @@ fun Disciplines() {
             Button(
                 onClick = {
                     viewModel.dialog(
-                        dialog = DisciplinesDialog.ManageDiscipline(disciplineState = null)
+                        dialog = DisciplinesDialog.ManageDiscipline(discipline = null)
                     )
                 }
             ) {
@@ -125,8 +125,7 @@ fun Disciplines() {
 
             OutlinedTextField(
                 value = viewState.searchQuery.text,
-                label = AppTheme.stringResources.disciplinesSearchLabel,
-                symmetricLayout = true
+                label = AppTheme.stringResources.disciplinesSearchLabel
             ) { text ->
                 viewModel.setSearchQuery(searchQuery = text)
             }
@@ -140,7 +139,7 @@ fun Disciplines() {
                     width(100.percent)
                 }
             },
-            lazyPagingItems = disciplines,
+            lazyPagingItems = pagedDisciplines,
             header = tableHeaderRow(AppTheme.stringResources.disciplinesName),
             bodyItem = { item ->
                 tableBodyRow(
@@ -149,9 +148,9 @@ fun Disciplines() {
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
-                        viewModel.dialog(dialog = DisciplinesDialog.ManageDiscipline(disciplineState = item))
+                        viewModel.dialog(dialog = DisciplinesDialog.ManageDiscipline(discipline = item))
                     },
-                    item.name.text
+                    item.name
                 )
             }
         )

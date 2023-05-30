@@ -19,6 +19,8 @@ class TablesViewModel(
     private val logOut: LogOut
 ) {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     val state: StateFlow<MainViewState> = combine(
         observePreferences.flow
     ) { preferences ->
@@ -26,7 +28,7 @@ class TablesViewModel(
             preferences = preferences.first()
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = MainViewState.Empty,
     )
@@ -40,10 +42,10 @@ class TablesViewModel(
             params = SaveColorScheme.Params(
                 colorSchemeMode = colorSchemeMode
             )
-        ).launchIn(CoroutineScope(Dispatchers.Default))
+        ).launchIn(coroutineScope)
     }
 
     fun logOut() {
-        logOut(Unit).launchIn(CoroutineScope(Dispatchers.Default))
+        logOut(Unit).launchIn(coroutineScope)
     }
 }

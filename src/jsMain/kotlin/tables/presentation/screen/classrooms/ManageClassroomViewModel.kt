@@ -11,6 +11,8 @@ import tables.presentation.screen.classrooms.model.ClassroomState
 
 class ManageClassroomViewModel {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val _classroomState = MutableStateFlow(ClassroomState.Empty)
     private val _isFormBlank = _classroomState.map { classroomState ->
         classroomState.name.text.isBlank()
@@ -25,7 +27,7 @@ class ManageClassroomViewModel {
             isFormBlank = isFormBlank
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = ManageClassroomViewState.Empty,
     )

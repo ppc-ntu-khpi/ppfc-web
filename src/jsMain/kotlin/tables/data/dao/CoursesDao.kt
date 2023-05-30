@@ -17,6 +17,6 @@ interface CoursesDao {
     suspend fun getCourses(
         limit: Long,
         offset: Long,
-        searchQuery: String
+        searchQuery: String?
     ): List<CourseResponse>
 }

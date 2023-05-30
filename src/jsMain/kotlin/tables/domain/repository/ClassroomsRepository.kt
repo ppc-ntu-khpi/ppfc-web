@@ -15,6 +15,6 @@ interface ClassroomsRepository {
 
     fun getClassroomsPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ): PagingSource<Long, Classroom>
 }

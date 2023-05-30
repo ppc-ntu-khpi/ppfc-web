@@ -5,6 +5,9 @@
 package coreui.theme
 
 val uaStringResources = StringResources(
+    yes = "Так",
+    no = "Ні",
+
     unexpectedErrorException = "Сталася невідома помилка. Зверніться до адміністратора системи для її вирішення.",
     authenticationException = "Помилка автентифікації, Ви ввели невірне ім'я користувача або пароль.",
     networkException = "Виникла проблема з підключенням до мережі. Будь ласка, перевірте Ваше Інтернет-з'єднання та спробуйте ще раз.",
@@ -23,6 +26,7 @@ val uaStringResources = StringResources(
     changePasswordChangePasswordButton = "Зберегти",
     changePasswordLogIn = "Увійти",
     changePasswordInAccount = "в обліковий запис.",
+    changePasswordShowPassword = "Показати пароль",
 
     navigationChanges = "Зміни",
     navigationSchedule = "Розклад",
@@ -56,4 +60,43 @@ val uaStringResources = StringResources(
 
     subjectsName = "Назва",
     subjectsSearchLabel = "Пошук за назвою",
+
+    teachersFirstName = "Ім'я",
+    teachersLastName = "Прізвище",
+    teacherMiddleName = "По батькові",
+    teachersDiscipline = "Циклова комісія",
+    teachersIsHeadTeacher = "Голова ЦК",
+    teachersSearchLabel = "Пошук за ім'ям",
+    teachersFilterByDisciplineLabel = "Циклова комісія",
+
+    groupsNumber = "Номер",
+    groupsCourseNumber = "Курс",
+    groupsSearchLabel = "Пошук за номером",
+    groupsFilterByCourseLabel = "Курс",
+
+    usersId = "Ідентифікатор",
+    usersUser = "Користувач",
+    usersGroup = "група",
+    usersSearchLabel = "Пошук за ідентифікатором",
+
+    scheduleGroupNumber = "Група",
+    scheduleClassroomName = "Аудиторія",
+    scheduleTeacher = "Викладач",
+    scheduleSubjectOrEventName = "Предмет/захід",
+    scheduleLessonNumber = "Номер пари",
+    scheduleDayNumber = "День",
+    scheduleIsNumerator = "???",
+    scheduleFilterByGroupLabel = "Група",
+    scheduleFilterByTeacherLabel = "Викладач",
+
+    monday = "Понеділок",
+    tuesday = "Вівторок",
+    wednesday = "Середа",
+    thursday = "Четвер",
+    friday = "П'ятниця",
+    saturday = "Субота",
+    sunday = "Неділя",
+
+    numerator = "Чисельник",
+    denominator = "Знаменник",
 )

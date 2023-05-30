@@ -7,7 +7,6 @@ package tables.presentation.screen.subjects
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
-import app.cash.paging.map
 import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
@@ -22,10 +21,8 @@ import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteSubjects
 import tables.domain.interactor.SaveSubject
 import tables.domain.model.Id
+import tables.domain.model.Subject
 import tables.domain.observer.ObservePagedSubjects
-import tables.presentation.screen.subjects.mapper.toDomain
-import tables.presentation.screen.subjects.mapper.toState
-import tables.presentation.screen.subjects.model.SubjectState
 
 @OptIn(FlowPreview::class)
 class SubjectsViewModel(
@@ -35,6 +32,8 @@ class SubjectsViewModel(
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val loadingState = ObservableLoadingCounter()
     private val savingLoadingState = ObservableLoadingCounter()
     private val deletingLoadingState = ObservableLoadingCounter()
@@ -43,14 +42,10 @@ class SubjectsViewModel(
     private val _searchQuery = MutableStateFlow(TextFieldState.Empty)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
 
-    val pagedSubjects: Flow<PagingData<SubjectState>> =
+    val pagedSubjects: Flow<PagingData<Subject>> =
         observePagedSubjects.flow.onEach {
             _rowsSelection.value = emptyMap()
-        }.map { pagingData ->
-            pagingData.map {
-                it.toState()
-            }
-        }.cachedIn(CoroutineScope(Dispatchers.Default))
+        }.cachedIn(coroutineScope)
 
     val state: StateFlow<SubjectsViewState> = combine(
         _searchQuery,
@@ -71,7 +66,7 @@ class SubjectsViewModel(
             event = event
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = SubjectsViewState.Empty,
     )
@@ -79,11 +74,11 @@ class SubjectsViewModel(
     init {
         _searchQuery.debounce(100).onEach { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery.text)
-        }.launchIn(CoroutineScope(Dispatchers.Default))
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedSubjects(
-        searchQuery: String = ""
+        searchQuery: String? = null
     ) {
         observePagedSubjects(
             params = ObservePagedSubjects.Params(
@@ -118,16 +113,14 @@ class SubjectsViewModel(
         )
     }
 
-    fun saveSubject(subjectState: SubjectState) = launchWithLoader(savingLoadingState) {
-        val subject = subjectState.toDomain().let {
-            it.copy(
-                name = it.name.trim()
-            )
-        }
+    fun saveSubject(subject: Subject) = launchWithLoader(savingLoadingState) {
+        val subjectToSave = subject.copy(
+            name = subject.name.trim()
+        )
 
         saveSubject(
             params = SaveSubject.Params(
-                subject = subject
+                subject = subjectToSave
             )
         ).onSuccess {
             sendEvent(

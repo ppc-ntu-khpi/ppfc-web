@@ -11,6 +11,8 @@ import tables.presentation.screen.subjects.model.SubjectState
 
 class ManageSubjectViewModel {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val _subjectState = MutableStateFlow(SubjectState.Empty)
     private val _isFormBlank = _subjectState.map { subjectState ->
         subjectState.name.text.isBlank()
@@ -25,7 +27,7 @@ class ManageSubjectViewModel {
             isFormBlank = isFormBlank
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = ManageSubjectViewState.Empty,
     )

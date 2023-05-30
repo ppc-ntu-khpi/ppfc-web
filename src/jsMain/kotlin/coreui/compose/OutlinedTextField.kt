@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import coreui.compose.base.*
 import coreui.extensions.elementContext
 import coreui.extensions.getActualBackgroundColor
+import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
@@ -30,8 +31,9 @@ fun OutlinedTextField(
     value: String,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
-    symmetricLayout: Boolean = false,
     textFieldType: TextFieldType = TextFieldType.TEXT,
+    trailingIcon: AppIconClass? = null,
+    onTrailingIconClick: () -> Unit = {},
     error: String? = null,
     onValueChange: (text: String) -> Unit
 ) {
@@ -54,82 +56,104 @@ fun OutlinedTextField(
                 style {
                     width(100.percent)
                     height(outlinedTextFieldHeight)
-                    marginTop(8.px)
-                    if (symmetricLayout) {
-                        marginBottom(8.px)
-                    }
                     backgroundColor(Color.transparent)
                 }
             },
             contentAlignment = Alignment.Box.CenterStart
         ) {
-            val inputContent: InputAttrsScope<String>.() -> Unit = {
-                style {
-                    width(100.percent)
-                    height(100.percent)
-                    padding(16.px)
-                    borderRadius(Shape.small)
-                    border {
-                        style = LineStyle.Solid
-                        width = 2.px
-                        color = if (error != null) {
-                            AppTheme.colors.error
-                        } else if (isFocused) {
-                            AppTheme.colors.primary
-                        } else {
-                            AppTheme.colors.outline
+            Box(
+                attrs = {
+                    style {
+                        width(100.percent)
+                        height(100.percent)
+                        borderRadius(Shape.small)
+                        border {
+                            style = LineStyle.Solid
+                            width = 2.px
+                            color = if (error != null) {
+                                AppTheme.colors.error
+                            } else if (isFocused) {
+                                AppTheme.colors.primary
+                            } else {
+                                AppTheme.colors.outline
+                            }
+                        }
+                        transitions {
+                            all {
+                                duration = 0.15.s
+                                timingFunction = AnimationTimingFunction.EaseOut
+                            }
                         }
                     }
-                    outline("0")
-                    boxSizing("border-box")
-                    fontSize(Typography.bodyLarge)
-                    backgroundColor(Color.transparent)
-                    color(AppTheme.colors.onSurface)
-                    transitions {
-                        all {
-                            duration = 0.15.s
-                            timingFunction = AnimationTimingFunction.EaseOut
+                },
+                contentAlignment = Alignment.Box.CenterStart
+            ) textFieldBox@ {
+                Spacer(width = 16.px)
+
+                val inputContent: InputAttrsScope<String>.() -> Unit = {
+                    style {
+                        width(100.percent)
+                        height(100.percent)
+                        backgroundColor(Color.transparent)
+                        outline("0")
+                        border(width = 0.px)
+                        boxSizing("border-box")
+                        fontSize(Typography.bodyLarge)
+                        color(AppTheme.colors.onSurface)
+                    }
+
+                    onFocusIn {
+                        isFocused = true
+                    }
+
+                    onFocusOut {
+                        isFocused = false
+                    }
+
+                    onInput {
+                        onValueChange(it.value)
+                    }
+                }
+
+                when (textFieldType) {
+                    TextFieldType.TEXT -> {
+                        TextInput(
+                            attrs = inputContent,
+                            value = value
+                        )
+                    }
+
+                    TextFieldType.PASSWORD -> {
+                        PasswordInput(
+                            attrs = inputContent,
+                            value = value
+                        )
+                    }
+
+                    TextFieldType.EMAIL -> {
+                        EmailInput(
+                            attrs = inputContent,
+                            value = value
+                        )
+                    }
+                }
+
+                Spacer(width = 16.px)
+
+                if (trailingIcon == null) return@textFieldBox
+
+                Icon(
+                    attrs = {
+                        onClick {
+                            onTrailingIconClick()
                         }
-                    }
-                }
+                    },
+                    size = 20.px,
+                    icon = trailingIcon,
+                    tint = AppTheme.colors.onSurfaceVariant
+                )
 
-                onFocusIn {
-                    isFocused = true
-                }
-
-                onFocusOut {
-                    isFocused = false
-                }
-
-                onInput {
-                    onValueChange(it.value)
-                }
-            }
-
-            when (textFieldType) {
-                TextFieldType.TEXT -> {
-                    TextInput(
-                        value = value
-                    ) {
-                        inputContent()
-                    }
-                }
-
-                TextFieldType.PASSWORD -> {
-                    PasswordInput(
-                        value = value
-                    ) {
-                        inputContent()
-                    }
-                }
-
-                TextFieldType.EMAIL -> {
-                    EmailInput(
-                        value = value
-                    ) {
-                        inputContent()
-                    }
-                }
+                Spacer(width = 16.px)
             }
 
             var labelElement by remember { mutableStateOf<Element?>(null) }

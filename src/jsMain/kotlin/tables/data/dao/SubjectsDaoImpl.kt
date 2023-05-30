@@ -36,18 +36,12 @@ class SubjectsDaoImpl(
     override suspend fun getSubjects(
         limit: Long,
         offset: Long,
-        searchQuery: String
+        searchQuery: String?
     ): List<SubjectResponse> {
         return apiClient.client.get(PATH) {
-            if(limit > 0) {
-                parameter("limit", limit)
-            }
-            if(offset > 0) {
-                parameter("offset", offset)
-            }
-            if(searchQuery.isNotBlank()) {
-                parameter("query", searchQuery)
-            }
+            if (limit > 0) parameter("limit", limit)
+            if (offset > 0) parameter("offset", offset)
+            if (searchQuery != null) parameter("query", searchQuery)
         }.body()
     }
 

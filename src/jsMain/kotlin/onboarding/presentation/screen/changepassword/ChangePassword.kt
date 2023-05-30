@@ -84,24 +84,13 @@ fun ChangePassword() {
                         )
                     }
 
-                    Spacer(height = 10.px)
+                    Spacer(height = 18.px)
 
-                    Row(
-                        attrs = {
-                            style {
-                                width(100.percent)
-                            }
-                        },
-                        verticalAlignment = Alignment.Vertical.CenterVertically,
-                        horizontalArrangement = Arrangement.Horizontal.Start
-                    ) {
-                        Checkbox(isPasswordVisible) {
-                            isPasswordVisible = !isPasswordVisible
-                        }
-
-                        Spacer(width = 5.px)
-
-                        Text(text = "Показати пароль")
+                    CheckboxWithLabel(
+                        checked = isPasswordVisible,
+                        label = AppTheme.stringResources.changePasswordShowPassword
+                    ) { checked ->
+                        isPasswordVisible = checked
                     }
 
                     Spacer(height = 18.px)

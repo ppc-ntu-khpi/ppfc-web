@@ -23,21 +23,23 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
-import tables.presentation.screen.classrooms.model.ClassroomState
+import tables.domain.model.Classroom
+import tables.presentation.screen.classrooms.mapper.toDomain
+import tables.presentation.screen.classrooms.mapper.toState
 
 @Composable
 fun ManageClassroomDialog(
     isLoading: Boolean,
-    classroomState: ClassroomState? = null,
-    onSave: (classroomState: ClassroomState) -> Unit,
+    classroom: Classroom? = null,
+    onSave: (classroom: Classroom) -> Unit,
     onClose: () -> Unit
 ) {
     val viewModel: ManageClassroomViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
 
-    LaunchedEffect(classroomState) {
-        classroomState ?: return@LaunchedEffect
-        viewModel.loadClassroomState(classroomState = classroomState)
+    LaunchedEffect(classroom) {
+        classroom ?: return@LaunchedEffect
+        viewModel.loadClassroomState(classroomState = classroom.toState())
     }
 
     Column(
@@ -53,7 +55,7 @@ fun ManageClassroomDialog(
             fontSize = Typography.headlineSmall
         )
 
-        Spacer(height = 10.px)
+        Spacer(height = 16.px)
 
         OutlinedTextField(
             value = viewState.classroomState.name.text,
@@ -64,7 +66,7 @@ fun ManageClassroomDialog(
             )
         }
 
-        Spacer(height = 18.px)
+        Spacer(height = 16.px)
 
         Column(
             attrs = {
@@ -99,7 +101,7 @@ fun ManageClassroomDialog(
                 enabled = !(viewState.isFormBlank || isLoading),
                 loader = isLoading,
                 onClick = {
-                    onSave(viewState.classroomState)
+                    onSave(viewState.classroomState.toDomain())
                 }
             ) {
                 Text(text = AppTheme.stringResources.tableManageItemDialogSave)

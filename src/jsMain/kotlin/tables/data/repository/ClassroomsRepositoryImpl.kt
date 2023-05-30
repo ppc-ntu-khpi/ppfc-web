@@ -36,7 +36,7 @@ class ClassroomsRepositoryImpl(
 
     override fun getClassroomsPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ) = object : PagingSource<Long, Classroom>() {
 
         init {

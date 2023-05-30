@@ -13,9 +13,11 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.js.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.ppfc.Web.BuildConfig
 
@@ -23,6 +25,7 @@ class ApiClient {
 
     private val tag = ApiClient::class.simpleName.toString()
 
+    @OptIn(ExperimentalSerializationApi::class)
     var client = HttpClient(Js) {
         expectSuccess = true
 
@@ -32,6 +35,7 @@ class ApiClient {
                     is RedirectResponseException -> UnexpectedErrorException()
                     is ClientRequestException -> UnexpectedErrorException()
                     is ServerResponseException -> UnexpectedErrorException()
+                    is JsonConvertException -> UnexpectedErrorException()
                     is NoTransformationFoundException -> UnexpectedErrorException()
                     is TimeoutCancellationException -> TimeoutException()
                     is CancellationException -> null
@@ -63,6 +67,7 @@ class ApiClient {
                 Json {
                     prettyPrint = true
                     isLenient = true
+                    explicitNulls = false
                 }
             )
         }

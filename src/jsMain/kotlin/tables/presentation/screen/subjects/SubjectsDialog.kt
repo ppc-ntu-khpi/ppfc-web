@@ -4,9 +4,9 @@
 
 package tables.presentation.screen.subjects
 
-import tables.presentation.screen.subjects.model.SubjectState
+import tables.domain.model.Subject
 
 sealed interface SubjectsDialog {
-    class ManageSubject(val subjectState: SubjectState?) : SubjectsDialog
+    class ManageSubject(val subject: Subject?) : SubjectsDialog
     class ConfirmDeletion(val itemsNumber: Long) : SubjectsDialog
 }

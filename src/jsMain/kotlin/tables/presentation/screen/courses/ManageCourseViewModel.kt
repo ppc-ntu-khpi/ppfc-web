@@ -11,6 +11,8 @@ import tables.presentation.screen.courses.model.CourseState
 
 class ManageCourseViewModel {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val _courseState = MutableStateFlow(CourseState.Empty)
     private val _isFormBlank = _courseState.map { courseState ->
         courseState.number.number == null
@@ -25,7 +27,7 @@ class ManageCourseViewModel {
             isFormBlank = isFormBlank
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = ManageCourseViewState.Empty,
     )

@@ -15,6 +15,6 @@ interface SubjectsRepository {
 
     fun getSubjectsPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ): PagingSource<Long, Subject>
 }

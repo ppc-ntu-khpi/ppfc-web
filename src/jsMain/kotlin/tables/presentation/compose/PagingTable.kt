@@ -24,6 +24,8 @@ fun <T : Any> PagingTable(
     itemsPerPage: Long = 10,
     lazyPagingItems: LazyPagingItems<T>,
     header: TableHeaderRow,
+    selectionEnabled: Boolean = true,
+    editingEnabled: Boolean = true,
     bodyItem: (item: T) -> TableBodyRow
 ) {
     val isRefreshing = lazyPagingItems.loadState.refresh == LoadStateLoading
@@ -187,7 +189,10 @@ fun <T : Any> PagingTable(
 
                             header.data.forEach { text ->
                                 TableHeaderItem {
-                                    Text(text = text)
+                                    Text(
+                                        text = text,
+                                        textAlign = TextAlign.Start
+                                    )
                                 }
                             }
 
@@ -214,7 +219,15 @@ fun <T : Any> PagingTable(
 
                             val bodyRow = bodyItem(item)
 
-                            Tr {
+                            Tr(
+                                attrs = {
+                                    style {
+                                        width(100.percent)
+                                        height(64.px)
+                                        minHeight(64.px)
+                                    }
+                                }
+                            ) {
                                 TableBodyItem(
                                     attrs = {
                                         style {
@@ -223,6 +236,8 @@ fun <T : Any> PagingTable(
                                         }
                                     }
                                 ) {
+                                    if(!selectionEnabled) return@TableBodyItem
+
                                     Checkbox(bodyRow.isSelected) {
                                         bodyRow.onSelectionChanged(it)
                                     }
@@ -230,7 +245,10 @@ fun <T : Any> PagingTable(
 
                                 bodyRow.data.forEach { text ->
                                     TableBodyItem {
-                                        Text(text = text)
+                                        Text(
+                                            text = text,
+                                            textAlign = TextAlign.Start
+                                        )
                                     }
                                 }
 
@@ -242,6 +260,8 @@ fun <T : Any> PagingTable(
                                         }
                                     }
                                 ) {
+                                    if(!editingEnabled) return@TableBodyItem
+
                                     IconButton(
                                         icon = AppIconClass.Edit
                                     ) {

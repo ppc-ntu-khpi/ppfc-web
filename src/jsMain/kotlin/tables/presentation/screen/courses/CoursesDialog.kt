@@ -4,9 +4,9 @@
 
 package tables.presentation.screen.courses
 
-import tables.presentation.screen.courses.model.CourseState
+import tables.domain.model.Course
 
 sealed interface CoursesDialog {
-    class ManageCourse(val courseState: CourseState?) : CoursesDialog
+    class ManageCourse(val course: Course?) : CoursesDialog
     class ConfirmDeletion(val itemsNumber: Long) : CoursesDialog
 }

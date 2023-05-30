@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
+package tables.domain.repository
+
+import app.cash.paging.PagingSource
+import tables.domain.model.*
+
+interface ScheduleRepository {
+    suspend fun saveScheduleItem(scheduleItem: ScheduleItem)
+
+    suspend fun deleteScheduleItems(ids: Set<Id>)
+
+    fun getSchedulePagingSource(
+        pageSize: Long,
+        dayNumber: DayNumber?,
+        isNumerator: Boolean?,
+        group: Group?,
+        teacher: Teacher?
+    ): PagingSource<Long, ScheduleItem>
+}

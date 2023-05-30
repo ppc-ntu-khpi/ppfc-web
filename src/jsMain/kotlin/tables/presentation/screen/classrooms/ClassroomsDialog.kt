@@ -4,9 +4,9 @@
 
 package tables.presentation.screen.classrooms
 
-import tables.presentation.screen.classrooms.model.ClassroomState
+import tables.domain.model.Classroom
 
 sealed interface ClassroomsDialog {
-    class ManageClassroom(val classroomState: ClassroomState?) : ClassroomsDialog
+    class ManageClassroom(val classroom: Classroom?) : ClassroomsDialog
     class ConfirmDeletion(val itemsNumber: Long) : ClassroomsDialog
 }

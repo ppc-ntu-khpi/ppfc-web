@@ -7,7 +7,6 @@ package tables.presentation.screen.courses
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
-import app.cash.paging.map
 import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
 import coreui.extensions.onSuccess
@@ -21,11 +20,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteCourses
 import tables.domain.interactor.SaveCourse
+import tables.domain.model.Course
 import tables.domain.model.Id
 import tables.domain.observer.ObservePagedCourses
-import tables.presentation.screen.courses.mapper.toDomain
-import tables.presentation.screen.courses.mapper.toState
-import tables.presentation.screen.courses.model.CourseState
 
 @OptIn(FlowPreview::class)
 class CoursesViewModel(
@@ -35,6 +32,8 @@ class CoursesViewModel(
     private val apiCommonErrorMapper: ApiCommonErrorMapper
 ) {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val loadingState = ObservableLoadingCounter()
     private val savingLoadingState = ObservableLoadingCounter()
     private val deletingLoadingState = ObservableLoadingCounter()
@@ -43,14 +42,10 @@ class CoursesViewModel(
     private val _searchQuery = MutableStateFlow(NumberFieldState.Empty)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
 
-    val pagedCourses: Flow<PagingData<CourseState>> =
+    val pagedCourses: Flow<PagingData<Course>> =
         observePagedCourses.flow.onEach {
             _rowsSelection.value = emptyMap()
-        }.map { pagingData ->
-            pagingData.map {
-                it.toState()
-            }
-        }.cachedIn(CoroutineScope(Dispatchers.Default))
+        }.cachedIn(coroutineScope)
 
     val state: StateFlow<CoursesViewState> = combine(
         _searchQuery,
@@ -71,7 +66,7 @@ class CoursesViewModel(
             event = event
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = CoursesViewState.Empty,
     )
@@ -79,11 +74,11 @@ class CoursesViewModel(
     init {
         _searchQuery.debounce(100).onEach { searchQuery ->
             observePagedCourses(searchQuery = searchQuery.number?.toString() ?: "")
-        }.launchIn(CoroutineScope(Dispatchers.Default))
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedCourses(
-        searchQuery: String = ""
+        searchQuery: String? = null
     ) {
         observePagedCourses(
             params = ObservePagedCourses.Params(
@@ -118,16 +113,14 @@ class CoursesViewModel(
         )
     }
 
-    fun saveCourse(courseState: CourseState) = launchWithLoader(savingLoadingState) {
-        val course = courseState.toDomain().let {
-            it.copy(
-                number = it.number
-            )
-        }
+    fun saveCourse(course: Course) = launchWithLoader(savingLoadingState) {
+        val courseToSave = course.copy(
+            number = course.number
+        )
 
         saveCourse(
             params = SaveCourse.Params(
-                course = course
+                course = courseToSave
             )
         ).onSuccess {
             sendEvent(

@@ -36,7 +36,7 @@ class CoursesRepositoryImpl(
 
     override fun getCoursesPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ) = object : PagingSource<Long, Course>() {
 
         init {

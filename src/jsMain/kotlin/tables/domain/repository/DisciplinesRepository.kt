@@ -15,6 +15,6 @@ interface DisciplinesRepository {
 
     fun getDisciplinesPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ): PagingSource<Long, Discipline>
 }

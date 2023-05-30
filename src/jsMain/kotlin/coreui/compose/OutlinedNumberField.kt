@@ -13,7 +13,6 @@ fun OutlinedNumberField(
     value: Long?,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
-    symmetricLayout: Boolean = false,
     error: String? = null,
     onValueChange: (number: Long?) -> Unit
 ) {
@@ -21,7 +20,6 @@ fun OutlinedNumberField(
         value = value?.toString() ?: "",
         label = label,
         attrs = attrs,
-        symmetricLayout = symmetricLayout,
         error = error,
         onValueChange = { text ->
             for(char in text) {

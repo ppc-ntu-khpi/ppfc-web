@@ -36,7 +36,7 @@ class DisciplinesRepositoryImpl(
 
     override fun getDisciplinesPagingSource(
         pageSize: Long,
-        searchQuery: String
+        searchQuery: String?
     ) = object : PagingSource<Long, Discipline>() {
 
         init {

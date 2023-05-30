@@ -11,6 +11,8 @@ import tables.presentation.screen.disciplines.model.DisciplineState
 
 class ManageDisciplineViewModel {
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val _disciplineState = MutableStateFlow(DisciplineState.Empty)
     private val _isFormBlank = _disciplineState.map { disciplineState ->
         disciplineState.name.text.isBlank()
@@ -25,7 +27,7 @@ class ManageDisciplineViewModel {
             isFormBlank = isFormBlank
         )
     }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default),
+        scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
         initialValue = ManageDisciplineViewState.Empty,
     )
