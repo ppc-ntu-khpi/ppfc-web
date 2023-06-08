@@ -134,7 +134,7 @@ fun Teachers() {
                 lazyPagingItems = pagedDisciplines,
                 state = viewState.filterDiscipline,
                 label = AppTheme.stringResources.teachersFilterByDisciplineLabel,
-                
+
                 itemLabel = { item ->
                     item.name
                 }
@@ -152,32 +152,65 @@ fun Teachers() {
                 }
             },
             lazyPagingItems = pagedTeachers,
-            header = tableHeaderRow(
-                AppTheme.stringResources.teachersLastName,
-                AppTheme.stringResources.teachersFirstName,
-                AppTheme.stringResources.teacherMiddleName,
-                AppTheme.stringResources.teachersDiscipline,
-                AppTheme.stringResources.teachersIsHeadTeacher,
-            ),
-            bodyItem = { item ->
-                tableBodyRow(
+            header = {
+                row {
+                    item {
+                        Text(text = AppTheme.stringResources.teachersLastName)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.teachersFirstName)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.teacherMiddleName)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.teachersDiscipline)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.teachersIsHeadTeacher)
+                    }
+                }
+            },
+            body = { _, item ->
+                row(
                     isSelected = viewState.rowsSelection[item.id] ?: false,
                     onSelectionChanged = { isSelected ->
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
                         viewModel.dialog(dialog = TeachersDialog.ManageTeacher(teacher = item))
-                    },
-                    item.lastName,
-                    item.firstName,
-                    item.middleName,
-                    item.discipline.name,
-                    if (item.isHeadTeacher) {
-                        AppTheme.stringResources.yes
-                    } else {
-                        AppTheme.stringResources.no
                     }
-                )
+                ) {
+                    item {
+                        Text(text = item.lastName)
+                    }
+
+                    item {
+                        Text(text = item.firstName)
+                    }
+
+                    item {
+                        Text(text = item.middleName)
+                    }
+
+                    item {
+                        Text(text = item.discipline.name)
+                    }
+
+                    item {
+                        Text(
+                            text = if (item.isHeadTeacher) {
+                                AppTheme.stringResources.yes
+                            } else {
+                                AppTheme.stringResources.no
+                            }
+                        )
+                    }
+                }
             }
         )
     }

@@ -152,22 +152,35 @@ fun Groups() {
                 }
             },
             lazyPagingItems = pagedGroups,
-            header = tableHeaderRow(
-                AppTheme.stringResources.groupsNumber,
-                AppTheme.stringResources.groupsCourseNumber
-            ),
-            bodyItem = { item ->
-                tableBodyRow(
+            header = {
+                row {
+                    item {
+                        Text(text = AppTheme.stringResources.groupsNumber)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.groupsCourseNumber)
+                    }
+                }
+            },
+            body = { _, item ->
+                row(
                     isSelected = viewState.rowsSelection[item.id] ?: false,
                     onSelectionChanged = { isSelected ->
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
                         viewModel.dialog(dialog = GroupsDialog.ManageGroup(group = item))
-                    },
-                    item.number.toString(),
-                    item.course.number.toString()
-                )
+                    }
+                ) {
+                    item {
+                        Text(text = item.number.toString())
+                    }
+
+                    item {
+                        Text(text = item.course.number.toString())
+                    }
+                }
             }
         )
     }

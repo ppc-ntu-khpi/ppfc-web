@@ -13,7 +13,7 @@ import tables.presentation.compose.PagingDropDownMenuState
 data class GroupsViewState(
     val searchQuery: TextFieldState = TextFieldState.Empty,
     val rowsSelection: Map<Id, Boolean> = emptyMap(),
-    val filterCourse: PagingDropDownMenuState<Course> = PagingDropDownMenuState(),
+    val filterCourse: PagingDropDownMenuState<Course> = PagingDropDownMenuState.Empty(),
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
     val isDeleting: Boolean = false,

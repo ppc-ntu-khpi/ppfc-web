@@ -9,13 +9,10 @@ import coreui.compose.base.Alignment
 import coreui.compose.base.Column
 import coreui.compose.base.Row
 import coreui.compose.base.Spacer
-import coreui.extensions.elementContext
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
-import coreui.util.ScrollState
 import coreui.util.alpha
-import coreui.util.getScrollState
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.HTMLDivElement
@@ -24,21 +21,11 @@ import org.w3c.dom.HTMLDivElement
 fun <K> Menu(
     values: Map<K, String>,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
-    appendLoaderVisible: Boolean = false,
-    onScrollStateChange: (ScrollState) -> Unit,
+    isLoading: Boolean = false,
     onItemSelected: (key: K) -> Unit
 ) {
     Surface(
         attrs = {
-            elementContext { element ->
-                element.addEventListener(
-                    type = "scroll",
-                    callback = {
-                        onScrollStateChange(element.getScrollState())
-                    }
-                )
-            }
-
             style {
                 width(100.percent)
                 maxWidth(280.px)
@@ -82,7 +69,7 @@ fun <K> Menu(
 
             Spacer(height = 8.px)
 
-            if (appendLoaderVisible) {
+            if (isLoading) {
                 CircularProgressIndicator(
                     size = 40.px
                 )

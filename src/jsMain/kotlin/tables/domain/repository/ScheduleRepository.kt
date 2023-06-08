@@ -15,7 +15,7 @@ interface ScheduleRepository {
     fun getSchedulePagingSource(
         pageSize: Long,
         dayNumber: DayNumber?,
-        isNumerator: Boolean?,
+        weekAlternation: WeekAlternation?,
         group: Group?,
         teacher: Teacher?
     ): PagingSource<Long, ScheduleItem>

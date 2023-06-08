@@ -93,10 +93,13 @@ data class StringResources(
     val scheduleSubjectOrEventName: String,
     val scheduleLessonNumber: String,
     val scheduleDayNumber: String,
-    val scheduleIsNumerator: String,
+    val scheduleWeekAlternation: String,
     val scheduleFilterByGroupLabel: String,
     val scheduleFilterByTeacherLabel: String,
+    val scheduleFilterByDayNumber: String,
+    val scheduleFilterByWeekAlternation: String,
 
+    val dayNumberAll: String,
     val monday: String,
     val tuesday: String,
     val wednesday: String,
@@ -105,6 +108,7 @@ data class StringResources(
     val saturday: String,
     val sunday: String,
 
-    val numerator: String,
-    val denominator: String,
+    val weekAlternationAll: String,
+    val weekAlternationNumerator: String,
+    val weekAlternationDenominator: String,
 )

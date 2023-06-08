@@ -73,6 +73,10 @@ fun Main() {
                         style = LineStyle.Solid
                     }
                 }
+
+                "::-webkit-scrollbar-corner" style  {
+                    backgroundColor(AppTheme.colors.background)
+                }
             }
         ) {
             NavHost(navController = navController)

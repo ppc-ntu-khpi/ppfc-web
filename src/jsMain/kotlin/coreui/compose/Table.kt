@@ -5,10 +5,8 @@
 package coreui.compose
 
 import androidx.compose.runtime.Composable
-import coreui.theme.AppStyleSheet.style
 import coreui.theme.AppTheme
 import coreui.theme.Typography
-import coreui.util.alpha
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.w3c.dom.HTMLTableCellElement
@@ -26,10 +24,6 @@ fun Table(
             style {
                 width(LengthKeyword.Auto)
                 borderCollapse(BorderCollapse.Collapse)
-            }
-
-            "tbody tr:nth-of-type(odd)" style {
-                backgroundColor(AppTheme.colors.primary.alpha(0.1f))
             }
 
             applyAttrs(attrs)
@@ -93,7 +87,6 @@ fun TableBodyItem(
     Td(
         attrs = {
             style {
-                width(1.percent)
                 paddingTop(10.px)
                 paddingBottom(10.px)
                 paddingLeft(16.px)

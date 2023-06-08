@@ -45,7 +45,7 @@ class ScheduleDaoImpl(
             if (limit > 0) parameter("limit", limit)
             if (offset > 0) parameter("offset", offset)
             if (dayNumber != null) parameter("dayNumber", dayNumber)
-            if (isNumerator != null) parameter("isNumerator", dayNumber)
+            if (isNumerator != null) parameter("isNumerator", isNumerator)
             if (groupId != null) parameter("groupId", groupId)
             if (teacherId != null) parameter("teacherId", teacherId)
         }.body()

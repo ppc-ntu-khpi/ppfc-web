@@ -17,8 +17,8 @@ import tables.domain.model.User
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.ConfirmDeletionDialog
 import tables.presentation.compose.PagingTable
-import tables.presentation.compose.tableBodyRow
-import tables.presentation.compose.tableHeaderRow
+import tables.presentation.compose.item
+import tables.presentation.compose.row
 
 @Composable
 fun Users() {
@@ -116,24 +116,37 @@ fun Users() {
                 }
             },
             lazyPagingItems = pagedUsers,
-            header = tableHeaderRow(
-                AppTheme.stringResources.usersId,
-                AppTheme.stringResources.usersUser
-            ),
-            editingEnabled = false,
-            bodyItem = { item ->
-                tableBodyRow(
+            header = {
+                row {
+                    item {
+                        Text(text = AppTheme.stringResources.usersId)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.usersUser)
+                    }
+                }
+            },
+            body = { _, item ->
+                row(
                     isSelected = viewState.rowsSelection[item.id] ?: false,
                     onSelectionChanged = { isSelected ->
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
-                    },
-                    onEdit = {},
-                    item.id.value.toString(),
-                    when (item) {
-                        is User.Group -> "${item.group.number} ${AppTheme.stringResources.usersGroup}"
-                        is User.Teacher ->item.teacher.toTextRepresentation()
                     }
-                )
+                ) {
+                    item {
+                        Text(text = item.id.value.toString())
+                    }
+
+                    item {
+                        Text(
+                            text = when (item) {
+                                is User.Group -> "${item.group.number} ${AppTheme.stringResources.usersGroup}"
+                                is User.Teacher -> item.teacher.toTextRepresentation()
+                            }
+                        )
+                    }
+                }
             }
         )
     }

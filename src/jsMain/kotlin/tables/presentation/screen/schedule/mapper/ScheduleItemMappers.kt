@@ -19,7 +19,7 @@ fun ScheduleItemState.toDomain() = ScheduleItem(
     isSubject = isSubject,
     lessonNumber = lessonNumber,
     dayNumber = dayNumber,
-    isNumerator = isNumerator
+    weekAlternation = weekAlternation
 )
 
 fun ScheduleItem.toState() = ScheduleItemState(
@@ -32,5 +32,5 @@ fun ScheduleItem.toState() = ScheduleItemState(
     isSubject = isSubject,
     lessonNumber = lessonNumber,
     dayNumber = dayNumber,
-    isNumerator = isNumerator
+    weekAlternation = weekAlternation
 )

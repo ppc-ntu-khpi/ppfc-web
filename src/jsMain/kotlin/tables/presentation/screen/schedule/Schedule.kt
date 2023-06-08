@@ -14,6 +14,8 @@ import coreui.theme.AppTheme
 import coreui.util.*
 import org.jetbrains.compose.web.css.*
 import tables.presentation.common.mapper.toTextRepresentation
+import tables.presentation.common.model.DayNumberOption
+import tables.presentation.common.model.WeekAlternationOption
 import tables.presentation.compose.*
 
 @Composable
@@ -103,7 +105,7 @@ fun Schedule() {
             Button(
                 onClick = {
                     viewModel.dialog(
-                        dialog = ScheduleDialog.ManageScheduleItem(scheduleItem = null)
+                        dialog = ScheduleDialog.CreateScheduleItems
                     )
                 }
             ) {
@@ -150,6 +152,32 @@ fun Schedule() {
             ) { state ->
                 viewModel.setFilterTeacher(filterTeacher = state)
             }
+
+            Spacer(width = 10.px)
+
+            DropDownMenu(
+                items = DayNumberOption.values().toList(),
+                state = viewState.filterDayNumber,
+                label = AppTheme.stringResources.scheduleFilterByDayNumber,
+                itemLabel = { item ->
+                    item.toTextRepresentation()
+                }
+            ) { state ->
+                viewModel.setFilterDayNumber(filterDayNumber = state)
+            }
+
+            Spacer(width = 10.px)
+
+            DropDownMenu(
+                items = WeekAlternationOption.values().toList(),
+                state = viewState.filterWeekAlternation,
+                label = AppTheme.stringResources.scheduleFilterByWeekAlternation,
+                itemLabel = { item ->
+                    item.toTextRepresentation()
+                }
+            ) { state ->
+                viewModel.setFilterWeekAlternation(filterWeekAlternation = state)
+            }
         }
 
         Spacer(height = 16.px)
@@ -161,36 +189,75 @@ fun Schedule() {
                 }
             },
             lazyPagingItems = pagedSchedule,
-            header = tableHeaderRow(
-                AppTheme.stringResources.scheduleGroupNumber,
-                AppTheme.stringResources.scheduleClassroomName,
-                AppTheme.stringResources.scheduleTeacher,
-                AppTheme.stringResources.scheduleSubjectOrEventName,
-                AppTheme.stringResources.scheduleLessonNumber,
-                AppTheme.stringResources.scheduleDayNumber,
-                AppTheme.stringResources.scheduleIsNumerator
-            ),
-            bodyItem = { item ->
-                tableBodyRow(
+            header = {
+                row {
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleGroupNumber)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleClassroomName)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleTeacher)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleSubjectOrEventName)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleLessonNumber)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleDayNumber)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleWeekAlternation)
+                    }
+                }
+            },
+            body = { _, item ->
+                row(
                     isSelected = viewState.rowsSelection[item.id] ?: false,
                     onSelectionChanged = { isSelected ->
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
-                        viewModel.dialog(dialog = ScheduleDialog.ManageScheduleItem(scheduleItem = item))
-                    },
-                    item.group.number.toString(),
-                    item.classroom.name,
-                    item.teacher.toTextRepresentation(),
-                    item.eventName ?: item.subject.name,
-                    item.lessonNumber.number.toString(),
-                    item.dayNumber.toTextRepresentation(),
-                    if(item.isNumerator) {
-                        AppTheme.stringResources.numerator
-                    } else {
-                        AppTheme.stringResources.denominator
+                        viewModel.dialog(dialog = ScheduleDialog.EditScheduleItem(scheduleItem = item))
                     }
-                )
+                ) {
+                    item {
+                        Text(text = item.group.number.toString())
+                    }
+
+                    item {
+                        Text(text = item.classroom.name)
+                    }
+
+                    item {
+                        Text(text = item.teacher.toTextRepresentation())
+                    }
+
+                    item {
+                        Text(text = item.eventName ?: item.subject.name)
+                    }
+
+                    item {
+                        Text(text = item.lessonNumber.number.toString())
+                    }
+
+                    item {
+                        Text(text = item.dayNumber.toTextRepresentation())
+                    }
+
+                    item {
+                        Text(text = item.weekAlternation.toTextRepresentation())
+                    }
+                }
             }
         )
     }

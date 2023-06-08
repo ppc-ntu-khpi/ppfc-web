@@ -9,13 +9,13 @@ import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
 import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
+import coreui.compose.DropDownMenuState
 import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
 import coreui.theme.AppTheme
 import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteScheduleItems
 import tables.domain.interactor.SaveScheduleItem
@@ -23,9 +23,11 @@ import tables.domain.model.*
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSchedule
 import tables.domain.observer.ObservePagedTeachers
+import tables.presentation.common.mapper.toDomain
+import tables.presentation.common.model.DayNumberOption
+import tables.presentation.common.model.WeekAlternationOption
 import tables.presentation.compose.PagingDropDownMenuState
 
-@OptIn(FlowPreview::class)
 class ScheduleViewModel(
     private val observePagedSchedule: ObservePagedSchedule,
     private val observePagedGroups: ObservePagedGroups,
@@ -45,6 +47,10 @@ class ScheduleViewModel(
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
     private val _filterGroup = MutableStateFlow(PagingDropDownMenuState.Empty<Group>())
     private val _filterTeacher = MutableStateFlow(PagingDropDownMenuState.Empty<Teacher>())
+    private val _filterDayNumber =
+        MutableStateFlow(DropDownMenuState.Empty(selectedItem = DayNumberOption.ALL))
+    private val _filterWeekAlternation =
+        MutableStateFlow(DropDownMenuState.Empty(selectedItem = WeekAlternationOption.ALL))
 
     val pagedSchedule: Flow<PagingData<ScheduleItem>> =
         observePagedSchedule.flow.onEach {
@@ -61,16 +67,20 @@ class ScheduleViewModel(
         _rowsSelection,
         _filterGroup,
         _filterTeacher,
+        _filterDayNumber,
+        _filterWeekAlternation,
         loadingState.observable,
         savingLoadingState.observable,
         deletingLoadingState.observable,
         _dialog,
         uiEventManager.event
-    ) { rowsSelection, filterGroup, filterTeacher, isLoading, isSaving, isDeleting, dialog, event ->
+    ) { rowsSelection, filterGroup, filterTeacher, filterDayNumber, filterWeekAlternation, isLoading, isSaving, isDeleting, dialog, event ->
         ScheduleViewState(
             rowsSelection = rowsSelection,
             filterGroup = filterGroup,
             filterTeacher = filterTeacher,
+            filterDayNumber = filterDayNumber,
+            filterWeekAlternation = filterWeekAlternation,
             isLoading = isLoading,
             isSaving = isSaving,
             isDeleting = isDeleting,
@@ -86,9 +96,13 @@ class ScheduleViewModel(
     init {
         combine(
             _filterGroup,
-            _filterTeacher
-        ) { filterGroup, filterTeacher ->
+            _filterTeacher,
+            _filterDayNumber,
+            _filterWeekAlternation
+        ) { filterGroup, filterTeacher, filterDayNumber, filterWeekAlternation ->
             observePagedSchedule(
+                dayNumber = filterDayNumber.selectedItem.toDomain(),
+                weekAlternation = filterWeekAlternation.selectedItem.toDomain(),
                 group = filterGroup.selectedItem,
                 teacher = filterTeacher.selectedItem
             )
@@ -109,14 +123,14 @@ class ScheduleViewModel(
 
     private fun observePagedSchedule(
         dayNumber: DayNumber? = null,
-        isNumerator: Boolean? = null,
+        weekAlternation: WeekAlternation? = null,
         group: Group? = null,
         teacher: Teacher? = null
     ) {
         observePagedSchedule(
             params = ObservePagedSchedule.Params(
                 dayNumber = dayNumber,
-                isNumerator =  isNumerator,
+                weekAlternation = weekAlternation,
                 group = group,
                 teacher = teacher,
                 pagingConfig = PAGING_CONFIG
@@ -147,12 +161,19 @@ class ScheduleViewModel(
     }
 
     fun setFilterGroup(filterGroup: PagingDropDownMenuState<Group>) {
-        println(filterGroup.selectedItem)
         _filterGroup.value = filterGroup
     }
 
     fun setFilterTeacher(filterTeacher: PagingDropDownMenuState<Teacher>) {
         _filterTeacher.value = filterTeacher
+    }
+
+    fun setFilterDayNumber(filterDayNumber: DropDownMenuState<DayNumberOption>) {
+        _filterDayNumber.value = filterDayNumber
+    }
+
+    fun setFilterWeekAlternation(filterWeekAlternation: DropDownMenuState<WeekAlternationOption>) {
+        _filterWeekAlternation.value = filterWeekAlternation
     }
 
     fun setRowSelection(id: Id, isSelected: Boolean) {

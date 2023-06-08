@@ -18,7 +18,7 @@ data class ScheduleItemState(
     val isSubject: Boolean = false,
     val lessonNumber: LessonNumber = LessonNumber.N1,
     val dayNumber: DayNumber = DayNumber.N1,
-    val isNumerator: Boolean = false
+    val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR
 ) {
     companion object {
         val Empty = ScheduleItemState()

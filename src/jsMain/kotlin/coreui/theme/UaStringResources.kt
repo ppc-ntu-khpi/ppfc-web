@@ -83,12 +83,15 @@ val uaStringResources = StringResources(
     scheduleClassroomName = "Аудиторія",
     scheduleTeacher = "Викладач",
     scheduleSubjectOrEventName = "Предмет/захід",
-    scheduleLessonNumber = "Номер пари",
+    scheduleLessonNumber = "Заняття",
     scheduleDayNumber = "День",
-    scheduleIsNumerator = "???",
+    scheduleWeekAlternation = "Чергування",
     scheduleFilterByGroupLabel = "Група",
     scheduleFilterByTeacherLabel = "Викладач",
+    scheduleFilterByDayNumber = "День",
+    scheduleFilterByWeekAlternation = "Чергування",
 
+    dayNumberAll = "Всі",
     monday = "Понеділок",
     tuesday = "Вівторок",
     wednesday = "Середа",
@@ -97,6 +100,7 @@ val uaStringResources = StringResources(
     saturday = "Субота",
     sunday = "Неділя",
 
-    numerator = "Чисельник",
-    denominator = "Знаменник",
+    weekAlternationAll = "Всі",
+    weekAlternationNumerator = "Чисельник",
+    weekAlternationDenominator = "Знаменник",
 )

@@ -9,10 +9,7 @@ import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import core.domain.PagingInteractor
 import kotlinx.coroutines.flow.Flow
-import tables.domain.model.DayNumber
-import tables.domain.model.Group
-import tables.domain.model.ScheduleItem
-import tables.domain.model.Teacher
+import tables.domain.model.*
 import tables.domain.repository.ScheduleRepository
 
 class ObservePagedSchedule(
@@ -26,7 +23,7 @@ class ObservePagedSchedule(
             scheduleRepository.getSchedulePagingSource(
                 pageSize = params.pagingConfig.pageSize.toLong(),
                 dayNumber = params.dayNumber,
-                isNumerator = params.isNumerator,
+                weekAlternation = params.weekAlternation,
                 group = params.group,
                 teacher = params.teacher
             )
@@ -36,7 +33,7 @@ class ObservePagedSchedule(
     data class Params(
         override val pagingConfig: PagingConfig,
         val dayNumber: DayNumber? = null,
-        val isNumerator: Boolean? = null,
+        val weekAlternation: WeekAlternation? = null,
         val group: Group? = null,
         val teacher: Teacher? = null
     ) : PagingInteractor.Params<ScheduleItem>

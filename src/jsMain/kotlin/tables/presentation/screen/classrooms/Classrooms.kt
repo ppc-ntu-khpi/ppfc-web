@@ -15,8 +15,8 @@ import coreui.util.*
 import org.jetbrains.compose.web.css.*
 import tables.presentation.compose.ConfirmDeletionDialog
 import tables.presentation.compose.PagingTable
-import tables.presentation.compose.tableBodyRow
-import tables.presentation.compose.tableHeaderRow
+import tables.presentation.compose.item
+import tables.presentation.compose.row
 
 @Composable
 fun Classrooms() {
@@ -140,18 +140,27 @@ fun Classrooms() {
                 }
             },
             lazyPagingItems = pagedClassrooms,
-            header = tableHeaderRow(AppTheme.stringResources.classroomsName),
-            bodyItem = { item ->
-                tableBodyRow(
+            header = {
+                row {
+                    item {
+                        Text(text = AppTheme.stringResources.classroomsName)
+                    }
+                }
+            },
+            body = { _, item ->
+                row(
                     isSelected = viewState.rowsSelection[item.id] ?: false,
                     onSelectionChanged = { isSelected ->
                         viewModel.setRowSelection(id = item.id, isSelected = isSelected)
                     },
                     onEdit = {
                         viewModel.dialog(dialog = ClassroomsDialog.ManageClassroom(classroom = item))
-                    },
-                    item.name
-                )
+                    }
+                ) {
+                    item {
+                        Text(text = item.name)
+                    }
+                }
             }
         )
     }

@@ -4,18 +4,25 @@
 
 package tables.presentation.compose
 
+/*
+ * Copyright (c) 2023. Vitalii Kozyr
+ */
+
 import androidx.compose.runtime.*
 import app.cash.paging.LoadStateLoading
 import coreui.compose.*
 import coreui.compose.base.*
 import coreui.theme.AppIconClass
+import coreui.theme.AppStyleSheet.style
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.util.LazyPagingItems
+import coreui.util.alpha
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Tr
 import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLTableRowElement
 import kotlin.math.min
 
 @Composable
@@ -23,10 +30,8 @@ fun <T : Any> PagingTable(
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
     itemsPerPage: Long = 10,
     lazyPagingItems: LazyPagingItems<T>,
-    header: TableHeaderRow,
-    selectionEnabled: Boolean = true,
-    editingEnabled: Boolean = true,
-    bodyItem: (item: T) -> TableBodyRow
+    header: @Composable PagingTableHeaderScope.() -> Unit,
+    body: @Composable PagingTableBodyScope.(index: Long, item: T) -> Unit
 ) {
     val isRefreshing = lazyPagingItems.loadState.refresh == LoadStateLoading
 
@@ -166,45 +171,14 @@ fun <T : Any> PagingTable(
                     attrs = {
                         style {
                             width(100.percent)
+
+                            "tbody tr:nth-of-type(odd)" style {
+                                backgroundColor(AppTheme.colors.primary.alpha(0.1f))
+                            }
                         }
                     },
                     header = {
-                        TableRow(
-                            attrs = {
-                                style {
-                                    position(Position.Sticky)
-                                    top(0.px)
-                                    zIndex(10)
-                                }
-                            }
-                        ) {
-                            TableHeaderItem(
-                                attrs = {
-                                    style {
-                                        width(1.percent)
-                                        textAlign(TextAlign.Start)
-                                    }
-                                }
-                            ) { }
-
-                            header.data.forEach { text ->
-                                TableHeaderItem {
-                                    Text(
-                                        text = text,
-                                        textAlign = TextAlign.Start
-                                    )
-                                }
-                            }
-
-                            TableHeaderItem(
-                                attrs = {
-                                    style {
-                                        width(100.percent)
-                                        textAlign(TextAlign.End)
-                                    }
-                                }
-                            ) { }
-                        }
+                        PagingTableHeaderScopeImpl().header()
                     },
                     body = {
                         val start = currentPage * itemsPerPage
@@ -217,58 +191,7 @@ fun <T : Any> PagingTable(
                                 null
                             } ?: break
 
-                            val bodyRow = bodyItem(item)
-
-                            Tr(
-                                attrs = {
-                                    style {
-                                        width(100.percent)
-                                        height(64.px)
-                                        minHeight(64.px)
-                                    }
-                                }
-                            ) {
-                                TableBodyItem(
-                                    attrs = {
-                                        style {
-                                            width(1.percent)
-                                            textAlign(TextAlign.Start)
-                                        }
-                                    }
-                                ) {
-                                    if(!selectionEnabled) return@TableBodyItem
-
-                                    Checkbox(bodyRow.isSelected) {
-                                        bodyRow.onSelectionChanged(it)
-                                    }
-                                }
-
-                                bodyRow.data.forEach { text ->
-                                    TableBodyItem {
-                                        Text(
-                                            text = text,
-                                            textAlign = TextAlign.Start
-                                        )
-                                    }
-                                }
-
-                                TableBodyItem(
-                                    attrs = {
-                                        style {
-                                            width(100.percent)
-                                            textAlign(TextAlign.End)
-                                        }
-                                    }
-                                ) {
-                                    if(!editingEnabled) return@TableBodyItem
-
-                                    IconButton(
-                                        icon = AppIconClass.Edit
-                                    ) {
-                                        bodyRow.onEdit()
-                                    }
-                                }
-                            }
+                            PagingTableBodyScopeImpl().body(index, item)
                         }
                     }
                 )
@@ -277,31 +200,119 @@ fun <T : Any> PagingTable(
     }
 }
 
-data class TableHeaderRow(
-    val data: List<String>
-)
+interface PagingTableHeaderScope
+class PagingTableHeaderScopeImpl : PagingTableHeaderScope
 
-fun tableHeaderRow(
-    vararg data: String
-) = TableHeaderRow(
-    data = data.toList()
-)
+@Composable
+fun PagingTableHeaderScope.row(
+    attrs: AttrBuilderContext<HTMLTableRowElement>? = null,
+    content: @Composable () -> Unit
+) {
+    TableRow(
+        attrs = {
+            style {
+                position(Position.Sticky)
+                top(0.px)
+                zIndex(10)
+            }
 
-data class TableBodyRow(
-    val isSelected: Boolean,
-    val onSelectionChanged: (isSelected: Boolean) -> Unit,
-    val onEdit: () -> Unit,
-    val data: List<String>
-)
+            applyAttrs(attrs)
+        }
+    ) {
+        TableHeaderItem(
+            attrs = {
+                style {
+                    width(1.percent)
+                    textAlign(TextAlign.Start)
+                }
+            }
+        ) { }
 
-fun tableBodyRow(
+        content()
+
+        TableHeaderItem(
+            attrs = {
+                style {
+                    width(100.percent)
+                    textAlign(TextAlign.End)
+                }
+            }
+        ) { }
+    }
+}
+
+@Composable
+fun PagingTableHeaderScope.item(
+    content: @Composable () -> Unit
+) {
+    TableHeaderItem {
+        content()
+    }
+}
+
+interface PagingTableBodyScope
+class PagingTableBodyScopeImpl : PagingTableBodyScope
+
+@Composable
+fun PagingTableBodyScope.row(
+    attrs: AttrBuilderContext<HTMLTableRowElement>? = null,
     isSelected: Boolean,
-    onSelectionChanged: (isSelected: Boolean) -> Unit,
-    onEdit: () -> Unit,
-    vararg data: String
-) = TableBodyRow(
-    isSelected = isSelected,
-    onSelectionChanged = onSelectionChanged,
-    onEdit = onEdit,
-    data = data.toList()
-)
+    onSelectionChanged: ((isSelected: Boolean) -> Unit)? = null,
+    onEdit: (() -> Unit)? = null,
+    content: @Composable () -> Unit
+) {
+    Tr(
+        attrs = {
+            style {
+                width(100.percent)
+                height(64.px)
+                minHeight(64.px)
+            }
+
+            applyAttrs(attrs)
+        }
+    ) {
+        TableBodyItem(
+            attrs = {
+                style {
+                    width(1.percent)
+                    textAlign(TextAlign.Start)
+                }
+            }
+        ) {
+            if (onSelectionChanged == null) return@TableBodyItem
+
+            Checkbox(isSelected) {
+                onSelectionChanged(it)
+            }
+        }
+
+        content()
+
+        TableBodyItem(
+            attrs = {
+                style {
+                    width(100.percent)
+                    textAlign(TextAlign.End)
+                }
+            }
+        ) {
+            if (onEdit == null) return@TableBodyItem
+
+            IconButton(
+                icon = AppIconClass.Edit
+            ) {
+                onEdit()
+            }
+        }
+    }
+}
+
+@Composable
+fun PagingTableBodyScope.item(
+    content: @Composable () -> Unit
+) {
+    TableBodyItem {
+        content()
+    }
+}

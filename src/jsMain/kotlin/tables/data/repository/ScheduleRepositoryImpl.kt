@@ -36,7 +36,7 @@ class ScheduleRepositoryImpl(
     override fun getSchedulePagingSource(
         pageSize: Long,
         dayNumber: DayNumber?,
-        isNumerator: Boolean?,
+        weekAlternation: WeekAlternation?,
         group: Group?,
         teacher: Teacher?
     ) = object : PagingSource<Long, ScheduleItem>() {
@@ -60,7 +60,7 @@ class ScheduleRepositoryImpl(
                     limit = pageSize,
                     offset = offset,
                     dayNumber = dayNumber?.number,
-                    isNumerator = isNumerator,
+                    isNumerator = weekAlternation?.isNumerator,
                     groupId = group?.id?.value,
                     teacherId = teacher?.id?.value
                 )
