@@ -7,14 +7,12 @@ package tables.presentation.compose
 import androidx.compose.runtime.*
 import app.cash.paging.LoadStateLoading
 import coreui.compose.*
-import coreui.compose.base.Alignment
 import coreui.compose.base.Column
-import coreui.compose.base.Row
 import coreui.extensions.elementContext
 import coreui.theme.AppIconClass
 import coreui.util.LazyPagingItems
 import coreui.util.ScrollState
-import coreui.util.scrollStateListener
+import coreui.util.getScrollState
 import kotlinx.browser.document
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.Position
@@ -34,27 +32,12 @@ fun <T : Any> PagingDropDownMenu(
     itemLabel: (item: T) -> String,
     onStateChanged: (state: PagingDropDownMenuState<T>) -> Unit
 ) {
-    var localState by remember { mutableStateOf(state) }
+    var isExpanded by remember { mutableStateOf(false) }
     var menuElement by remember { mutableStateOf<Element?>(null) }
     val itemsNumber = lazyPagingItems.itemCount
+    val isRefreshing = lazyPagingItems.loadState.refresh == LoadStateLoading
     val isAppending = lazyPagingItems.loadState.append == LoadStateLoading
-
-    LaunchedEffect(localState) {
-        onStateChanged(localState)
-    }
-
-    LaunchedEffect(state.scrollState == ScrollState.BOTTOM) {
-        try {
-            lazyPagingItems[(itemsNumber - 1).coerceAtLeast(0)]
-        } catch (_: IndexOutOfBoundsException) {
-        }
-    }
-
-    LaunchedEffect(isAppending) {
-        localState = state.copy(
-            isLoading = isAppending
-        )
-    }
+    val isLoading = isRefreshing || isAppending
 
     Column(
         attrs = {
@@ -62,83 +45,84 @@ fun <T : Any> PagingDropDownMenu(
                 position(Position.Relative)
                 display(DisplayStyle.InlineBlock)
                 overflowY(Overflow.Visible)
-                zIndex(1)
+            }
+
+            elementContext { element ->
+                document.addEventListener(
+                    type = "click",
+                    callback = { event ->
+                        val clickedOutside = !element.contains(event.target.asDynamic() as? Node)
+                        if (clickedOutside) {
+                            isExpanded = false
+                        }
+                    }
+                )
             }
         }
     ) {
-        Row(
-            verticalAlignment = Alignment.Vertical.CenterVertically
-        ) {
-            OutlinedTextField(
-                attrs = {
-                    elementContext { element ->
-                        document.addEventListener(
-                            type = "click",
-                            callback = { event ->
-                                val clickedOutside = !element.contains(event.target.asDynamic() as? Node)
-                                if (clickedOutside) {
-                                    localState = localState.copy(
-                                        isExpanded = false
-                                    )
-                                }
-                            }
-                        )
-                    }
+        OutlinedTextField(
+            attrs = {
+                onFocusIn {
+                    isExpanded = true
+                }
 
-                    onFocusIn {
-                        localState = localState.copy(
-                            isExpanded = true
-                        )
-                    }
-
-                    applyAttrs(attrs)
-                },
-                value = state.selectedItem?.let { item ->
-                    itemLabel(item)
-                } ?: state.searchQuery,
-                label = label,
-                error = state.error,
-                trailingIcon = if (localState.selectedItem != null) {
-                    AppIconClass.Cancel
-                } else null,
-                onTrailingIconClick = {
-                    localState = localState.copy(
+                applyAttrs(attrs)
+            },
+            value = state.selectedItem?.let { item ->
+                itemLabel(item)
+            } ?: state.searchQuery,
+            label = label,
+            error = state.error,
+            trailingIcon = if (state.selectedItem != null) {
+                AppIconClass.Cancel
+            } else null,
+            onTrailingIconClick = {
+                isExpanded = false
+                onStateChanged(
+                    state.copy(
                         selectedItem = null,
-                        searchQuery = "",
-                        isExpanded = false
+                        searchQuery = ""
                     )
-                },
-                onValueChange = { text ->
-                    menuElement?.scroll(x = 0.0, y = 0.0)
+                )
+            },
+            onValueChange = { text ->
+                menuElement?.scroll(x = 0.0, y = 0.0)
 
-                    localState = localState.copy(
+                onStateChanged(
+                    state.copy(
                         selectedItem = null,
                         searchQuery = text
                     )
-                }
-            )
-        }
+                )
+            }
+        )
 
-        if (!localState.isExpanded) return@Column
+        if (!isExpanded) return@Column
 
         Menu(
             attrs = {
-                elementContext { element ->
-                    menuElement = element
+                elementContext {
+                    menuElement = it
+                }
 
-                    element.scrollStateListener { scrollState ->
-                        localState = localState.copy(
-                            scrollState = scrollState
-                        )
+                onScroll {
+                    val scrollState = menuElement?.getScrollState() ?: return@onScroll
+                    if(scrollState != ScrollState.BOTTOM) return@onScroll
+
+                    try {
+                        lazyPagingItems[(itemsNumber - 1).coerceAtLeast(0)]
+                    } catch (_: IndexOutOfBoundsException) {
                     }
                 }
             },
-            isLoading = state.isLoading,
+            isLoading = isLoading,
             values = lazyPagingItems.itemSnapshotList.items.associateWith { item -> itemLabel(item) }
         ) { item ->
-            localState = localState.copy(
-                selectedItem = item,
-                isExpanded = false
+            isExpanded = false
+            onStateChanged(
+                state.copy(
+                    selectedItem = item
+                )
             )
         }
     }

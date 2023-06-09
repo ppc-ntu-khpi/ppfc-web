@@ -52,20 +52,18 @@ fun Schedule() {
         dialog = viewState.dialog
     ) { dialog ->
         when (dialog) {
-            /*
-            is ScheduleDialog.ManageScheduleItem -> {
-                ManageTeacherDialog(
+            is ScheduleDialog.EditScheduleItem -> {
+                EditScheduleItemDialog(
                     isLoading = viewState.isSaving,
-                    teacher = dialog.teacher,
-                    onSave = { teacher ->
-                        viewModel.saveTeacher(teacher = teacher)
+                    scheduleItem = dialog.scheduleItem,
+                    onSave = { scheduleItem ->
+                        viewModel.saveScheduleItem(scheduleItem = scheduleItem)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
                     }
                 )
             }
-             */
 
             is ScheduleDialog.ConfirmDeletion -> {
                 ConfirmDeletionDialog(
@@ -95,11 +93,6 @@ fun Schedule() {
         }
     ) {
         Row(
-            attrs = {
-                style {
-                    height(50.px)
-                }
-            },
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
             Button(
@@ -157,7 +150,7 @@ fun Schedule() {
 
             DropDownMenu(
                 items = DayNumberOption.values().toList(),
-                state = viewState.filterDayNumber,
+                selectedItem = viewState.filterDayNumber,
                 label = AppTheme.stringResources.scheduleFilterByDayNumber,
                 itemLabel = { item ->
                     item.toTextRepresentation()
@@ -170,7 +163,7 @@ fun Schedule() {
 
             DropDownMenu(
                 items = WeekAlternationOption.values().toList(),
-                state = viewState.filterWeekAlternation,
+                selectedItem = viewState.filterWeekAlternation,
                 label = AppTheme.stringResources.scheduleFilterByWeekAlternation,
                 itemLabel = { item ->
                     item.toTextRepresentation()

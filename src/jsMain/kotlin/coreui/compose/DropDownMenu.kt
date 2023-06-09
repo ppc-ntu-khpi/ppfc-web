@@ -5,9 +5,7 @@
 package coreui.compose
 
 import androidx.compose.runtime.*
-import coreui.compose.base.Alignment
 import coreui.compose.base.Column
-import coreui.compose.base.Row
 import coreui.extensions.elementContext
 import kotlinx.browser.document
 import org.jetbrains.compose.web.css.DisplayStyle
@@ -20,71 +18,56 @@ import org.w3c.dom.Node
 
 @Composable
 fun <T : Any> DropDownMenu(
-    state: DropDownMenuState<T>,
     items: List<T>,
+    selectedItem: T,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
     itemLabel: (item: T) -> String,
-    onStateChanged: (state: DropDownMenuState<T>) -> Unit
+    onItemSelected: (item: T) -> Unit
 ) {
-    var localState by remember { mutableStateOf(state) }
-
-    LaunchedEffect(localState) {
-        onStateChanged(localState)
-    }
+    var isExpanded by remember { mutableStateOf(false) }
 
     Column(
         attrs = {
+            elementContext { element ->
+                document.addEventListener(
+                    type = "click",
+                    callback = { event ->
+                        val clickedOutside = !element.contains(event.target.asDynamic() as? Node)
+                        if (clickedOutside) {
+                            isExpanded = false
+                        }
+                    }
+                )
+            }
+
             style {
                 position(Position.Relative)
                 display(DisplayStyle.InlineBlock)
                 overflowY(Overflow.Visible)
-                zIndex(1)
             }
         }
     ) {
-        Row(
-            verticalAlignment = Alignment.Vertical.CenterVertically
-        ) {
-            OutlinedTextField(
-                attrs = {
-                    elementContext { element ->
-                        document.addEventListener(
-                            type = "click",
-                            callback = { event ->
-                                val clickedOutside = !element.contains(event.target.asDynamic() as? Node)
-                                if (clickedOutside) {
-                                    localState = localState.copy(
-                                        isExpanded = false
-                                    )
-                                }
-                            }
-                        )
-                    }
+        OutlinedTextField(
+            attrs = {
+                onFocusIn {
+                    isExpanded = true
+                }
 
-                    onFocusIn {
-                        localState = localState.copy(
-                            isExpanded = true
-                        )
-                    }
+                applyAttrs(attrs)
+            },
+            value = itemLabel(selectedItem),
+            label = label,
+            onValueChange = {}
+        )
 
-                    applyAttrs(attrs)
-                },
-                value = itemLabel(state.selectedItem),
-                label = label,
-                onValueChange = {}
-            )
-        }
-
-        if (!localState.isExpanded) return@Column
+        if (!isExpanded) return@Column
 
         Menu(
             values = items.associateWith { item -> itemLabel(item) }
         ) { item ->
-            localState = localState.copy(
-                selectedItem = item,
-                isExpanded = false
-            )
+            isExpanded = false
+            onItemSelected(item)
         }
     }
 }

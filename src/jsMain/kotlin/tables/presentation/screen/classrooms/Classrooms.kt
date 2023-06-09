@@ -89,11 +89,6 @@ fun Classrooms() {
         }
     ) {
         Row(
-            attrs = {
-                style {
-                    height(50.px)
-                }
-            },
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
             Button(

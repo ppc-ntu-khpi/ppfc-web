@@ -9,7 +9,6 @@ import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
 import core.extensions.combine
 import coreui.common.ApiCommonErrorMapper
-import coreui.compose.DropDownMenuState
 import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
 import coreui.theme.AppTheme
@@ -47,10 +46,8 @@ class ScheduleViewModel(
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
     private val _filterGroup = MutableStateFlow(PagingDropDownMenuState.Empty<Group>())
     private val _filterTeacher = MutableStateFlow(PagingDropDownMenuState.Empty<Teacher>())
-    private val _filterDayNumber =
-        MutableStateFlow(DropDownMenuState.Empty(selectedItem = DayNumberOption.ALL))
-    private val _filterWeekAlternation =
-        MutableStateFlow(DropDownMenuState.Empty(selectedItem = WeekAlternationOption.ALL))
+    private val _filterDayNumber = MutableStateFlow(DayNumberOption.ALL)
+    private val _filterWeekAlternation = MutableStateFlow( WeekAlternationOption.ALL)
 
     val pagedSchedule: Flow<PagingData<ScheduleItem>> =
         observePagedSchedule.flow.onEach {
@@ -101,8 +98,8 @@ class ScheduleViewModel(
             _filterWeekAlternation
         ) { filterGroup, filterTeacher, filterDayNumber, filterWeekAlternation ->
             observePagedSchedule(
-                dayNumber = filterDayNumber.selectedItem.toDomain(),
-                weekAlternation = filterWeekAlternation.selectedItem.toDomain(),
+                dayNumber = filterDayNumber.toDomain(),
+                weekAlternation = filterWeekAlternation.toDomain(),
                 group = filterGroup.selectedItem,
                 teacher = filterTeacher.selectedItem
             )
@@ -168,11 +165,11 @@ class ScheduleViewModel(
         _filterTeacher.value = filterTeacher
     }
 
-    fun setFilterDayNumber(filterDayNumber: DropDownMenuState<DayNumberOption>) {
+    fun setFilterDayNumber(filterDayNumber: DayNumberOption) {
         _filterDayNumber.value = filterDayNumber
     }
 
-    fun setFilterWeekAlternation(filterWeekAlternation: DropDownMenuState<WeekAlternationOption>) {
+    fun setFilterWeekAlternation(filterWeekAlternation: WeekAlternationOption) {
         _filterWeekAlternation.value = filterWeekAlternation
     }
 

@@ -44,8 +44,6 @@ fun Tables() {
                 attrs = {
                     style {
                         width(100.percent)
-                        height(50.px)
-                        maxHeight(50.px)
                     }
                 },
                 selectedScreen = navController.currentScreen.value,

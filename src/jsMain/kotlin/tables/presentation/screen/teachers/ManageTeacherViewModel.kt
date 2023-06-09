@@ -47,7 +47,9 @@ class ManageTeacherViewModel(
     )
 
     init {
-        _teacherState.onEach { teacherState ->
+        _teacherState.distinctUntilChanged { old, new ->
+            old.discipline.searchQuery == new.discipline.searchQuery
+        }.onEach { teacherState ->
             observePagedDisciplines(
                 searchQuery = teacherState.discipline.searchQuery
             )

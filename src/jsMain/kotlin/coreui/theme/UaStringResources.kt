@@ -91,6 +91,11 @@ val uaStringResources = StringResources(
     scheduleFilterByDayNumber = "День",
     scheduleFilterByWeekAlternation = "Чергування",
 
+    scheduleGroupLabel = "Група",
+    scheduleClassroomLabel = "Аудиторія",
+    scheduleTeacherLabel = "Викладач",
+    scheduleSubjectLabel = "Предмет",
+
     dayNumberAll = "Всі",
     monday = "Понеділок",
     tuesday = "Вівторок",

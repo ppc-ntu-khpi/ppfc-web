@@ -36,6 +36,7 @@ fun <K> Menu(
                 position(Position.Absolute)
                 borderRadius(Shape.small)
                 overflowY(Overflow.Auto)
+                zIndex(100)
             }
 
             applyAttrs(attrs)

@@ -11,5 +11,5 @@ enum class DayNumber(val number: Long) {
     N4(number = 4),
     N5(number = 5),
     N6(number = 6),
-    N7(number = 7),
+    N7(number = 7)
 }

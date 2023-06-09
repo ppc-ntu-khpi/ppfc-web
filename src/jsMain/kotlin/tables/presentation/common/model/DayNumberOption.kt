@@ -12,5 +12,5 @@ enum class DayNumberOption {
     N4,
     N5,
     N6,
-    N7,
+    N7
 }
