@@ -21,6 +21,7 @@ data class StringResources(
     val networkException: String,
     val timeoutException: String,
     val newPasswordRequiredChallengeFailed: String,
+    val formIsNotValidException: String,
 
     val passwordIsNotInvalid: String,
 
@@ -90,6 +91,8 @@ data class StringResources(
     val scheduleGroupNumber: String,
     val scheduleClassroomName: String,
     val scheduleTeacher: String,
+    val scheduleSubject: String,
+    val scheduleEventName: String,
     val scheduleSubjectOrEventName: String,
     val scheduleLessonNumber: String,
     val scheduleDayNumber: String,
@@ -98,11 +101,6 @@ data class StringResources(
     val scheduleFilterByTeacherLabel: String,
     val scheduleFilterByDayNumber: String,
     val scheduleFilterByWeekAlternation: String,
-
-    val scheduleGroupLabel: String,
-    val scheduleClassroomLabel: String,
-    val scheduleTeacherLabel: String,
-    val scheduleSubjectLabel: String,
 
     val dayNumberAll: String,
     val monday: String,

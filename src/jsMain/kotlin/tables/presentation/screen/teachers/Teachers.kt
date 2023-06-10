@@ -129,7 +129,6 @@ fun Teachers() {
                 lazyPagingItems = pagedDisciplines,
                 state = viewState.filterDiscipline,
                 label = AppTheme.stringResources.teachersFilterByDisciplineLabel,
-
                 itemLabel = { item ->
                     item.name
                 }

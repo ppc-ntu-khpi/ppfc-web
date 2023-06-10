@@ -22,6 +22,7 @@ import tables.domain.model.*
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSchedule
 import tables.domain.observer.ObservePagedTeachers
+import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.common.mapper.toDomain
 import tables.presentation.common.model.DayNumberOption
 import tables.presentation.common.model.WeekAlternationOption
@@ -33,7 +34,8 @@ class ScheduleViewModel(
     private val observePagedTeachers: ObservePagedTeachers,
     private val saveScheduleItem: SaveScheduleItem,
     private val deleteScheduleItems: DeleteScheduleItems,
-    private val apiCommonErrorMapper: ApiCommonErrorMapper
+    private val apiCommonErrorMapper: ApiCommonErrorMapper,
+    private val tablesCommonErrorMapper: TablesCommonErrorMapper
 ) {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
@@ -47,7 +49,7 @@ class ScheduleViewModel(
     private val _filterGroup = MutableStateFlow(PagingDropDownMenuState.Empty<Group>())
     private val _filterTeacher = MutableStateFlow(PagingDropDownMenuState.Empty<Teacher>())
     private val _filterDayNumber = MutableStateFlow(DayNumberOption.ALL)
-    private val _filterWeekAlternation = MutableStateFlow( WeekAlternationOption.ALL)
+    private val _filterWeekAlternation = MutableStateFlow(WeekAlternationOption.ALL)
 
     val pagedSchedule: Flow<PagingData<ScheduleItem>> =
         observePagedSchedule.flow.onEach {
@@ -105,17 +107,21 @@ class ScheduleViewModel(
             )
         }.launchIn(coroutineScope)
 
-        _filterGroup.onEach { filterGroup ->
-            observePagedGroups(
-                searchQuery = filterGroup.searchQuery
-            )
-        }.launchIn(coroutineScope)
+        _filterGroup.map { it.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedGroups(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
 
-        _filterTeacher.onEach { filterTeacher ->
-            observePagedTeachers(
-                searchQuery = filterTeacher.searchQuery
-            )
-        }.launchIn(coroutineScope)
+        _filterTeacher.map { it.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedTeachers(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
     }
 
     private fun observePagedSchedule(
@@ -203,7 +209,7 @@ class ScheduleViewModel(
             )
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
-            errorMapper = apiCommonErrorMapper
+            errorMapper = apiCommonErrorMapper + tablesCommonErrorMapper
         ) { message ->
             sendEvent(
                 event = ScheduleViewEvent.Message(

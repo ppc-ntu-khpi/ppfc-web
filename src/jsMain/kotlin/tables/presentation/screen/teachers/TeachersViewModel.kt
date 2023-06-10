@@ -92,11 +92,13 @@ class TeachersViewModel(
             )
         }.launchIn(coroutineScope)
 
-        _filterDiscipline.onEach { filterDiscipline ->
-            observePagedDisciplines(
-                searchQuery = filterDiscipline.searchQuery
-            )
-        }.launchIn(coroutineScope)
+        _filterDiscipline.map { it.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedDisciplines(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
     }
 
     private fun observePagedTeachers(

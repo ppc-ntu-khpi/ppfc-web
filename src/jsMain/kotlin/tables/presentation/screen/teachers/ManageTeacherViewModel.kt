@@ -47,13 +47,13 @@ class ManageTeacherViewModel(
     )
 
     init {
-        _teacherState.distinctUntilChanged { old, new ->
-            old.discipline.searchQuery == new.discipline.searchQuery
-        }.onEach { teacherState ->
-            observePagedDisciplines(
-                searchQuery = teacherState.discipline.searchQuery
-            )
-        }.launchIn(coroutineScope)
+        _teacherState.map { it.discipline.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedDisciplines(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
     }
 
     private fun observePagedDisciplines(

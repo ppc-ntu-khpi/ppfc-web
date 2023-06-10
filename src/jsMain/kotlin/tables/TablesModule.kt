@@ -10,6 +10,7 @@ import tables.data.repository.*
 import tables.domain.interactor.*
 import tables.domain.observer.*
 import tables.domain.repository.*
+import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.courses.CoursesViewModel
@@ -28,6 +29,10 @@ import tables.presentation.screen.teachers.TeachersViewModel
 import tables.presentation.screen.users.UsersViewModel
 
 val tablesModule = module {
+    single {
+        TablesCommonErrorMapper()
+    }
+
     factory {
         TablesViewModel(get(), get(), get())
     }
@@ -249,7 +254,7 @@ val tablesModule = module {
     }
 
     factory {
-        ScheduleViewModel(get(), get(), get(), get(), get(), get())
+        ScheduleViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 
     factory {

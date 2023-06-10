@@ -129,7 +129,6 @@ fun Groups() {
                 lazyPagingItems = pagedCourses,
                 state = viewState.filterCourse,
                 label = AppTheme.stringResources.groupsFilterByCourseLabel,
-                
                 itemLabel = { item ->
                     item.number.toString()
                 }

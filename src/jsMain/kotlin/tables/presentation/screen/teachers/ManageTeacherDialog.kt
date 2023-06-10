@@ -96,7 +96,6 @@ fun ManageTeacherDialog(
                     lazyPagingItems = pagedDisciplines,
                     state = viewState.teacherState.discipline,
                     label = AppTheme.stringResources.teachersFilterByDisciplineLabel,
-                    
                     itemLabel = { item ->
                         item.name
                     }

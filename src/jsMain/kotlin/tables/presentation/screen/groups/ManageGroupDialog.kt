@@ -72,7 +72,6 @@ fun ManageGroupDialog(
             lazyPagingItems = pagedDisciplines,
             state = viewState.groupState.course,
             label = AppTheme.stringResources.groupsFilterByCourseLabel,
-            
             itemLabel = { item ->
                 item.number.toString()
             }

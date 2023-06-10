@@ -155,8 +155,8 @@ fun Schedule() {
                 itemLabel = { item ->
                     item.toTextRepresentation()
                 }
-            ) { state ->
-                viewModel.setFilterDayNumber(filterDayNumber = state)
+            ) { item ->
+                viewModel.setFilterDayNumber(filterDayNumber = item)
             }
 
             Spacer(width = 10.px)
@@ -168,8 +168,8 @@ fun Schedule() {
                 itemLabel = { item ->
                     item.toTextRepresentation()
                 }
-            ) { state ->
-                viewModel.setFilterWeekAlternation(filterWeekAlternation = state)
+            ) { item ->
+                viewModel.setFilterWeekAlternation(filterWeekAlternation = item)
             }
         }
 
@@ -193,19 +193,19 @@ fun Schedule() {
                     }
 
                     item {
-                        Text(text = AppTheme.stringResources.scheduleTeacher)
-                    }
-
-                    item {
                         Text(text = AppTheme.stringResources.scheduleSubjectOrEventName)
                     }
 
                     item {
-                        Text(text = AppTheme.stringResources.scheduleLessonNumber)
+                        Text(text = AppTheme.stringResources.scheduleTeacher)
                     }
 
                     item {
                         Text(text = AppTheme.stringResources.scheduleDayNumber)
+                    }
+
+                    item {
+                        Text(text = AppTheme.stringResources.scheduleLessonNumber)
                     }
 
                     item {
@@ -232,19 +232,19 @@ fun Schedule() {
                     }
 
                     item {
-                        Text(text = item.teacher.toTextRepresentation())
-                    }
-
-                    item {
                         Text(text = item.eventName ?: item.subject.name)
                     }
 
                     item {
-                        Text(text = item.lessonNumber.number.toString())
+                        Text(text = item.teacher.toTextRepresentation())
                     }
 
                     item {
                         Text(text = item.dayNumber.toTextRepresentation())
+                    }
+
+                    item {
+                        Text(text = item.lessonNumber.number.toString())
                     }
 
                     item {

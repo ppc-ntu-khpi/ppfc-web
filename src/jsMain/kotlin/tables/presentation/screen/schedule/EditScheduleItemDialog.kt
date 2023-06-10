@@ -8,9 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import coreui.compose.ButtonWithLoader
-import coreui.compose.OutlinedButton
-import coreui.compose.Text
+import coreui.compose.*
 import coreui.compose.base.*
 import coreui.theme.AppTheme
 import coreui.theme.Typography
@@ -20,7 +18,10 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
+import tables.domain.model.DayNumber
+import tables.domain.model.LessonNumber
 import tables.domain.model.ScheduleItem
+import tables.domain.model.WeekAlternation
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.PagingDropDownMenu
 import tables.presentation.screen.schedule.mapper.toDomain
@@ -65,7 +66,7 @@ fun EditScheduleItemDialog(
                 PagingDropDownMenu(
                     lazyPagingItems = pagedGroups,
                     state = viewState.scheduleItemState.group,
-                    label = AppTheme.stringResources.scheduleGroupLabel,
+                    label = AppTheme.stringResources.scheduleGroupNumber,
                     itemLabel = { item ->
                         item.number.toString()
                     }
@@ -75,47 +76,91 @@ fun EditScheduleItemDialog(
 
                 Spacer(height = 16.px)
 
-                Column {
-                    PagingDropDownMenu(
-                        lazyPagingItems = pagedClassrooms,
-                        state = viewState.scheduleItemState.classroom,
-                        label = AppTheme.stringResources.scheduleClassroomLabel,
-                        itemLabel = { item ->
-                            item.name
-                        }
-                    ) { state ->
-                        viewModel.setClassroom(classroom = state)
+                PagingDropDownMenu(
+                    lazyPagingItems = pagedClassrooms,
+                    state = viewState.scheduleItemState.classroom,
+                    label = AppTheme.stringResources.scheduleClassroomName,
+                    itemLabel = { item ->
+                        item.name
                     }
+                ) { state ->
+                    viewModel.setClassroom(classroom = state)
                 }
-            }
 
-            Spacer(width = 16.px)
+                Spacer(height = 16.px)
 
-            Column {
+                PagingDropDownMenu(
+                    lazyPagingItems = pagedSubjects,
+                    state = viewState.scheduleItemState.subject,
+                    label = AppTheme.stringResources.scheduleSubject,
+                    itemLabel = { item ->
+                        item.name
+                    }
+                ) { state ->
+                    viewModel.setSubject(subject = state)
+                }
+
+                Spacer(height = 16.px)
+
+                OutlinedTextField(
+                    value = viewState.scheduleItemState.eventName.text,
+                    label = AppTheme.stringResources.scheduleEventName
+                ) { text ->
+                    viewModel.setEventName(eventName = text)
+                }
+
+                Spacer(height = 16.px)
+
                 PagingDropDownMenu(
                     lazyPagingItems = pagedTeachers,
                     state = viewState.scheduleItemState.teacher,
-                    label = AppTheme.stringResources.scheduleTeacherLabel,
+                    label = AppTheme.stringResources.scheduleTeacher,
                     itemLabel = { item ->
                         item.toTextRepresentation()
                     }
                 ) { state ->
                     viewModel.setTeacher(teacher = state)
                 }
+            }
+
+            Spacer(width = 16.px)
+
+            Column {
+                DropDownMenu(
+                    items = DayNumber.values().toList(),
+                    selectedItem = viewState.scheduleItemState.dayNumber,
+                    label = AppTheme.stringResources.scheduleDayNumber,
+                    itemLabel = { item ->
+                        item.toTextRepresentation()
+                    }
+                ) { item ->
+                    viewModel.setDayNumber(dayNumber = item)
+                }
 
                 Spacer(height = 16.px)
 
-                Column {
-                    PagingDropDownMenu(
-                        lazyPagingItems = pagedSubjects,
-                        state = viewState.scheduleItemState.subject,
-                        label = AppTheme.stringResources.scheduleSubjectLabel,
-                        itemLabel = { item ->
-                            item.name
-                        }
-                    ) { state ->
-                        viewModel.setSubject(subject = state)
+                DropDownMenu(
+                    items = LessonNumber.values().toList(),
+                    selectedItem = viewState.scheduleItemState.lessonNumber,
+                    label = AppTheme.stringResources.scheduleLessonNumber,
+                    itemLabel = { item ->
+                        item.number.toString()
                     }
+                ) { item ->
+                    viewModel.setLessonNumber(lessonNumber = item)
+                }
+
+                Spacer(height = 16.px)
+
+                DropDownMenu(
+                    items = WeekAlternation.values().toList(),
+                    selectedItem = viewState.scheduleItemState.weekAlternation,
+                    label = AppTheme.stringResources.scheduleWeekAlternation,
+                    itemLabel = { item ->
+                        item.toTextRepresentation()
+                    }
+                ) { item ->
+                    viewModel.setWeekAlternation(weekAlternation = item)
                 }
             }
         }

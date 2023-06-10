@@ -13,6 +13,7 @@ val uaStringResources = StringResources(
     networkException = "Виникла проблема з підключенням до мережі. Будь ласка, перевірте Ваше Інтернет-з'єднання та спробуйте ще раз.",
     timeoutException = "Ваш запит перевищив час очікування. Будь ласка, перевірте Інтернет-з'єднання та спробуйте ще раз.",
     newPasswordRequiredChallengeFailed = "Час зміни пароля вичерпано. Вам необхідно увійти в обліковий запис ще раз.",
+    formIsNotValidException = "Форма не дійсна.",
 
     passwordIsNotInvalid = "Пароль повинен мати довжину не менше 8 символів і містити принаймні одну велику літеру та одну цифру.",
 
@@ -82,6 +83,8 @@ val uaStringResources = StringResources(
     scheduleGroupNumber = "Група",
     scheduleClassroomName = "Аудиторія",
     scheduleTeacher = "Викладач",
+    scheduleSubject = "Предмет",
+    scheduleEventName = "Захід",
     scheduleSubjectOrEventName = "Предмет/захід",
     scheduleLessonNumber = "Заняття",
     scheduleDayNumber = "День",
@@ -90,11 +93,6 @@ val uaStringResources = StringResources(
     scheduleFilterByTeacherLabel = "Викладач",
     scheduleFilterByDayNumber = "День",
     scheduleFilterByWeekAlternation = "Чергування",
-
-    scheduleGroupLabel = "Група",
-    scheduleClassroomLabel = "Аудиторія",
-    scheduleTeacherLabel = "Викладач",
-    scheduleSubjectLabel = "Предмет",
 
     dayNumberAll = "Всі",
     monday = "Понеділок",

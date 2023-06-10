@@ -11,10 +11,7 @@ import coreui.model.TextFieldState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import tables.domain.model.Classroom
-import tables.domain.model.Group
-import tables.domain.model.Subject
-import tables.domain.model.Teacher
+import tables.domain.model.*
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
@@ -36,8 +33,7 @@ class EditScheduleItemViewModel(
         scheduleItemState.group.selectedItem == null
                 || scheduleItemState.classroom.selectedItem == null
                 || scheduleItemState.teacher.selectedItem == null
-                || scheduleItemState.subject.selectedItem == null
-                || scheduleItemState.eventName == TextFieldState.Empty
+                || (scheduleItemState.subject.selectedItem == null && scheduleItemState.eventName == TextFieldState.Empty)
     }
 
     val pagedGroups: Flow<PagingData<Group>> =
@@ -67,101 +63,145 @@ class EditScheduleItemViewModel(
     )
 
     init {
-        _scheduleItemState.onEach { scheduleItemState ->
-            observePagedGroups(
-                searchQuery = scheduleItemState.group.searchQuery
-            )
+        _scheduleItemState.map { it.group.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedGroups(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
 
-            observePagedClassrooms(
-                searchQuery = scheduleItemState.classroom.searchQuery
-            )
+        _scheduleItemState.map { it.classroom.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedClassrooms(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
 
-            observePagedTeachers(
-                searchQuery = scheduleItemState.teacher.searchQuery
-            )
+        _scheduleItemState.map { it.teacher.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedTeachers(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
 
-            observePagedSubjects(
-                searchQuery = scheduleItemState.subject.searchQuery
-            )
-        }.launchIn(coroutineScope)
+        _scheduleItemState.map { it.subject.searchQuery }
+            .distinctUntilChanged()
+            .onEach { searchQuery ->
+                observePagedSubjects(
+                    searchQuery = searchQuery
+                )
+            }.launchIn(coroutineScope)
+}
+
+private fun observePagedGroups(
+    searchQuery: String? = null
+) {
+    observePagedGroups(
+        params = ObservePagedGroups.Params(
+            searchQuery = searchQuery,
+            pagingConfig = PAGING_CONFIG
+        )
+    )
+}
+
+private fun observePagedClassrooms(
+    searchQuery: String? = null
+) {
+    observePagedClassrooms(
+        params = ObservePagedClassrooms.Params(
+            searchQuery = searchQuery,
+            pagingConfig = PAGING_CONFIG
+        )
+    )
+}
+
+private fun observePagedTeachers(
+    searchQuery: String? = null
+) {
+    observePagedTeachers(
+        params = ObservePagedTeachers.Params(
+            searchQuery = searchQuery,
+            pagingConfig = PAGING_CONFIG
+        )
+    )
+}
+
+private fun observePagedSubjects(
+    searchQuery: String? = null
+) {
+    observePagedSubjects(
+        params = ObservePagedSubjects.Params(
+            searchQuery = searchQuery,
+            pagingConfig = PAGING_CONFIG
+        )
+    )
+}
+
+fun loadScheduleItemState(scheduleItemState: ScheduleItemState) {
+    _scheduleItemState.value = scheduleItemState
+}
+
+fun setGroup(group: PagingDropDownMenuState<Group>) {
+    _scheduleItemState.update {
+        it.copy(group = group)
     }
+}
 
-    private fun observePagedGroups(
-        searchQuery: String? = null
-    ) {
-        observePagedGroups(
-            params = ObservePagedGroups.Params(
-                searchQuery = searchQuery,
-                pagingConfig = PAGING_CONFIG
-            )
+fun setClassroom(classroom: PagingDropDownMenuState<Classroom>) {
+    _scheduleItemState.update {
+        it.copy(classroom = classroom)
+    }
+}
+
+fun setTeacher(teacher: PagingDropDownMenuState<Teacher>) {
+    _scheduleItemState.update {
+        it.copy(teacher = teacher)
+    }
+}
+
+fun setEventName(eventName: String) {
+    _scheduleItemState.update {
+        it.copy(
+            eventName = it.eventName.copy(text = eventName),
+            subject = PagingDropDownMenuState.Empty()
         )
     }
+}
 
-    private fun observePagedClassrooms(
-        searchQuery: String? = null
-    ) {
-        observePagedClassrooms(
-            params = ObservePagedClassrooms.Params(
-                searchQuery = searchQuery,
-                pagingConfig = PAGING_CONFIG
-            )
+fun setSubject(subject: PagingDropDownMenuState<Subject>) {
+    _scheduleItemState.update {
+        it.copy(
+            subject = subject,
+            eventName = TextFieldState.Empty
         )
     }
+}
 
-    private fun observePagedTeachers(
-        searchQuery: String? = null
-    ) {
-        observePagedTeachers(
-            params = ObservePagedTeachers.Params(
-                searchQuery = searchQuery,
-                pagingConfig = PAGING_CONFIG
-            )
-        )
+fun setDayNumber(dayNumber: DayNumber) {
+    _scheduleItemState.update {
+        it.copy(dayNumber = dayNumber)
     }
+}
 
-    private fun observePagedSubjects(
-        searchQuery: String? = null
-    ) {
-        observePagedSubjects(
-            params = ObservePagedSubjects.Params(
-                searchQuery = searchQuery,
-                pagingConfig = PAGING_CONFIG
-            )
-        )
+fun setLessonNumber(lessonNumber: LessonNumber) {
+    _scheduleItemState.update {
+        it.copy(lessonNumber = lessonNumber)
     }
+}
 
-    fun loadScheduleItemState(scheduleItemState: ScheduleItemState) {
-        _scheduleItemState.value = scheduleItemState
+fun setWeekAlternation(weekAlternation: WeekAlternation) {
+    _scheduleItemState.update {
+        it.copy(weekAlternation = weekAlternation)
     }
+}
 
-    fun setGroup(group: PagingDropDownMenuState<Group>) {
-        _scheduleItemState.update {
-            it.copy(group = group)
-        }
-    }
-
-    fun setClassroom(classroom: PagingDropDownMenuState<Classroom>) {
-        _scheduleItemState.update {
-            it.copy(classroom = classroom)
-        }
-    }
-
-    fun setTeacher(teacher: PagingDropDownMenuState<Teacher>) {
-        _scheduleItemState.update {
-            it.copy(teacher = teacher)
-        }
-    }
-
-    fun setSubject(subject: PagingDropDownMenuState<Subject>) {
-        _scheduleItemState.update {
-            it.copy(subject = subject)
-        }
-    }
-
-    private companion object {
-        val PAGING_CONFIG = PagingConfig(
-            pageSize = 10,
-            prefetchDistance = 20
-        )
-    }
+private companion object {
+    val PAGING_CONFIG = PagingConfig(
+        pageSize = 10,
+        prefetchDistance = 20
+    )
+}
 }
