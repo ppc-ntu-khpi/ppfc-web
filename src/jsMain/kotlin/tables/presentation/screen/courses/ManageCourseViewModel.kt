@@ -14,13 +14,13 @@ class ManageCourseViewModel {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val _courseState = MutableStateFlow(CourseState.Empty)
-    private val _isFormBlank = _courseState.map { courseState ->
+    private val isFormBlank = _courseState.map { courseState ->
         courseState.number.number == null
     }
 
     val state: StateFlow<ManageCourseViewState> = combine(
         _courseState,
-        _isFormBlank
+        isFormBlank
     ) { courseState, isFormBlank ->
         ManageCourseViewState(
             courseState = courseState,

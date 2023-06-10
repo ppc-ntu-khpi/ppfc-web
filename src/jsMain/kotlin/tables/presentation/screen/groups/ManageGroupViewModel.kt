@@ -22,7 +22,7 @@ class ManageGroupViewModel(
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val _groupState = MutableStateFlow(GroupState.Empty)
-    private val _isFormBlank = _groupState.map { groupState ->
+    private val isFormBlank = _groupState.map { groupState ->
         groupState.number.number == null
                 || groupState.course.selectedItem == null
     }
@@ -32,7 +32,7 @@ class ManageGroupViewModel(
 
     val state: StateFlow<ManageGroupViewState> = combine(
         _groupState,
-        _isFormBlank
+        isFormBlank
     ) { groupState, isFormBlank ->
         ManageGroupViewState(
             groupState = groupState,

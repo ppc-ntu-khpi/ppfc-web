@@ -14,13 +14,13 @@ class ManageSubjectViewModel {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val _subjectState = MutableStateFlow(SubjectState.Empty)
-    private val _isFormBlank = _subjectState.map { subjectState ->
+    private val isFormBlank = _subjectState.map { subjectState ->
         subjectState.name.text.isBlank()
     }
 
     val state: StateFlow<ManageSubjectViewState> = combine(
         _subjectState,
-        _isFormBlank
+        isFormBlank
     ) { subjectState, isFormBlank ->
         ManageSubjectViewState(
             subjectState = subjectState,

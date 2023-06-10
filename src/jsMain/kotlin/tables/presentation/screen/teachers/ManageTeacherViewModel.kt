@@ -22,7 +22,7 @@ class ManageTeacherViewModel(
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val _teacherState = MutableStateFlow(TeacherState.Empty)
-    private val _isFormBlank = _teacherState.map { teacherState ->
+    private val isFormBlank = _teacherState.map { teacherState ->
         teacherState.firstName.text.isBlank()
                 || teacherState.lastName.text.isBlank()
                 || teacherState.middleName.text.isBlank()
@@ -34,7 +34,7 @@ class ManageTeacherViewModel(
 
     val state: StateFlow<ManageTeacherViewState> = combine(
         _teacherState,
-        _isFormBlank
+        isFormBlank
     ) { teacherState, isFormBlank ->
         ManageTeacherViewState(
             teacherState = teacherState,

@@ -101,6 +101,8 @@ data class StringResources(
     val scheduleFilterByTeacherLabel: String,
     val scheduleFilterByDayNumber: String,
     val scheduleFilterByWeekAlternation: String,
+    val scheduleAddSubject: String,
+    val scheduleSubjects: String,
 
     val dayNumberAll: String,
     val monday: String,

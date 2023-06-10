@@ -14,13 +14,13 @@ class ManageDisciplineViewModel {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val _disciplineState = MutableStateFlow(DisciplineState.Empty)
-    private val _isFormBlank = _disciplineState.map { disciplineState ->
+    private val isFormBlank = _disciplineState.map { disciplineState ->
         disciplineState.name.text.isBlank()
     }
 
     val state: StateFlow<ManageDisciplineViewState> = combine(
         _disciplineState,
-        _isFormBlank
+        isFormBlank
     ) { disciplineState, isFormBlank ->
         ManageDisciplineViewState(
             disciplineState = disciplineState,

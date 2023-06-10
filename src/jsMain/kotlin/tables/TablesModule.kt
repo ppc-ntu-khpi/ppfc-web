@@ -19,6 +19,7 @@ import tables.presentation.screen.disciplines.DisciplinesViewModel
 import tables.presentation.screen.disciplines.ManageDisciplineViewModel
 import tables.presentation.screen.groups.GroupsViewModel
 import tables.presentation.screen.groups.ManageGroupViewModel
+import tables.presentation.screen.schedule.CreateScheduleItemsViewModel
 import tables.presentation.screen.schedule.EditScheduleItemViewModel
 import tables.presentation.screen.schedule.ScheduleViewModel
 import tables.presentation.screen.subjects.ManageSubjectViewModel
@@ -246,6 +247,10 @@ val tablesModule = module {
     }
 
     single {
+        SaveScheduleItems(get())
+    }
+
+    single {
         DeleteScheduleItems(get())
     }
 
@@ -254,7 +259,11 @@ val tablesModule = module {
     }
 
     factory {
-        ScheduleViewModel(get(), get(), get(), get(), get(), get(), get())
+        ScheduleViewModel(get(), get(), get(), get(), get(), get(), get(), get())
+    }
+
+    factory {
+        CreateScheduleItemsViewModel(get(), get(), get(), get())
     }
 
     factory {

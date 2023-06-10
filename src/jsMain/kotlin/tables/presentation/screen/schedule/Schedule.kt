@@ -52,6 +52,18 @@ fun Schedule() {
         dialog = viewState.dialog
     ) { dialog ->
         when (dialog) {
+            is ScheduleDialog.CreateScheduleItems -> {
+                CreateScheduleItemsDialog(
+                    isLoading = viewState.isSaving,
+                    onSave = { scheduleItems ->
+                        viewModel.saveScheduleItems(scheduleItems = scheduleItems)
+                    },
+                    onClose = {
+                        viewModel.dialog(dialog = null)
+                    }
+                )
+            }
+
             is ScheduleDialog.EditScheduleItem -> {
                 EditScheduleItemDialog(
                     isLoading = viewState.isSaving,
@@ -77,8 +89,6 @@ fun Schedule() {
                     }
                 )
             }
-
-            else -> {}
         }
     }
 

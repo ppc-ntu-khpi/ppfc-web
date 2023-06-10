@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteScheduleItems
 import tables.domain.interactor.SaveScheduleItem
+import tables.domain.interactor.SaveScheduleItems
 import tables.domain.model.*
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSchedule
@@ -33,6 +34,7 @@ class ScheduleViewModel(
     private val observePagedGroups: ObservePagedGroups,
     private val observePagedTeachers: ObservePagedTeachers,
     private val saveScheduleItem: SaveScheduleItem,
+    private val saveScheduleItems: SaveScheduleItems,
     private val deleteScheduleItems: DeleteScheduleItems,
     private val apiCommonErrorMapper: ApiCommonErrorMapper,
     private val tablesCommonErrorMapper: TablesCommonErrorMapper
@@ -202,6 +204,27 @@ class ScheduleViewModel(
         saveScheduleItem(
             params = SaveScheduleItem.Params(
                 scheduleItem = scheduleItem
+            )
+        ).onSuccess {
+            sendEvent(
+                event = ScheduleViewEvent.ScheduleItemSaved
+            )
+        }.withErrorMapper(
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper + tablesCommonErrorMapper
+        ) { message ->
+            sendEvent(
+                event = ScheduleViewEvent.Message(
+                    message = UiMessage(message = message)
+                )
+            )
+        }.collect()
+    }
+
+    fun saveScheduleItems(scheduleItems: List<ScheduleItem>) = launchWithLoader(savingLoadingState) {
+        saveScheduleItems(
+            params = SaveScheduleItems.Params(
+                scheduleItems = scheduleItems
             )
         ).onSuccess {
             sendEvent(

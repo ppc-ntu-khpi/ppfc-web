@@ -16,15 +16,18 @@ class SaveScheduleItem(
 ) : Interactor<SaveScheduleItem.Params, Unit>() {
 
     override suspend fun doWork(params: Params): Unit = withContext(Dispatchers.Default) {
+        var scheduleItemToSave = params.scheduleItem.copy(
+            eventName = params.scheduleItem.eventName.takeUnless { it.isNullOrBlank() }
+        )
+
+        scheduleItemToSave = when {
+            scheduleItemToSave.eventName != null -> scheduleItemToSave.copy(isSubject = false)
+            scheduleItemToSave.subject != Subject.Empty -> scheduleItemToSave.copy(isSubject = true)
+            else -> throw FormIsNotValidException()
+        }
+
         scheduleRepository.saveScheduleItem(
-            scheduleItem = params.scheduleItem.let { scheduleItem ->
-                params.scheduleItem.copy(eventName = scheduleItem.eventName.takeUnless { it.isNullOrBlank() })
-            }.let { scheduleItem ->
-                if (scheduleItem.subject == Subject.Empty && scheduleItem.eventName == null) {
-                    throw FormIsNotValidException()
-                }
-                scheduleItem
-            }
+            scheduleItem = scheduleItemToSave
         )
     }
 

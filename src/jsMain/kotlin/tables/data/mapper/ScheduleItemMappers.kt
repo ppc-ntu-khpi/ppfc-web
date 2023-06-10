@@ -14,7 +14,7 @@ fun ScheduleItem.toRequest() = ScheduleRequest(
     groupId = group.id.value,
     classroomId = classroom.id.value,
     teacherId = teacher.id.value,
-    subjectId = subject.id.value,
+    subjectId = if(subject == Subject.Empty) null else subject.id.value,
     eventName = eventName,
     lessonNumber = lessonNumber.toNumber(),
     dayNumber = dayNumber.toNumber(),
