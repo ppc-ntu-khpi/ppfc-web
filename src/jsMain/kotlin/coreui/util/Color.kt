@@ -7,7 +7,7 @@ package coreui.util
 import org.jetbrains.compose.web.css.CSSColorValue
 import org.jetbrains.compose.web.css.rgba
 
-fun Color(value: Long): CSSColorValue {
+fun color(value: Long): CSSColorValue {
     val red = (value shr 16 and 0xFF)
     val green = (value shr 8 and 0xFF)
     val blue = (value and 0xFF)

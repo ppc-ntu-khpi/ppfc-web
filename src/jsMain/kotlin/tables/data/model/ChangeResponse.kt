@@ -2,13 +2,9 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package org.ppfc.api.model.service.change
+package tables.data.model
 
 import kotlinx.serialization.Serializable
-import tables.data.model.ClassroomResponse
-import tables.data.model.GroupResponse
-import tables.data.model.SubjectResponse
-import tables.data.model.TeacherResponse
 
 @Serializable
 data class ChangeResponse(

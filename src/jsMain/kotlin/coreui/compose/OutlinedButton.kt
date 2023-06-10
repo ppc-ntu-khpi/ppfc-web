@@ -11,12 +11,10 @@ import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
 import coreui.util.alpha
-import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.HTMLButtonElement
 
-@OptIn(ExperimentalComposeWebApi::class)
 @Composable
 fun OutlinedButton(
     attrs: AttrBuilderContext<HTMLButtonElement>? = null,

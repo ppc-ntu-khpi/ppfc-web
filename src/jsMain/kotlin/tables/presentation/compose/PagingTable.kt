@@ -203,6 +203,7 @@ fun <T : Any> PagingTable(
 interface PagingTableHeaderScope
 class PagingTableHeaderScopeImpl : PagingTableHeaderScope
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun PagingTableHeaderScope.row(
     attrs: AttrBuilderContext<HTMLTableRowElement>? = null,
@@ -241,6 +242,7 @@ fun PagingTableHeaderScope.row(
     }
 }
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun PagingTableHeaderScope.item(
     content: @Composable () -> Unit
@@ -253,6 +255,7 @@ fun PagingTableHeaderScope.item(
 interface PagingTableBodyScope
 class PagingTableBodyScopeImpl : PagingTableBodyScope
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun PagingTableBodyScope.row(
     attrs: AttrBuilderContext<HTMLTableRowElement>? = null,
@@ -308,6 +311,7 @@ fun PagingTableBodyScope.row(
     }
 }
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun PagingTableBodyScope.item(
     content: @Composable () -> Unit
