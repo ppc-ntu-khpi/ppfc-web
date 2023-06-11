@@ -25,6 +25,7 @@ import tables.domain.model.Id
 import tables.domain.model.Teacher
 import tables.domain.observer.ObservePagedDisciplines
 import tables.domain.observer.ObservePagedTeachers
+import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 
 @OptIn(FlowPreview::class)
@@ -92,13 +93,9 @@ class TeachersViewModel(
             )
         }.launchIn(coroutineScope)
 
-        _filterDiscipline.map { it.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedDisciplines(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        _filterDiscipline.onSearchQuery { searchQuery ->
+            observePagedDisciplines(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedTeachers(

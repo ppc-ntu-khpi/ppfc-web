@@ -16,6 +16,7 @@ import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
+import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.schedule.model.ScheduleItemState
 
@@ -64,37 +65,26 @@ class EditScheduleItemViewModel(
     )
 
     init {
-        _scheduleItemState.map { it.group.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedGroups(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        observePagedGroups()
+        observePagedClassrooms()
+        observePagedTeachers()
+        observePagedSubjects()
 
-        _scheduleItemState.map { it.classroom.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedClassrooms(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        _scheduleItemState.map { it.group }.onSearchQuery { searchQuery ->
+            observePagedGroups(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.teacher.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedTeachers(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        _scheduleItemState.map { it.classroom }.onSearchQuery { searchQuery ->
+            observePagedClassrooms(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.subject.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedSubjects(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        _scheduleItemState.map { it.teacher }.onSearchQuery { searchQuery ->
+            observePagedTeachers(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
+
+        _scheduleItemState.map { it.subject }.onSearchQuery { searchQuery ->
+            observePagedSubjects(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedGroups(

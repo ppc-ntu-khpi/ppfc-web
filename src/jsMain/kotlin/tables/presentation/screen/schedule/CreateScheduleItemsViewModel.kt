@@ -10,17 +10,17 @@ import app.cash.paging.cachedIn
 import coreui.model.TextFieldState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import tables.domain.model.*
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
+import tables.extensions.onItem
+import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.schedule.model.ScheduleItemState
 
-@OptIn(FlowPreview::class)
 class CreateScheduleItemsViewModel(
     private val observePagedGroups: ObservePagedGroups,
     private val observePagedClassrooms: ObservePagedClassrooms,
@@ -78,45 +78,34 @@ class CreateScheduleItemsViewModel(
     )
 
     init {
-        _scheduleItemsStates.flatMapConcat { items ->
-            items.map {
-                it.group.searchQuery
-            }.asFlow()
-        }.onEach { searchQuery ->
-            observePagedGroups(
-                searchQuery = searchQuery
-            )
-        }.launchIn(coroutineScope)
+        observePagedGroups()
+        observePagedClassrooms()
+        observePagedTeachers()
+        observePagedSubjects()
 
-        _scheduleItemsStates.flatMapConcat { items ->
-            items.map {
-                it.classroom.searchQuery
-            }.asFlow()
-        }.onEach { searchQuery ->
-            observePagedClassrooms(
-                searchQuery = searchQuery
-            )
+        val pagingGroups = _scheduleItemsStates.map { items -> items.map { it.group } }
+        pagingGroups.onSearchQuery { searchQuery ->
+            observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
+        pagingGroups.onItem { observePagedGroups() }.launchIn(coroutineScope)
 
-        _scheduleItemsStates.flatMapConcat { items ->
-            items.map {
-                it.teacher.searchQuery
-            }.asFlow()
-        }.onEach { searchQuery ->
-            observePagedTeachers(
-                searchQuery = searchQuery
-            )
+        val pagingClassrooms = _scheduleItemsStates.map { items -> items.map { it.classroom } }
+        pagingClassrooms.onSearchQuery { searchQuery ->
+            observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
+        pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        _scheduleItemsStates.flatMapConcat { items ->
-            items.map {
-                it.subject.searchQuery
-            }.asFlow()
-        }.onEach { searchQuery ->
-            observePagedSubjects(
-                searchQuery = searchQuery
-            )
+        val pagingTeachers = _scheduleItemsStates.map { items -> items.map { it.teacher } }
+        pagingTeachers.onSearchQuery { searchQuery ->
+            observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
+        pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
+
+        val pagingSubjects = _scheduleItemsStates.map { items -> items.map { it.subject } }
+        pagingSubjects.onSearchQuery { searchQuery ->
+            observePagedSubjects(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
+        pagingSubjects.onItem { observePagedSubjects() }.launchIn(coroutineScope)
     }
 
     private fun observePagedGroups(
@@ -187,16 +176,16 @@ class CreateScheduleItemsViewModel(
 
     fun setGroup(group: PagingDropDownMenuState<Group>) {
         _scheduleItemsStates.update { items ->
-            items.map {
-                it.copy(group = group)
+            items.map { item ->
+                item.copy(group = group)
             }
         }
     }
 
     fun setDayNumber(dayNumber: DayNumber) {
         _scheduleItemsStates.update { items ->
-            items.map {
-                it.copy(dayNumber = dayNumber)
+            items.map { item ->
+                item.copy(dayNumber = dayNumber)
             }
         }
     }

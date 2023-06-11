@@ -23,6 +23,7 @@ import tables.domain.model.*
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSchedule
 import tables.domain.observer.ObservePagedTeachers
+import tables.extensions.onSearchQuery
 import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.common.mapper.toDomain
 import tables.presentation.common.model.DayNumberOption
@@ -109,21 +110,16 @@ class ScheduleViewModel(
             )
         }.launchIn(coroutineScope)
 
-        _filterGroup.map { it.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedGroups(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        observePagedGroups()
+        observePagedTeachers()
 
-        _filterTeacher.map { it.searchQuery }
-            .distinctUntilChanged()
-            .onEach { searchQuery ->
-                observePagedTeachers(
-                    searchQuery = searchQuery
-                )
-            }.launchIn(coroutineScope)
+        _filterGroup.onSearchQuery { searchQuery ->
+            observePagedGroups(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
+
+        _filterTeacher.onSearchQuery { searchQuery ->
+            observePagedTeachers(searchQuery = searchQuery)
+        }.launchIn(coroutineScope)
     }
 
     private fun observePagedSchedule(
@@ -166,11 +162,15 @@ class ScheduleViewModel(
     }
 
     fun setFilterGroup(filterGroup: PagingDropDownMenuState<Group>) {
-        _filterGroup.value = filterGroup
+        _filterGroup.update {
+            filterGroup
+        }
     }
 
     fun setFilterTeacher(filterTeacher: PagingDropDownMenuState<Teacher>) {
-        _filterTeacher.value = filterTeacher
+        _filterTeacher.update {
+            filterTeacher
+        }
     }
 
     fun setFilterDayNumber(filterDayNumber: DayNumberOption) {
