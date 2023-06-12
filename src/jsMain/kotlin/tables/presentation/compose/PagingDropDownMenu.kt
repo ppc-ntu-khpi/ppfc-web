@@ -14,13 +14,14 @@ import coreui.util.LazyPagingItems
 import coreui.util.ScrollState
 import coreui.util.getScrollState
 import kotlinx.browser.document
-import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.css.DisplayStyle
+import org.jetbrains.compose.web.css.Position
+import org.jetbrains.compose.web.css.display
+import org.jetbrains.compose.web.css.position
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.Node
-
-private val menuMaxHeight = 200.px
 
 @Composable
 fun <T : Any> PagingDropDownMenu(
@@ -100,17 +101,13 @@ fun <T : Any> PagingDropDownMenu(
 
         Menu(
             attrs = {
-                style {
-                    maxHeight(menuMaxHeight)
-                }
-
                 elementContext {
                     menuElement = it
                 }
 
                 onScroll {
                     val scrollState = menuElement?.getScrollState() ?: return@onScroll
-                    if(scrollState != ScrollState.BOTTOM) return@onScroll
+                    if (scrollState != ScrollState.BOTTOM) return@onScroll
 
                     try {
                         lazyPagingItems[(itemsNumber - 1).coerceAtLeast(0)]

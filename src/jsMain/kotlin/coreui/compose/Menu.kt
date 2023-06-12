@@ -30,13 +30,10 @@ fun <K> Menu(
                 width(100.percent)
                 maxWidth(280.px)
                 maxHeight(200.px)
-                top(100.percent)
-                left(0.px)
-                right(0.px)
                 position(Position.Absolute)
                 borderRadius(Shape.small)
                 overflowY(Overflow.Auto)
-                zIndex(100)
+                zIndex(1000)
             }
 
             applyAttrs(attrs)

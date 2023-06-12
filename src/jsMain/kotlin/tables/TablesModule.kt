@@ -11,6 +11,7 @@ import tables.domain.interactor.*
 import tables.domain.observer.*
 import tables.domain.repository.*
 import tables.presentation.common.mapper.TablesCommonErrorMapper
+import tables.presentation.screen.changes.ChangesViewModel
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.courses.CoursesViewModel
@@ -268,5 +269,34 @@ val tablesModule = module {
 
     factory {
         EditScheduleItemViewModel(get(), get(), get(), get())
+    }
+
+    /* Changes */
+    single<ChangesDao> {
+        ChangesDaoImpl(get())
+    }
+
+    single<ChangesRepository> {
+        ChangesRepositoryImpl(get())
+    }
+
+    single {
+        SaveChange(get())
+    }
+
+    single {
+        SaveChanges(get())
+    }
+
+    single {
+        DeleteChanges(get())
+    }
+
+    single {
+        ObservePagedChanges(get())
+    }
+
+    factory {
+        ChangesViewModel(get(), get(), get(), get(), get(), get(), get(), get())
     }
 }

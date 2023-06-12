@@ -27,7 +27,7 @@ fun Dialog(
                 pointerEvents(PointerEvents.Fill)
             }
         },
-        overlapElevation = 100L,
+        overlapElevation = 100,
         contentAlignment = Alignment.Box.Center
     ) {
         Surface(
