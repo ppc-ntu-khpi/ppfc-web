@@ -8,26 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="WIP">
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DatePicker.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/AppSvgIcon.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/infrastructure/extensions/DateFormat.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DropDownMenu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DropDownMenu.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedTextField.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/OutlinedTextField.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/StyleProperties.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/StyleProperties.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/AppIconClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/AppIconClass.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/ChangeMappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/ChangeMappers.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Change.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Change.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/observer/ObservePagedChanges.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/observer/ObservePagedChanges.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DatePicker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DatePicker.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -354,7 +336,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686571079587</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="WIP">
+      <created>1686601796641</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1686601796643</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -6,6 +6,7 @@ package coreui.compose
 
 import androidx.compose.runtime.*
 import coreui.compose.base.Box
+import coreui.compose.base.Spacer
 import coreui.theme.AppStyleSheet.style
 import coreui.theme.AppSvgIcon
 import coreui.theme.AppTheme
@@ -55,14 +56,14 @@ fun DatePicker(
             applyAttrs(attrs)
         }
     ) {
+        Spacer(width = 16.px)
+
         DateInput(
             attrs = {
                 style {
                     width(100.percent)
                     height(100.percent)
                     backgroundColor(Color.transparent)
-                    paddingLeft(14.px)
-                    paddingRight(14.px)
                     fontSize(Typography.bodyLarge)
                     color(AppTheme.colors.onSurfaceVariant)
                     outline("0")
@@ -91,5 +92,7 @@ fun DatePicker(
             },
             value = date.toISO8601String()
         )
+
+        Spacer(width = 16.px)
     }
 }
