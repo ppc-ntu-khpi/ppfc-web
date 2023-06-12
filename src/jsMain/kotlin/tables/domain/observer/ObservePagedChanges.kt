@@ -14,6 +14,7 @@ import tables.domain.model.Group
 import tables.domain.model.Teacher
 import tables.domain.model.WeekAlternation
 import tables.domain.repository.ChangesRepository
+import kotlin.js.Date
 
 class ObservePagedChanges(
     private val changesRepository: ChangesRepository
@@ -35,7 +36,7 @@ class ObservePagedChanges(
 
     data class Params(
         override val pagingConfig: PagingConfig,
-        val date: String? = null,
+        val date: Date? = null,
         val weekAlternation: WeekAlternation? = null,
         val group: Group? = null,
         val teacher: Teacher? = null

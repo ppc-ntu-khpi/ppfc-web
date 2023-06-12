@@ -7,6 +7,7 @@ package tables.presentation.screen.changes.model
 import coreui.model.TextFieldState
 import tables.domain.model.*
 import tables.presentation.compose.PagingDropDownMenuState
+import kotlin.js.Date
 
 data class ChangeState(
     val id: Id = Id.Empty,
@@ -17,7 +18,7 @@ data class ChangeState(
     val eventName: TextFieldState = TextFieldState.Empty,
     val isSubject: Boolean = false,
     val lessonNumber: LessonNumber = LessonNumber.N1,
-    val date: String? = null,
+    val date: Date = Date(),
     val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR
 ) {
     companion object {

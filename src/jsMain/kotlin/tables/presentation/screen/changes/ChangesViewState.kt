@@ -7,15 +7,14 @@ package tables.presentation.screen.changes
 import coreui.util.UiEvent
 import tables.domain.model.Group
 import tables.domain.model.Id
-import tables.domain.model.Teacher
 import tables.presentation.common.model.WeekAlternationOption
 import tables.presentation.compose.PagingDropDownMenuState
+import kotlin.js.Date
 
 data class ChangesViewState(
     val rowsSelection: Map<Id, Boolean> = emptyMap(),
     val filterGroup: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
-    val filterTeacher: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
-    val filterDate: String? = null,
+    val filterDate: Date = Date(),
     val filterWeekAlternation: WeekAlternationOption = WeekAlternationOption.ALL,
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,

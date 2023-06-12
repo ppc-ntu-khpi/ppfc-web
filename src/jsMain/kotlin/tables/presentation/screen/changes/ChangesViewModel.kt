@@ -22,17 +22,16 @@ import tables.domain.interactor.SaveChanges
 import tables.domain.model.*
 import tables.domain.observer.ObservePagedChanges
 import tables.domain.observer.ObservePagedGroups
-import tables.domain.observer.ObservePagedTeachers
 import tables.extensions.onSearchQuery
 import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.common.mapper.toDomain
 import tables.presentation.common.model.WeekAlternationOption
 import tables.presentation.compose.PagingDropDownMenuState
+import kotlin.js.Date
 
 class ChangesViewModel(
     private val observePagedChanges: ObservePagedChanges,
     private val observePagedGroups: ObservePagedGroups,
-    private val observePagedTeachers: ObservePagedTeachers,
     private val saveChange: SaveChange,
     private val saveChanges: SaveChanges,
     private val deleteChanges: DeleteChanges,
@@ -49,8 +48,7 @@ class ChangesViewModel(
     private val _dialog = MutableStateFlow<ChangesDialog?>(null)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
     private val _filterGroup = MutableStateFlow(PagingDropDownMenuState.Empty<Group>())
-    private val _filterTeacher = MutableStateFlow(PagingDropDownMenuState.Empty<Teacher>())
-    private val _filterDate = MutableStateFlow<String?>(null)
+    private val _filterDate = MutableStateFlow(Date())
     private val _filterWeekAlternation = MutableStateFlow(WeekAlternationOption.ALL)
 
     val pagedChanges: Flow<PagingData<Change>> =
@@ -61,13 +59,9 @@ class ChangesViewModel(
     val pagedGroups: Flow<PagingData<Group>> =
         observePagedGroups.flow.cachedIn(coroutineScope)
 
-    val pagedTeachers: Flow<PagingData<Teacher>> =
-        observePagedTeachers.flow.cachedIn(coroutineScope)
-
     val state: StateFlow<ChangesViewState> = combine(
         _rowsSelection,
         _filterGroup,
-        _filterTeacher,
         _filterDate,
         _filterWeekAlternation,
         loadingState.observable,
@@ -75,11 +69,10 @@ class ChangesViewModel(
         deletingLoadingState.observable,
         _dialog,
         uiEventManager.event
-    ) { rowsSelection, filterGroup, filterTeacher, filterDate, filterWeekAlternation, isLoading, isSaving, isDeleting, dialog, event ->
+    ) { rowsSelection, filterGroup, filterDate, filterWeekAlternation, isLoading, isSaving, isDeleting, dialog, event ->
         ChangesViewState(
             rowsSelection = rowsSelection,
             filterGroup = filterGroup,
-            filterTeacher = filterTeacher,
             filterDate = filterDate,
             filterWeekAlternation = filterWeekAlternation,
             isLoading = isLoading,
@@ -97,32 +90,25 @@ class ChangesViewModel(
     init {
         combine(
             _filterGroup,
-            _filterTeacher,
             _filterDate,
             _filterWeekAlternation
-        ) { filterGroup, filterTeacher, filterDate, filterWeekAlternation ->
+        ) { filterGroup, filterDate, filterWeekAlternation ->
             observePagedChanges(
                 date = filterDate,
                 weekAlternation = filterWeekAlternation.toDomain(),
-                group = filterGroup.selectedItem,
-                teacher = filterTeacher.selectedItem
+                group = filterGroup.selectedItem
             )
         }.launchIn(coroutineScope)
 
         observePagedGroups()
-        observePagedTeachers()
 
         _filterGroup.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-
-        _filterTeacher.onSearchQuery { searchQuery ->
-            observePagedTeachers(searchQuery = searchQuery)
-        }.launchIn(coroutineScope)
     }
 
     private fun observePagedChanges(
-        date: String? = null,
+        date: Date? = null,
         weekAlternation: WeekAlternation? = null,
         group: Group? = null,
         teacher: Teacher? = null
@@ -149,30 +135,13 @@ class ChangesViewModel(
         )
     }
 
-    private fun observePagedTeachers(
-        searchQuery: String? = null
-    ) {
-        observePagedTeachers(
-            params = ObservePagedTeachers.Params(
-                searchQuery = searchQuery,
-                pagingConfig = PAGING_CONFIG
-            )
-        )
-    }
-
     fun setFilterGroup(filterGroup: PagingDropDownMenuState<Group>) {
         _filterGroup.update {
             filterGroup
         }
     }
 
-    fun setFilterTeacher(filterTeacher: PagingDropDownMenuState<Teacher>) {
-        _filterTeacher.update {
-            filterTeacher
-        }
-    }
-
-    fun setFilterDate(filterDate: String?) {
+    fun setFilterDate(filterDate: Date) {
         _filterDate.value = filterDate
     }
 

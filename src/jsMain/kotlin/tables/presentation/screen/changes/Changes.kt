@@ -24,7 +24,6 @@ fun Changes() {
     val viewState by viewModel.state.collectAsState()
     var uiMessage by remember { mutableStateOf<UiMessage?>(null) }
     val pagedGroups = viewModel.pagedGroups.collectAsLazyPagingItems()
-    val pagedTeachers = viewModel.pagedTeachers.collectAsLazyPagingItems()
     val pagedChanges = viewModel.pagedChanges.collectAsLazyPagingItems()
     val selectedRowsNumber = viewState.rowsSelection.count { it.value }.toLong()
 
@@ -138,6 +137,14 @@ fun Changes() {
 
             Spacer(width = 10.px)
 
+            DatePicker(
+                date = viewState.filterDate
+            ) { date ->
+                viewModel.setFilterDate(filterDate = date)
+            }
+
+            Spacer(width = 10.px)
+
             PagingDropDownMenu(
                 lazyPagingItems = pagedGroups,
                 state = viewState.filterGroup,
@@ -147,19 +154,6 @@ fun Changes() {
                 }
             ) { state ->
                 viewModel.setFilterGroup(filterGroup = state)
-            }
-
-            Spacer(width = 10.px)
-
-            PagingDropDownMenu(
-                lazyPagingItems = pagedTeachers,
-                state = viewState.filterTeacher,
-                label = AppTheme.stringResources.changesFilterByTeacherLabel,
-                itemLabel = { item ->
-                    item.toTextRepresentation()
-                }
-            ) { state ->
-                viewModel.setFilterTeacher(filterTeacher = state)
             }
 
             Spacer(width = 10.px)

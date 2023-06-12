@@ -7,11 +7,13 @@ package tables.data.repository
 import androidx.paging.PagingState
 import app.cash.paging.PagingSource
 import core.domain.ApiException
+import infrastructure.extensions.toISO8601String
 import tables.data.dao.ChangesDao
 import tables.data.mapper.toDomain
 import tables.data.mapper.toRequest
 import tables.domain.model.*
 import tables.domain.repository.ChangesRepository
+import kotlin.js.Date
 
 class ChangesRepositoryImpl(
     private val changesDao: ChangesDao
@@ -35,7 +37,7 @@ class ChangesRepositoryImpl(
 
     override fun getChangesPagingSource(
         pageSize: Long,
-        date: String?,
+        date: Date?,
         weekAlternation: WeekAlternation?,
         group: Group?,
         teacher: Teacher?
@@ -59,7 +61,7 @@ class ChangesRepositoryImpl(
                 changesDao.getChanges(
                     limit = pageSize,
                     offset = offset,
-                    date = date,
+                    date = date?.toISO8601String(),
                     isNumerator = weekAlternation?.isNumerator,
                     groupId = group?.id?.value,
                     teacherId = teacher?.id?.value

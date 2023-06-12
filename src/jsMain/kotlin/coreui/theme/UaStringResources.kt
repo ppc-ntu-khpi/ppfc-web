@@ -103,7 +103,6 @@ val uaStringResources = StringResources(
     changesEventName = "Захід",
     changesSubjectOrEventName = "Предмет/захід",
     changesLessonNumber = "Заняття",
-    changesDayNumber = "День",
     changesWeekAlternation = "Чергування",
     changesFilterByGroupLabel = "Група",
     changesFilterByTeacherLabel = "Викладач",

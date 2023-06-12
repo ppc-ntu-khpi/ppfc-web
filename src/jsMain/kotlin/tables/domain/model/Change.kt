@@ -4,6 +4,8 @@
 
 package tables.domain.model
 
+import kotlin.js.Date
+
 data class Change(
     val id: Id = Id.Empty,
     val group: Group = Group.Empty,
@@ -13,7 +15,7 @@ data class Change(
     val eventName: String? = null,
     val isSubject: Boolean = false,
     val lessonNumber: LessonNumber = LessonNumber.N1,
-    val date: String? = null,
+    val date: Date = Date(),
     val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR
 ) {
     companion object {

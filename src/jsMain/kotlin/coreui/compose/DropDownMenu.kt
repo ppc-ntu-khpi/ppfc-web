@@ -58,6 +58,7 @@ fun <T : Any> DropDownMenu(
             },
             value = itemLabel(selectedItem),
             label = label,
+            editable = false,
             onValueChange = {}
         )
 

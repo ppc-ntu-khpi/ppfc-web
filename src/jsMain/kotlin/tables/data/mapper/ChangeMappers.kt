@@ -4,12 +4,14 @@
 
 package tables.data.mapper
 
+import infrastructure.extensions.toISO8601String
 import tables.data.model.ChangeRequest
 import tables.data.model.ChangeResponse
 import tables.domain.model.Change
 import tables.domain.model.Id
 import tables.domain.model.Subject
 import tables.domain.model.Teacher
+import kotlin.js.Date
 
 fun Change.toRequest() = ChangeRequest(
     groupId = group.id.value,
@@ -18,7 +20,7 @@ fun Change.toRequest() = ChangeRequest(
     subjectId = if(subject == Subject.Empty) null else subject.id.value,
     eventName = eventName,
     lessonNumber = lessonNumber.toNumber(),
-    date = date ?: "",
+    date = date.toISO8601String(),
     isNumerator = weekAlternation.isNumerator
 )
 
@@ -30,6 +32,6 @@ fun ChangeResponse.toDomain() = Change(
     subject = subject?.toDomain() ?: Subject.Empty,
     eventName = eventName,
     lessonNumber = lessonNumber.toLessonNumber(),
-    date = date,
+    date = Date(date),
     weekAlternation = isNumerator.toWeekAlternation()
 )

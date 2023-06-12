@@ -6,6 +6,7 @@ package tables.domain.repository
 
 import app.cash.paging.PagingSource
 import tables.domain.model.*
+import kotlin.js.Date
 
 interface ChangesRepository {
     suspend fun saveChange(change: Change)
@@ -14,7 +15,7 @@ interface ChangesRepository {
 
     fun getChangesPagingSource(
         pageSize: Long,
-        date: String?,
+        date: Date?,
         weekAlternation: WeekAlternation?,
         group: Group?,
         teacher: Teacher?

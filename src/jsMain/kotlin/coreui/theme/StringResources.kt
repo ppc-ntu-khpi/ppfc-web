@@ -111,7 +111,6 @@ data class StringResources(
     val changesEventName: String,
     val changesSubjectOrEventName: String,
     val changesLessonNumber: String,
-    val changesDayNumber: String,
     val changesWeekAlternation: String,
     val changesFilterByGroupLabel: String,
     val changesFilterByTeacherLabel: String,

@@ -14,6 +14,7 @@ import coreui.theme.Shape
 import coreui.theme.Typography
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.attributes.builders.InputAttrsScope
+import org.jetbrains.compose.web.attributes.readOnly
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.EmailInput
@@ -34,6 +35,7 @@ fun OutlinedTextField(
     textFieldType: TextFieldType = TextFieldType.TEXT,
     trailingIcon: AppIconClass? = null,
     onTrailingIconClick: () -> Unit = {},
+    editable: Boolean = true,
     error: String? = null,
     onValueChange: (text: String) -> Unit
 ) {
@@ -44,6 +46,9 @@ fun OutlinedTextField(
         attrs = {
             style {
                 width(outlinedTextFieldWidth)
+                maxWidth(outlinedTextFieldWidth)
+                height(outlinedTextFieldHeight)
+                maxHeight(outlinedTextFieldHeight)
                 backgroundColor(Color.transparent)
             }
 
@@ -55,7 +60,7 @@ fun OutlinedTextField(
             attrs = {
                 style {
                     width(100.percent)
-                    height(outlinedTextFieldHeight)
+                    height(100.percent)
                     backgroundColor(Color.transparent)
                 }
             },
@@ -87,7 +92,7 @@ fun OutlinedTextField(
                     }
                 },
                 contentAlignment = Alignment.Box.CenterStart
-            ) textFieldBox@ {
+            ) textFieldBox@{
                 Spacer(width = 16.px)
 
                 val inputContent: InputAttrsScope<String>.() -> Unit = {
@@ -97,7 +102,7 @@ fun OutlinedTextField(
                         backgroundColor(Color.transparent)
                         outline("0")
                         border(width = 0.px)
-                        boxSizing("border-box")
+                        boxSizing(BoxSizing.BorderBox)
                         fontSize(Typography.bodyLarge)
                         color(AppTheme.colors.onSurface)
                     }
@@ -112,6 +117,10 @@ fun OutlinedTextField(
 
                     onInput {
                         onValueChange(it.value)
+                    }
+
+                    if(!editable) {
+                        readOnly()
                     }
                 }
 

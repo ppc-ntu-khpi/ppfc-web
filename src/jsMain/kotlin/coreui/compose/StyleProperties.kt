@@ -130,6 +130,10 @@ fun StyleScope.boxSizing(value: BoxSizing) {
     property("box-sizing", value.value)
 }
 
+fun StyleScope.caretColor(color: CSSColorValue) {
+    property("caret-color", color)
+}
+
 sealed class BoxSizing(val value: String) {
     object BorderBox : BoxSizing(value = "border-box")
     object ContentBox : BoxSizing(value = "content-box")
