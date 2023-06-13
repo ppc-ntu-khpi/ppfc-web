@@ -19,7 +19,9 @@ import tables.domain.observer.ObservePagedTeachers
 import tables.extensions.onItem
 import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
-import tables.presentation.screen.schedule.model.ScheduleItemState
+import tables.presentation.screen.schedule.mapper.toDomain
+import tables.presentation.screen.schedule.model.ScheduleCommonLessonState
+import tables.presentation.screen.schedule.model.ScheduleLessonState
 
 class CreateScheduleItemsViewModel(
     private val observePagedGroups: ObservePagedGroups,
@@ -30,21 +32,24 @@ class CreateScheduleItemsViewModel(
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    private val _scheduleItemsStates = MutableStateFlow(listOf(ScheduleItemState.Empty))
-    private val isFormBlank = _scheduleItemsStates.map { scheduleItemsStates ->
-        scheduleItemsStates.any { scheduleItemState ->
-            scheduleItemState.group.selectedItem == null
-                    || scheduleItemState.classroom.selectedItem == null
-                    || scheduleItemState.teacher.selectedItem == null
-                    || (scheduleItemState.subject.selectedItem == null
-                    && scheduleItemState.eventName == TextFieldState.Empty)
+    private val _scheduleCommonLesson = MutableStateFlow(ScheduleCommonLessonState.Empty)
+    private val _scheduleLessons = MutableStateFlow(
+        mapOf(Id.random() to ScheduleLessonState.Empty)
+    )
+    private val isFormBlank = combine(
+        _scheduleCommonLesson,
+        _scheduleLessons
+    ) { scheduleCommonLesson, scheduleLessons ->
+        isScheduleCommonLessonNotValid(scheduleCommonLesson = scheduleCommonLesson)
+                || scheduleLessons.values.any { scheduleLesson ->
+            isScheduleLessonNotValid(scheduleLesson = scheduleLesson)
         }
     }
-    private val canAddItems = _scheduleItemsStates.map { scheduleItemState ->
-        scheduleItemState.size < LessonNumber.values().size * 2
+    private val canAddItems = _scheduleLessons.map { scheduleLessons ->
+        scheduleLessons.size < LessonNumber.values().size * 2
     }
-    private val canRemoveItems = _scheduleItemsStates.map { scheduleItemState ->
-        scheduleItemState.size > 1
+    private val canRemoveItems = _scheduleLessons.map { scheduleLessons ->
+        scheduleLessons.size > 1
     }
 
     val pagedGroups: Flow<PagingData<Group>> =
@@ -60,13 +65,15 @@ class CreateScheduleItemsViewModel(
         observePagedSubjects.flow.cachedIn(coroutineScope)
 
     val state: StateFlow<CreateScheduleItemsViewState> = combine(
-        _scheduleItemsStates,
+        _scheduleCommonLesson,
+        _scheduleLessons,
         isFormBlank,
         canAddItems,
         canRemoveItems
-    ) { scheduleItemsStates, isFormBlank, canAddItems, canRemoveItems ->
+    ) { scheduleCommonLesson, scheduleLessons, isFormBlank, canAddItems, canRemoveItems ->
         CreateScheduleItemsViewState(
-            scheduleItemsStates = scheduleItemsStates,
+            scheduleCommonLesson = scheduleCommonLesson,
+            scheduleLessons = scheduleLessons,
             isFormBlank = isFormBlank,
             canAddItems = canAddItems,
             canRemoveItems = canRemoveItems
@@ -83,25 +90,24 @@ class CreateScheduleItemsViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        val pagingGroups = _scheduleItemsStates.map { items -> items.map { it.group } }
+        val pagingGroups = _scheduleCommonLesson.map { it.group }
         pagingGroups.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingGroups.onItem { observePagedGroups() }.launchIn(coroutineScope)
 
-        val pagingClassrooms = _scheduleItemsStates.map { items -> items.map { it.classroom } }
+        val pagingClassrooms = _scheduleLessons.map { items -> items.values.map { it.classroom } }
         pagingClassrooms.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        val pagingTeachers = _scheduleItemsStates.map { items -> items.map { it.teacher } }
+        val pagingTeachers = _scheduleLessons.map { items -> items.values.map { it.teacher } }
         pagingTeachers.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
 
-        val pagingSubjects = _scheduleItemsStates.map { items -> items.map { it.subject } }
+        val pagingSubjects = _scheduleLessons.map { items -> items.values.map { it.subject } }
         pagingSubjects.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
@@ -152,101 +158,108 @@ class CreateScheduleItemsViewModel(
         )
     }
 
-    fun addScheduleItem() {
-        _scheduleItemsStates.update { items ->
-            if (items.size >= LessonNumber.values().size * 2) return@update items
-            val lastLessonNumberOrdinal = items.lastOrNull()?.lessonNumber?.ordinal ?: 0
-            val nextLessonNumber = LessonNumber.values().getOrElse(lastLessonNumberOrdinal + 1) {
-                LessonNumber.N5
-            }
-            items + ScheduleItemState.Empty.copy(
-                group = items.first().group,
-                dayNumber = items.first().dayNumber,
-                lessonNumber = nextLessonNumber
+    private fun isScheduleCommonLessonNotValid(scheduleCommonLesson: ScheduleCommonLessonState): Boolean {
+        return scheduleCommonLesson.group.selectedItem == null
+    }
+
+    private fun isScheduleLessonNotValid(scheduleLesson: ScheduleLessonState): Boolean {
+        return scheduleLesson.classroom.selectedItem == null
+                || scheduleLesson.teacher.selectedItem == null
+                || (scheduleLesson.subject.selectedItem == null
+                && scheduleLesson.eventName == TextFieldState.Empty)
+    }
+
+    fun getScheduleItems(): List<ScheduleItem>? {
+        val scheduleCommonLesson = _scheduleCommonLesson.value
+        val scheduleLessons = _scheduleLessons.value
+
+        if (isScheduleCommonLessonNotValid(scheduleCommonLesson = scheduleCommonLesson)) return null
+        return scheduleLessons.values.map { item ->
+            if (isScheduleLessonNotValid(scheduleLesson = item)) return null
+            item.toDomain(
+                group = scheduleCommonLesson.group.selectedItem!!,
+                dayNumber = scheduleCommonLesson.dayNumber
             )
         }
     }
 
-    fun removeScheduleItem(index: Long) {
-        _scheduleItemsStates.update { items ->
+    fun addScheduleItem() {
+        _scheduleLessons.update { items ->
+            if (items.size >= LessonNumber.values().size * 2) return@update items
+            val lastLessonNumberOrdinal = items.values.lastOrNull()?.lessonNumber?.ordinal ?: 0
+            val nextLessonNumber = LessonNumber.values().getOrElse(lastLessonNumberOrdinal + 1) {
+                LessonNumber.N5
+            }
+            items + (Id.random() to ScheduleLessonState.Empty.copy(lessonNumber = nextLessonNumber))
+        }
+    }
+
+    fun removeScheduleItem(id: Id.Value) {
+        _scheduleLessons.update { items ->
             if (items.size <= 1) return@update items
-            items.filterIndexed { itemIndex, _ -> itemIndex.toLong() != index }
+            items.filterNot { item ->
+                item.key == id
+            }
         }
     }
 
     fun setGroup(group: PagingDropDownMenuState<Group>) {
-        _scheduleItemsStates.update { items ->
-            items.map { item ->
-                item.copy(group = group)
-            }
+        _scheduleCommonLesson.update { item ->
+            item.copy(group = group)
         }
     }
 
     fun setDayNumber(dayNumber: DayNumber) {
-        _scheduleItemsStates.update { items ->
-            items.map { item ->
-                item.copy(dayNumber = dayNumber)
-            }
+        _scheduleCommonLesson.update { item ->
+            item.copy(dayNumber = dayNumber)
         }
     }
 
-    fun setClassroom(index: Long, classroom: PagingDropDownMenuState<Classroom>) {
-        _scheduleItemsStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(classroom = classroom)
-            }
+    fun setClassroom(id: Id.Value, classroom: PagingDropDownMenuState<Classroom>) {
+        _scheduleLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(classroom = classroom))
         }
     }
 
-    fun setTeacher(index: Long, teacher: PagingDropDownMenuState<Teacher>) {
-        _scheduleItemsStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(teacher = teacher)
-            }
+    fun setTeacher(id: Id.Value, teacher: PagingDropDownMenuState<Teacher>) {
+        _scheduleLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(teacher = teacher))
         }
     }
 
-    fun setEventName(index: Long, eventName: String) {
-        _scheduleItemsStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(
-                    eventName = item.eventName.copy(text = eventName),
-                    subject = PagingDropDownMenuState.Empty()
-                )
-            }
+    fun setEventName(id: Id.Value, eventName: String) {
+        _scheduleLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(
+                eventName = item.eventName.copy(text = eventName),
+                subject = PagingDropDownMenuState.Empty()
+            ))
         }
     }
 
-    fun setSubject(index: Long, subject: PagingDropDownMenuState<Subject>) {
-        _scheduleItemsStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(
-                    subject = subject,
-                    eventName = TextFieldState.Empty
-                )
-            }
+    fun setSubject(id: Id.Value, subject: PagingDropDownMenuState<Subject>) {
+        _scheduleLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(
+                subject = subject,
+                eventName = TextFieldState.Empty
+            ))
         }
     }
 
-    fun setLessonNumber(index: Long, lessonNumber: LessonNumber) {
-        _scheduleItemsStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(lessonNumber = lessonNumber)
-            }
+    fun setLessonNumber(id: Id.Value, lessonNumber: LessonNumber) {
+        _scheduleLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(lessonNumber = lessonNumber))
         }
     }
 
-    fun setWeekAlternation(index: Long, weekAlternation: WeekAlternation) {
-        _scheduleItemsStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(weekAlternation = weekAlternation)
-            }
+    fun setWeekAlternation(id: Id.Value, weekAlternation: WeekAlternation) {
+        _scheduleLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(weekAlternation = weekAlternation))
         }
     }
 

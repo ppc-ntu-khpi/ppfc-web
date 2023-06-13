@@ -12,6 +12,7 @@ import tables.domain.observer.*
 import tables.domain.repository.*
 import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.screen.changes.ChangesViewModel
+import tables.presentation.screen.changes.CreateChangesViewModel
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.courses.CoursesViewModel
@@ -298,5 +299,9 @@ val tablesModule = module {
 
     factory {
         ChangesViewModel(get(), get(), get(), get(), get(), get(), get())
+    }
+
+    factory {
+        CreateChangesViewModel(get(), get(), get(), get())
     }
 }

@@ -8,8 +8,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="WIP">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Web_js_15_0_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Web_js_16_0_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Web_js_16_15_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Web_js_16_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Web_js_18_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesDialog.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/model/ScheduleCommonLessonState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/model/ScheduleLessonState.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kotlin-js-store/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/kotlin-js-store/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DatePicker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/compose/DatePicker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/infrastructure/extensions/DateFormat.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/infrastructure/extensions/Date.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/ChangeMappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/ChangeMappers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Change.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Change.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Id.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Id.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/LessonNumber.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/LessonNumber.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsDialog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsViewState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsViewState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/mapper/ScheduleItemMappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/mapper/ScheduleItemMappers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/model/ScheduleItemState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/model/ScheduleItemState.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +77,7 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Web" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="kotlin browser" type="c8890929:TasksNode$1" />
+                <item name="other" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -64,8 +92,8 @@
         <option value="Kotlin Interface" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Enum" />
-        <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -102,22 +130,22 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/zvaeu/Desktop/Project/Web/src/jsMain/kotlin/coreui/compose",
+    "last_opened_file_path": "C:/Users/zvaeu/Desktop/Project/Server",
     "notification.kotlin.js.compiler.ignored": "true",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.37471265",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "reference.settings.project.statistic.project.settings"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\screen\changes" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\coreui\compose" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\screen\changes\mapper" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\data\mapper" />
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\extensions" />
-      <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\screen\schedule" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\zvaeu\Desktop\Project\Web\src\jsMain\kotlin\tables\presentation\compose" />
@@ -134,14 +162,14 @@
       <recent name="tables.presentation.common" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="tables.presentation.screen.schedule.model" />
       <recent name="tables.presentation.screen.changes" />
       <recent name="tables.presentation.screen.changes.model" />
       <recent name="tables.domain.observer" />
       <recent name="tables.domain.interactor" />
-      <recent name="tables.data.repository" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.Web [jsBrowserRun]">
     <configuration name="Web [jsBrowserRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -164,9 +192,55 @@
       <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
+    <configuration name="Web [kotlinStoreYarnLock]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="kotlinStoreYarnLock" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="Web [kotlinUpgradeYarnLock]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="kotlinUpgradeYarnLock" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.Web [jsBrowserRun]" />
+        <item itemvalue="Gradle.Web [kotlinUpgradeYarnLock]" />
+        <item itemvalue="Gradle.Web [kotlinStoreYarnLock]" />
       </list>
     </recent_temporary>
   </component>
@@ -343,7 +417,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686601796643</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="WIP">
+      <created>1686602370695</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1686602370695</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="UnknownFeatures">

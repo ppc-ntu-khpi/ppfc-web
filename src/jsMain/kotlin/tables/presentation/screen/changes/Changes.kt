@@ -52,18 +52,17 @@ fun Changes() {
     ) { dialog ->
         when (dialog) {
             is ChangesDialog.CreateChanges -> {
-                /*
-                CreatechangesItemsDialog(
+                CreateChangesDialog(
                     isLoading = viewState.isSaving,
-                    onSave = { change ->
-                        viewModel.saveChange(change = change)
+                    onSave = { changes ->
+                        viewModel.saveChanges(changes = changes)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
                     }
                 )
-                 */
             }
+
 
             is ChangesDialog.EditChange -> {
                 /*

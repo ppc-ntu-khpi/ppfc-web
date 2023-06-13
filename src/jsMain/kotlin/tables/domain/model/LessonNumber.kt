@@ -5,6 +5,7 @@
 package tables.domain.model
 
 enum class LessonNumber(val number: Long) {
+    N0(number = 0),
     N1(number = 1),
     N2(number = 2),
     N3(number = 3),

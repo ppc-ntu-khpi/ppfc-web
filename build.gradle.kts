@@ -21,6 +21,10 @@ repositories {
 
 kotlin {
     js(IR) {
+        nodejs {
+            version = "18.16.0"
+        }
+
         browser {
             testTask {
                 testLogging.showStandardStreams = true

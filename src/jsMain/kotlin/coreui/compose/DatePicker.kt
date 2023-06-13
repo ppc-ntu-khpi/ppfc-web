@@ -12,6 +12,7 @@ import coreui.theme.AppSvgIcon
 import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
+import infrastructure.extensions.dateFromString
 import infrastructure.extensions.toISO8601String
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
@@ -87,7 +88,7 @@ fun DatePicker(
 
                 onChange { listener ->
                     listener.target.blur()
-                    onDateChange(Date(listener.value))
+                    onDateChange(dateFromString(listener.value) ?: Date())
                 }
             },
             value = date.toISO8601String()
