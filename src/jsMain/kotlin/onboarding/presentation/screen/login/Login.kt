@@ -64,7 +64,7 @@ fun Login() {
                     fontSize = Typography.headlineSmall
                 )
 
-                Spacer(height = 10.px)
+                Spacer(height = 16.px)
 
                 OutlinedTextField(
                     attrs = {
@@ -81,7 +81,7 @@ fun Login() {
                     )
                 }
 
-                Spacer(height = 10.px)
+                Spacer(height = 16.px)
 
                 OutlinedTextField(
                     attrs = {
@@ -99,7 +99,7 @@ fun Login() {
                     )
                 }
 
-                Spacer(height = 18.px)
+                Spacer(height = 16.px)
 
                 ButtonWithLoader(
                     attrs = {

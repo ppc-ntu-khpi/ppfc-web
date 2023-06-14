@@ -66,7 +66,7 @@ fun ChangePassword() {
                         fontSize = Typography.headlineSmall
                     )
 
-                    Spacer(height = 10.px)
+                    Spacer(height = 16.px)
 
                     OutlinedTextField(
                         attrs = {
@@ -84,7 +84,7 @@ fun ChangePassword() {
                         )
                     }
 
-                    Spacer(height = 18.px)
+                    Spacer(height = 16.px)
 
                     CheckboxWithLabel(
                         checked = isPasswordVisible,
@@ -93,7 +93,7 @@ fun ChangePassword() {
                         isPasswordVisible = checked
                     }
 
-                    Spacer(height = 18.px)
+                    Spacer(height = 16.px)
 
                     ButtonWithLoader(
                         attrs = {
@@ -114,7 +114,7 @@ fun ChangePassword() {
                 }
             }
 
-            Spacer(height = 10.px)
+            Spacer(height = 16.px)
 
             Row {
                 TextLink(text = AppTheme.stringResources.changePasswordLogIn + " ") {
