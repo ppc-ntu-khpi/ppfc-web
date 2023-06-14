@@ -15,7 +15,7 @@ data class ScheduleItemState(
     val teacher: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
     val subject: PagingDropDownMenuState<Subject> = PagingDropDownMenuState.Empty(),
     val eventName: TextFieldState = TextFieldState.Empty,
-    val lessonNumber: LessonNumber = LessonNumber.N1,
+    val lessonNumber: ScheduleLessonNumberOption = ScheduleLessonNumberOption.N1,
     val dayNumber: DayNumber = DayNumber.N1,
     val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR
 ) {

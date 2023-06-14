@@ -20,6 +20,7 @@ import tables.domain.model.*
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.PagingDropDownMenu
 import tables.presentation.compose.PagingDropDownMenuState
+import tables.presentation.screen.schedule.model.ScheduleLessonNumberOption
 import tables.presentation.screen.schedule.model.ScheduleLessonState
 
 @Composable
@@ -83,7 +84,7 @@ fun CreateScheduleItemsDialog(
                     onClick = {
                         viewModel.addScheduleItem()
                     },
-                    enabled = viewState.canAddItems
+                    enabled = viewState.canAddLessons
                 ) {
                     Text(text = AppTheme.stringResources.scheduleAddSubject)
                 }
@@ -92,15 +93,15 @@ fun CreateScheduleItemsDialog(
             Spacer(height = 16.px)
 
             Text(
-                text = AppTheme.stringResources.scheduleSubjects,
+                text = AppTheme.stringResources.scheduleLessons,
                 fontSize = 20.px
             )
 
             Spacer(height = 16.px)
 
-            viewState.scheduleLessons.forEach { (id, scheduleLessonState) ->
+            viewState.scheduleLessons.forEach { (id, scheduleLesson) ->
                 ScheduleLesson(
-                    scheduleLessonState = scheduleLessonState,
+                    scheduleLesson = scheduleLesson,
                     pagedClassrooms = pagedClassrooms,
                     pagedTeachers = pagedTeachers,
                     pagedSubjects = pagedSubjects,
@@ -122,7 +123,7 @@ fun CreateScheduleItemsDialog(
                     onEventName = {
                         viewModel.setEventName(id = id, eventName = it)
                     },
-                    canRemove = viewState.canRemoveItems,
+                    canRemove = viewState.canRemoveLessons,
                     onRemove = {
                         viewModel.removeScheduleItem(id = id)
                     }
@@ -192,11 +193,11 @@ fun CreateScheduleItemsDialog(
 
 @Composable
 private fun ScheduleLesson(
-    scheduleLessonState: ScheduleLessonState,
+    scheduleLesson: ScheduleLessonState,
     pagedClassrooms: LazyPagingItems<Classroom>,
     pagedTeachers: LazyPagingItems<Teacher>,
     pagedSubjects: LazyPagingItems<Subject>,
-    onLessonNumber: (lessonNumber: LessonNumber) -> Unit,
+    onLessonNumber: (lessonNumber: ScheduleLessonNumberOption) -> Unit,
     onWeekAlternation: (weekAlternation: WeekAlternation) -> Unit,
     onClassroom: (classroom: PagingDropDownMenuState<Classroom>) -> Unit,
     onTeacher: (teacher: PagingDropDownMenuState<Teacher>) -> Unit,
@@ -210,8 +211,8 @@ private fun ScheduleLesson(
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
             DropDownMenu(
-                items = LessonNumber.values().toList().drop(1),
-                selectedItem = scheduleLessonState.lessonNumber,
+                items = ScheduleLessonNumberOption.values().toList(),
+                selectedItem = scheduleLesson.lessonNumber,
                 label = AppTheme.stringResources.scheduleLessonNumber,
                 itemLabel = { item ->
                     item.number.toString()
@@ -224,7 +225,7 @@ private fun ScheduleLesson(
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedClassrooms,
-                state = scheduleLessonState.classroom,
+                state = scheduleLesson.classroom,
                 label = AppTheme.stringResources.scheduleClassroomName,
                 itemLabel = { item ->
                     item.name
@@ -237,7 +238,7 @@ private fun ScheduleLesson(
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedSubjects,
-                state = scheduleLessonState.subject,
+                state = scheduleLesson.subject,
                 label = AppTheme.stringResources.scheduleSubject,
                 itemLabel = { item ->
                     item.name
@@ -261,7 +262,7 @@ private fun ScheduleLesson(
         Row {
             DropDownMenu(
                 items = WeekAlternation.values().toList(),
-                selectedItem = scheduleLessonState.weekAlternation,
+                selectedItem = scheduleLesson.weekAlternation,
                 label = AppTheme.stringResources.scheduleWeekAlternation,
                 itemLabel = { item ->
                     item.toTextRepresentation()
@@ -274,7 +275,7 @@ private fun ScheduleLesson(
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedTeachers,
-                state = scheduleLessonState.teacher,
+                state = scheduleLesson.teacher,
                 label = AppTheme.stringResources.scheduleTeacher,
                 itemLabel = { item ->
                     item.toTextRepresentation()
@@ -286,7 +287,7 @@ private fun ScheduleLesson(
             Spacer(width = 16.px)
 
             OutlinedTextField(
-                value = scheduleLessonState.eventName.text,
+                value = scheduleLesson.eventName.text,
                 label = AppTheme.stringResources.scheduleEventName
             ) { text ->
                 onEventName(text)

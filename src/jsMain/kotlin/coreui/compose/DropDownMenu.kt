@@ -22,6 +22,7 @@ fun <T : Any> DropDownMenu(
     selectedItem: T,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
+    enabled: Boolean = true,
     itemLabel: (item: T) -> String,
     onItemSelected: (item: T) -> Unit
 ) {
@@ -59,6 +60,7 @@ fun <T : Any> DropDownMenu(
             value = itemLabel(selectedItem),
             label = label,
             editable = false,
+            enabled = enabled,
             onValueChange = {}
         )
 

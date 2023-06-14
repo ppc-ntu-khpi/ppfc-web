@@ -24,6 +24,7 @@ fun Teacher.toState() = TeacherState(
     firstName = TextFieldState.Empty.copy(text = firstName),
     lastName = TextFieldState.Empty.copy(text = lastName),
     middleName = TextFieldState.Empty.copy(text = middleName),
-    discipline = PagingDropDownMenuState.Empty<Discipline>().copy(selectedItem = discipline),
+    discipline = PagingDropDownMenuState.Empty<Discipline>()
+        .copy(selectedItem = discipline.takeIf { it != Discipline.Empty }),
     isHeadTeacher = isHeadTeacher
 )

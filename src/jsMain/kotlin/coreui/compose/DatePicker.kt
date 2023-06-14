@@ -21,7 +21,7 @@ import org.jetbrains.compose.web.dom.DateInput
 import org.w3c.dom.HTMLDivElement
 import kotlin.js.Date
 
-private val datePickerFieldWidth = 180.px
+private val datePickerFieldWidth = 240.px
 private val datePickerFieldHeight = 45.px
 
 @OptIn(ExperimentalComposeWebApi::class)

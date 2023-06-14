@@ -19,13 +19,14 @@ import kotlinx.coroutines.flow.*
 import tables.domain.interactor.DeleteChanges
 import tables.domain.interactor.SaveChange
 import tables.domain.interactor.SaveChanges
-import tables.domain.model.*
+import tables.domain.model.Change
+import tables.domain.model.Group
+import tables.domain.model.Id
+import tables.domain.model.Teacher
 import tables.domain.observer.ObservePagedChanges
 import tables.domain.observer.ObservePagedGroups
 import tables.extensions.onSearchQuery
 import tables.presentation.common.mapper.TablesCommonErrorMapper
-import tables.presentation.common.mapper.toDomain
-import tables.presentation.common.model.WeekAlternationOption
 import tables.presentation.compose.PagingDropDownMenuState
 import kotlin.js.Date
 
@@ -49,7 +50,6 @@ class ChangesViewModel(
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
     private val _filterGroup = MutableStateFlow(PagingDropDownMenuState.Empty<Group>())
     private val _filterDate = MutableStateFlow(Date())
-    private val _filterWeekAlternation = MutableStateFlow(WeekAlternationOption.ALL)
 
     val pagedChanges: Flow<PagingData<Change>> =
         observePagedChanges.flow.onEach {
@@ -63,18 +63,16 @@ class ChangesViewModel(
         _rowsSelection,
         _filterGroup,
         _filterDate,
-        _filterWeekAlternation,
         loadingState.observable,
         savingLoadingState.observable,
         deletingLoadingState.observable,
         _dialog,
         uiEventManager.event
-    ) { rowsSelection, filterGroup, filterDate, filterWeekAlternation, isLoading, isSaving, isDeleting, dialog, event ->
+    ) { rowsSelection, filterGroup, filterDate, isLoading, isSaving, isDeleting, dialog, event ->
         ChangesViewState(
             rowsSelection = rowsSelection,
             filterGroup = filterGroup,
             filterDate = filterDate,
-            filterWeekAlternation = filterWeekAlternation,
             isLoading = isLoading,
             isSaving = isSaving,
             isDeleting = isDeleting,
@@ -91,11 +89,9 @@ class ChangesViewModel(
         combine(
             _filterGroup,
             _filterDate,
-            _filterWeekAlternation
-        ) { filterGroup, filterDate, filterWeekAlternation ->
+        ) { filterGroup, filterDate ->
             observePagedChanges(
                 date = filterDate,
-                weekAlternation = filterWeekAlternation.toDomain(),
                 group = filterGroup.selectedItem
             )
         }.launchIn(coroutineScope)
@@ -109,14 +105,12 @@ class ChangesViewModel(
 
     private fun observePagedChanges(
         date: Date? = null,
-        weekAlternation: WeekAlternation? = null,
         group: Group? = null,
         teacher: Teacher? = null
     ) {
         observePagedChanges(
             params = ObservePagedChanges.Params(
                 date = date,
-                weekAlternation = weekAlternation,
                 group = group,
                 teacher = teacher,
                 pagingConfig = PAGING_CONFIG
@@ -143,10 +137,6 @@ class ChangesViewModel(
 
     fun setFilterDate(filterDate: Date) {
         _filterDate.value = filterDate
-    }
-
-    fun setFilterWeekAlternation(filterWeekAlternation: WeekAlternationOption) {
-        _filterWeekAlternation.value = filterWeekAlternation
     }
 
     fun setRowSelection(id: Id, isSelected: Boolean) {

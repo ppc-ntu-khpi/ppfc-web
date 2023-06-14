@@ -15,6 +15,7 @@ fun getStringResources(locale: Locale): StringResources {
 data class StringResources(
     val yes: String,
     val no: String,
+    val dropDownMenuNotSelected: String,
 
     val unexpectedErrorException: String,
     val authenticationException: String,
@@ -102,7 +103,7 @@ data class StringResources(
     val scheduleFilterByDayNumber: String,
     val scheduleFilterByWeekAlternation: String,
     val scheduleAddSubject: String,
-    val scheduleSubjects: String,
+    val scheduleLessons: String,
 
     val changesGroupNumber: String,
     val changesClassroomName: String,
@@ -111,13 +112,15 @@ data class StringResources(
     val changesEventName: String,
     val changesSubjectOrEventName: String,
     val changesLessonNumber: String,
+    val changesDayNumber: String,
     val changesWeekAlternation: String,
     val changesFilterByGroupLabel: String,
     val changesFilterByTeacherLabel: String,
     val changesFilterByDate: String,
     val changesFilterByWeekAlternation: String,
     val changesAddSubject: String,
-    val changesSubjects: String,
+    val changesLessons: String,
+    val createChangesGroupIsNotSelected: String,
 
     val dayNumberAll: String,
     val monday: String,

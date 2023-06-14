@@ -7,6 +7,7 @@ package coreui.theme
 val uaStringResources = StringResources(
     yes = "Так",
     no = "Ні",
+    dropDownMenuNotSelected = "Не вибрано",
 
     unexpectedErrorException = "Сталася невідома помилка. Зверніться до адміністратора системи для її вирішення.",
     authenticationException = "Помилка автентифікації, Ви ввели невірне ім'я користувача або пароль.",
@@ -94,7 +95,7 @@ val uaStringResources = StringResources(
     scheduleFilterByDayNumber = "День",
     scheduleFilterByWeekAlternation = "Чергування",
     scheduleAddSubject = "Додати заняття",
-    scheduleSubjects = "Заняття",
+    scheduleLessons = "Заняття",
 
     changesGroupNumber = "Група",
     changesClassroomName = "Аудиторія",
@@ -103,13 +104,15 @@ val uaStringResources = StringResources(
     changesEventName = "Захід",
     changesSubjectOrEventName = "Предмет/захід",
     changesLessonNumber = "Заняття",
+    changesDayNumber = "День",
     changesWeekAlternation = "Чергування",
     changesFilterByGroupLabel = "Група",
     changesFilterByTeacherLabel = "Викладач",
     changesFilterByDate = "Дата",
     changesFilterByWeekAlternation = "Чергування",
     changesAddSubject = "Додати заняття",
-    changesSubjects = "Заняття",
+    changesLessons = "Заняття",
+    createChangesGroupIsNotSelected = "Групу не вибрано.",
 
     dayNumberAll = "Всі",
     monday = "Понеділок",

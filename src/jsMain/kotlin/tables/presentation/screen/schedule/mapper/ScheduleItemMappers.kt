@@ -19,7 +19,7 @@ fun ScheduleLessonState.toDomain(
     teacher = teacher.selectedItem ?: Teacher.Empty,
     subject = subject.selectedItem ?: Subject.Empty,
     eventName = eventName.text,
-    lessonNumber = lessonNumber,
+    lessonNumber = lessonNumber.toDomain(),
     dayNumber = dayNumber,
     weekAlternation = weekAlternation
 )
@@ -31,19 +31,23 @@ fun ScheduleItemState.toDomain() = ScheduleItem(
     teacher = teacher.selectedItem ?: Teacher.Empty,
     subject = subject.selectedItem ?: Subject.Empty,
     eventName = eventName.text,
-    lessonNumber = lessonNumber,
+    lessonNumber = lessonNumber.toDomain(),
     dayNumber = dayNumber,
     weekAlternation = weekAlternation
 )
 
 fun ScheduleItem.toState() = ScheduleItemState(
     id = id,
-    group = PagingDropDownMenuState.Empty<Group>().copy(selectedItem = group),
-    classroom = PagingDropDownMenuState.Empty<Classroom>().copy(selectedItem = classroom),
-    teacher = PagingDropDownMenuState.Empty<Teacher>().copy(selectedItem = teacher),
-    subject = PagingDropDownMenuState.Empty<Subject>().copy(selectedItem = subject),
+    group = PagingDropDownMenuState.Empty<Group>()
+        .copy(selectedItem = group.takeIf { it != Group.Empty }),
+    classroom = PagingDropDownMenuState.Empty<Classroom>()
+        .copy(selectedItem = classroom.takeIf { it != Classroom.Empty }),
+    teacher = PagingDropDownMenuState.Empty<Teacher>()
+        .copy(selectedItem = teacher.takeIf { it != Teacher.Empty }),
+    subject = PagingDropDownMenuState.Empty<Subject>()
+        .copy(selectedItem = subject.takeIf { it != Subject.Empty }),
     eventName = TextFieldState.Empty.copy(text = eventName ?: ""),
-    lessonNumber = lessonNumber,
+    lessonNumber = lessonNumber.toScheduleState(),
     dayNumber = dayNumber,
     weekAlternation = weekAlternation
 )

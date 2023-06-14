@@ -13,6 +13,7 @@ import tables.domain.repository.*
 import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.screen.changes.ChangesViewModel
 import tables.presentation.screen.changes.CreateChangesViewModel
+import tables.presentation.screen.changes.EditChangeViewModel
 import tables.presentation.screen.classrooms.ClassroomsViewModel
 import tables.presentation.screen.classrooms.ManageClassroomViewModel
 import tables.presentation.screen.courses.CoursesViewModel
@@ -303,5 +304,9 @@ val tablesModule = module {
 
     factory {
         CreateChangesViewModel(get(), get(), get(), get())
+    }
+
+    factory {
+        EditChangeViewModel(get(), get(), get(), get())
     }
 }

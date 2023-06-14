@@ -29,6 +29,11 @@ class ApiClient {
     var client = HttpClient(Js) {
         expectSuccess = true
 
+        install(HttpRequestRetry) {
+            retryOnServerErrors(maxRetries = 3)
+            exponentialDelay()
+        }
+
         HttpResponseValidator {
             handleResponseExceptionWithRequest { cause, request ->
                 val exception = when (cause) {

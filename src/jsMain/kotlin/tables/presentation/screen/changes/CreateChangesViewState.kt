@@ -4,13 +4,19 @@
 
 package tables.presentation.screen.changes
 
-import tables.presentation.screen.changes.model.ChangeState
+import tables.domain.model.Id
+import tables.presentation.screen.changes.model.ChangeLessonState
+import tables.presentation.screen.changes.model.ChangesCommonLessonState
 
 data class CreateChangesViewState(
-    val changesStates: List<ChangeState> = listOf(ChangeState.Empty),
+    val changesCommonLesson: ChangesCommonLessonState = ChangesCommonLessonState.Empty,
+    val changesLessons: Map<Id.Value, ChangeLessonState> = mapOf(
+        Id.random() to ChangeLessonState.Empty
+    ),
     val isFormBlank: Boolean = true,
-    val canAddItems: Boolean = true,
-    val canRemoveItems: Boolean = false
+    val canAddLessons: Boolean = true,
+    val canRemoveLessons: Boolean = false,
+    val canAddGroups: Map<Id.Value, Boolean> = emptyMap()
 ) {
     companion object {
         val Empty = CreateChangesViewState()

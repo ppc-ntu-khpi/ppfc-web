@@ -21,6 +21,7 @@ import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.schedule.mapper.toDomain
 import tables.presentation.screen.schedule.model.ScheduleCommonLessonState
+import tables.presentation.screen.schedule.model.ScheduleLessonNumberOption
 import tables.presentation.screen.schedule.model.ScheduleLessonState
 
 class CreateScheduleItemsViewModel(
@@ -45,10 +46,10 @@ class CreateScheduleItemsViewModel(
             isScheduleLessonNotValid(scheduleLesson = scheduleLesson)
         }
     }
-    private val canAddItems = _scheduleLessons.map { scheduleLessons ->
-        scheduleLessons.size < LessonNumber.values().size * 2
+    private val canAddLessons = _scheduleLessons.map { scheduleLessons ->
+        scheduleLessons.size < ScheduleLessonNumberOption.values().size * 2
     }
-    private val canRemoveItems = _scheduleLessons.map { scheduleLessons ->
+    private val canRemoveLessons = _scheduleLessons.map { scheduleLessons ->
         scheduleLessons.size > 1
     }
 
@@ -68,15 +69,15 @@ class CreateScheduleItemsViewModel(
         _scheduleCommonLesson,
         _scheduleLessons,
         isFormBlank,
-        canAddItems,
-        canRemoveItems
+        canAddLessons,
+        canRemoveLessons
     ) { scheduleCommonLesson, scheduleLessons, isFormBlank, canAddItems, canRemoveItems ->
         CreateScheduleItemsViewState(
             scheduleCommonLesson = scheduleCommonLesson,
             scheduleLessons = scheduleLessons,
             isFormBlank = isFormBlank,
-            canAddItems = canAddItems,
-            canRemoveItems = canRemoveItems
+            canAddLessons = canAddItems,
+            canRemoveLessons = canRemoveItems
         )
     }.stateIn(
         scope = coroutineScope,
@@ -185,10 +186,10 @@ class CreateScheduleItemsViewModel(
 
     fun addScheduleItem() {
         _scheduleLessons.update { items ->
-            if (items.size >= LessonNumber.values().size * 2) return@update items
+            if (items.size >= ScheduleLessonNumberOption.values().size * 2) return@update items
             val lastLessonNumberOrdinal = items.values.lastOrNull()?.lessonNumber?.ordinal ?: 0
-            val nextLessonNumber = LessonNumber.values().getOrElse(lastLessonNumberOrdinal + 1) {
-                LessonNumber.N5
+            val nextLessonNumber = ScheduleLessonNumberOption.values().getOrElse(lastLessonNumberOrdinal + 1) {
+                ScheduleLessonNumberOption.N5
             }
             items + (Id.random() to ScheduleLessonState.Empty.copy(lessonNumber = nextLessonNumber))
         }
@@ -249,7 +250,7 @@ class CreateScheduleItemsViewModel(
         }
     }
 
-    fun setLessonNumber(id: Id.Value, lessonNumber: LessonNumber) {
+    fun setLessonNumber(id: Id.Value, lessonNumber: ScheduleLessonNumberOption) {
         _scheduleLessons.update { items ->
             val item = items[id] ?: return@update items
             items + (id to item.copy(lessonNumber = lessonNumber))

@@ -36,6 +36,7 @@ fun OutlinedTextField(
     trailingIcon: AppIconClass? = null,
     onTrailingIconClick: () -> Unit = {},
     editable: Boolean = true,
+    enabled: Boolean = true,
     error: String? = null,
     onValueChange: (text: String) -> Unit
 ) {
@@ -89,6 +90,10 @@ fun OutlinedTextField(
                                 timingFunction = AnimationTimingFunction.EaseOut
                             }
                         }
+                        if(!enabled) {
+                            opacity(0.7)
+                            pointerEvents(PointerEvents.None)
+                        }
                     }
                 },
                 contentAlignment = Alignment.Box.CenterStart
@@ -119,7 +124,7 @@ fun OutlinedTextField(
                         onValueChange(it.value)
                     }
 
-                    if(!editable) {
+                    if(!editable || !enabled) {
                         readOnly()
                     }
                 }

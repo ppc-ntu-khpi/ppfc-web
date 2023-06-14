@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package tables.presentation.screen.schedule
+package tables.presentation.screen.changes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,31 +18,32 @@ import org.jetbrains.compose.web.css.margin
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
+import tables.domain.model.Change
 import tables.domain.model.DayNumber
-import tables.domain.model.ScheduleItem
 import tables.domain.model.WeekAlternation
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.PagingDropDownMenu
-import tables.presentation.screen.schedule.mapper.toDomain
-import tables.presentation.screen.schedule.mapper.toState
-import tables.presentation.screen.schedule.model.ScheduleLessonNumberOption
+import tables.presentation.screen.changes.mapper.toDomain
+import tables.presentation.screen.changes.mapper.toState
+import tables.presentation.screen.changes.mapper.toTextRepresentation
+import tables.presentation.screen.changes.model.ChangeLessonNumberOption
 
 @Composable
-fun EditScheduleItemDialog(
+fun EditChangeDialog(
     isLoading: Boolean,
-    scheduleItem: ScheduleItem,
-    onSave: (scheduleItem: ScheduleItem) -> Unit,
+    change: Change,
+    onSave: (change: Change) -> Unit,
     onClose: () -> Unit
 ) {
-    val viewModel: EditScheduleItemViewModel by rememberGet()
+    val viewModel: EditChangeViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
     val pagedGroups = viewModel.pagedGroups.collectAsLazyPagingItems()
     val pagedClassrooms = viewModel.pagedClassrooms.collectAsLazyPagingItems()
     val pagedTeachers = viewModel.pagedTeachers.collectAsLazyPagingItems()
     val pagedSubjects = viewModel.pagedSubjects.collectAsLazyPagingItems()
 
-    LaunchedEffect(scheduleItem) {
-        viewModel.loadScheduleItemState(scheduleItemState = scheduleItem.toState())
+    LaunchedEffect(change) {
+        viewModel.loadChangeState(changeState = change.toState())
     }
 
     Column(
@@ -65,8 +66,8 @@ fun EditScheduleItemDialog(
             Column {
                 PagingDropDownMenu(
                     lazyPagingItems = pagedGroups,
-                    state = viewState.scheduleItemState.group,
-                    label = AppTheme.stringResources.scheduleGroupNumber,
+                    state = viewState.changeState.group,
+                    label = AppTheme.stringResources.changesGroupNumber,
                     itemLabel = { item ->
                         item.number.toString()
                     }
@@ -78,8 +79,8 @@ fun EditScheduleItemDialog(
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedClassrooms,
-                    state = viewState.scheduleItemState.classroom,
-                    label = AppTheme.stringResources.scheduleClassroomName,
+                    state = viewState.changeState.classroom,
+                    label = AppTheme.stringResources.changesClassroomName,
                     itemLabel = { item ->
                         item.name
                     }
@@ -91,8 +92,8 @@ fun EditScheduleItemDialog(
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedSubjects,
-                    state = viewState.scheduleItemState.subject,
-                    label = AppTheme.stringResources.scheduleSubject,
+                    state = viewState.changeState.subject,
+                    label = AppTheme.stringResources.changesSubject,
                     itemLabel = { item ->
                         item.name
                     }
@@ -103,8 +104,8 @@ fun EditScheduleItemDialog(
                 Spacer(height = 16.px)
 
                 OutlinedTextField(
-                    value = viewState.scheduleItemState.eventName.text,
-                    label = AppTheme.stringResources.scheduleEventName
+                    value = viewState.changeState.eventName.text,
+                    label = AppTheme.stringResources.changesEventName
                 ) { text ->
                     viewModel.setEventName(eventName = text)
                 }
@@ -113,8 +114,8 @@ fun EditScheduleItemDialog(
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedTeachers,
-                    state = viewState.scheduleItemState.teacher,
-                    label = AppTheme.stringResources.scheduleTeacher,
+                    state = viewState.changeState.teacher,
+                    label = AppTheme.stringResources.changesTeacher,
                     itemLabel = { item ->
                         item.toTextRepresentation()
                     }
@@ -126,10 +127,18 @@ fun EditScheduleItemDialog(
             Spacer(width = 16.px)
 
             Column {
+                DatePicker(
+                    date = viewState.changeState.date
+                ) { date ->
+                    viewModel.setDate(date = date)
+                }
+
+                Spacer(height = 16.px)
+
                 DropDownMenu(
                     items = DayNumber.values().toList(),
-                    selectedItem = viewState.scheduleItemState.dayNumber,
-                    label = AppTheme.stringResources.scheduleDayNumber,
+                    selectedItem = viewState.changeState.dayNumber,
+                    label = AppTheme.stringResources.changesDayNumber,
                     itemLabel = { item ->
                         item.toTextRepresentation()
                     }
@@ -140,11 +149,11 @@ fun EditScheduleItemDialog(
                 Spacer(height = 16.px)
 
                 DropDownMenu(
-                    items = ScheduleLessonNumberOption.values().toList(),
-                    selectedItem = viewState.scheduleItemState.lessonNumber,
-                    label = AppTheme.stringResources.scheduleLessonNumber,
+                    items = ChangeLessonNumberOption.values().toList(),
+                    selectedItem = viewState.changeState.lessonNumber,
+                    label = AppTheme.stringResources.changesLessonNumber,
                     itemLabel = { item ->
-                        item.number.toString()
+                        item.toTextRepresentation()
                     }
                 ) { item ->
                     viewModel.setLessonNumber(lessonNumber = item)
@@ -154,8 +163,8 @@ fun EditScheduleItemDialog(
 
                 DropDownMenu(
                     items = WeekAlternation.values().toList(),
-                    selectedItem = viewState.scheduleItemState.weekAlternation,
-                    label = AppTheme.stringResources.scheduleWeekAlternation,
+                    selectedItem = viewState.changeState.weekAlternation,
+                    label = AppTheme.stringResources.changesWeekAlternation,
                     itemLabel = { item ->
                         item.toTextRepresentation()
                     }
@@ -200,7 +209,7 @@ fun EditScheduleItemDialog(
                 enabled = !(viewState.isFormBlank || isLoading),
                 loader = isLoading,
                 onClick = {
-                    onSave(viewState.scheduleItemState.toDomain())
+                    onSave(viewState.changeState.toDomain())
                 }
             ) {
                 Text(text = AppTheme.stringResources.tableManageItemDialogSave)

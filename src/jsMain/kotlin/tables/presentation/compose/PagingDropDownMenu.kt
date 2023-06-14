@@ -29,6 +29,7 @@ fun <T : Any> PagingDropDownMenu(
     lazyPagingItems: LazyPagingItems<T>,
     label: String,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
+    enabled: Boolean = true,
     itemLabel: (item: T) -> String,
     onStateChanged: (state: PagingDropDownMenuState<T>) -> Unit
 ) {
@@ -73,6 +74,7 @@ fun <T : Any> PagingDropDownMenu(
             } ?: state.searchQuery,
             label = label,
             error = state.error,
+            enabled = enabled,
             trailingIcon = if (state.selectedItem != null) {
                 AppIconClass.Cancel
             } else null,

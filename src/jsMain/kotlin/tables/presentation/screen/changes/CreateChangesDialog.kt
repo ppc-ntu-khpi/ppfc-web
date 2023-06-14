@@ -11,6 +11,7 @@ import coreui.compose.*
 import coreui.compose.base.*
 import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
+import coreui.theme.Shape
 import coreui.theme.Typography
 import coreui.util.LazyPagingItems
 import coreui.util.collectAsLazyPagingItems
@@ -20,8 +21,9 @@ import tables.domain.model.*
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.PagingDropDownMenu
 import tables.presentation.compose.PagingDropDownMenuState
-import tables.presentation.screen.changes.mapper.toDomain
-import tables.presentation.screen.changes.model.ChangeState
+import tables.presentation.screen.changes.mapper.toTextRepresentation
+import tables.presentation.screen.changes.model.ChangeLessonNumberOption
+import tables.presentation.screen.changes.model.ChangeLessonState
 
 @Composable
 fun CreateChangesDialog(
@@ -54,25 +56,36 @@ fun CreateChangesDialog(
             Row(
                 verticalAlignment = Alignment.Vertical.CenterVertically
             ) {
-                viewState.changesStates.firstOrNull()?.let { change ->
-                    DatePicker(
-                        date = change.date
-                    ) { date ->
-                        viewModel.setDate(date = date)
-                    }
+                DatePicker(
+                    date = viewState.changesCommonLesson.date
+                ) { date ->
+                    viewModel.setDate(date = date)
+                }
 
-                    Spacer(width = 16.px)
+                Spacer(width = 16.px)
 
-                    PagingDropDownMenu(
-                        lazyPagingItems = pagedGroups,
-                        state = change.group,
-                        label = AppTheme.stringResources.changesGroupNumber,
-                        itemLabel = { item ->
-                            item.number.toString()
-                        }
-                    ) { state ->
-                        viewModel.setGroup(group = state)
+                DropDownMenu(
+                    items = DayNumber.values().toList(),
+                    selectedItem = viewState.changesCommonLesson.dayNumber,
+                    label = AppTheme.stringResources.changesDayNumber,
+                    itemLabel = { item ->
+                        item.toTextRepresentation()
                     }
+                ) { item ->
+                    viewModel.setDayNumber(dayNumber = item)
+                }
+
+                Spacer(width = 16.px)
+
+                DropDownMenu(
+                    items = WeekAlternation.values().toList(),
+                    selectedItem = viewState.changesCommonLesson.weekAlternation,
+                    label = AppTheme.stringResources.changesWeekAlternation,
+                    itemLabel = { item ->
+                        item.toTextRepresentation()
+                    }
+                ) { item ->
+                    viewModel.setWeekAlternation(item)
                 }
 
                 Spacer(width = 16.px)
@@ -81,7 +94,7 @@ fun CreateChangesDialog(
                     onClick = {
                         viewModel.addChange()
                     },
-                    enabled = viewState.canAddItems
+                    enabled = viewState.canAddLessons
                 ) {
                     Text(text = AppTheme.stringResources.changesAddSubject)
                 }
@@ -90,45 +103,53 @@ fun CreateChangesDialog(
             Spacer(height = 16.px)
 
             Text(
-                text = AppTheme.stringResources.changesSubject,
+                text = AppTheme.stringResources.changesLessons,
                 fontSize = 20.px
             )
 
             Spacer(height = 16.px)
 
-            viewState.changesStates.forEachIndexed { index, change ->
-                Change(
-                    changeState = change,
+            viewState.changesLessons.forEach { (id, changeLesson) ->
+                ChangeLesson(
+                    changeLesson = changeLesson,
+                    pagedGroups = pagedGroups,
                     pagedClassrooms = pagedClassrooms,
                     pagedTeachers = pagedTeachers,
                     pagedSubjects = pagedSubjects,
                     onLessonNumber = {
-                        viewModel.setLessonNumber(index = index.toLong(), it)
+                        viewModel.setLessonNumber(id = id, lessonNumber = it)
                     },
-                    onWeekAlternation = {
-                        viewModel.setWeekAlternation(index = index.toLong(), it)
+                    onGroup = {
+                        viewModel.setGroup(id = id, group = it)
                     },
                     onClassroom = {
-                        viewModel.setClassroom(index = index.toLong(), it)
+                        viewModel.setClassroom(id = id, classroom = it)
                     },
                     onTeacher = {
-                        viewModel.setTeacher(index = index.toLong(), it)
+                        viewModel.setTeacher(id = id, teacher = it)
                     },
                     onSubject = {
-                        viewModel.setSubject(index = index.toLong(), it)
+                        viewModel.setSubject(id = id, subject = it)
                     },
                     onEventName = {
-                        viewModel.setEventName(index = index.toLong(), it)
+                        viewModel.setEventName(id = id, eventName = it)
                     },
-                    canRemove = viewState.canRemoveItems,
+                    onAddGroup = {
+                        viewModel.addGroup(id = id, group = it)
+                    },
+                    onRemoveGroup = {
+                        viewModel.removeGroup(id = id, group = it)
+                    },
+                    canRemove = viewState.canRemoveLessons,
+                    canAddGroups = viewState.canAddGroups[id] ?: false,
                     onRemove = {
-                        viewModel.removeChange(index = index.toLong())
+                        viewModel.removeChange(id = id)
                     }
                 )
 
                 Spacer(height = 16.px)
 
-                if (index != viewState.changesStates.lastIndex) {
+                if (id != viewState.changesLessons.keys.lastOrNull()) {
                     Box(
                         attrs = {
                             style {
@@ -176,7 +197,9 @@ fun CreateChangesDialog(
                     enabled = !(viewState.isFormBlank || isLoading),
                     loader = isLoading,
                     onClick = {
-                        onSave(viewState.changesStates.map { it.toDomain() })
+                        viewModel.getChanges()?.let { changes ->
+                            onSave(changes)
+                        }
                     }
                 ) {
                     Text(text = AppTheme.stringResources.tableManageItemDialogSave)
@@ -187,30 +210,92 @@ fun CreateChangesDialog(
 }
 
 @Composable
-private fun Change(
-    changeState: ChangeState,
+private fun ChangeLesson(
+    changeLesson: ChangeLessonState,
+    pagedGroups: LazyPagingItems<Group>,
     pagedClassrooms: LazyPagingItems<Classroom>,
     pagedTeachers: LazyPagingItems<Teacher>,
     pagedSubjects: LazyPagingItems<Subject>,
-    onLessonNumber: (lessonNumber: LessonNumber) -> Unit,
-    onWeekAlternation: (weekAlternation: WeekAlternation) -> Unit,
+    onLessonNumber: (lessonNumber: ChangeLessonNumberOption) -> Unit,
+    onGroup: (group: PagingDropDownMenuState<Group>) -> Unit,
     onClassroom: (classroom: PagingDropDownMenuState<Classroom>) -> Unit,
     onTeacher: (teacher: PagingDropDownMenuState<Teacher>) -> Unit,
     onSubject: (subject: PagingDropDownMenuState<Subject>) -> Unit,
     onEventName: (eventName: String) -> Unit,
+    onAddGroup: (group: Group) -> Unit,
+    onRemoveGroup: (group: Group) -> Unit,
     canRemove: Boolean,
+    canAddGroups: Boolean,
     onRemove: () -> Unit
 ) {
     Column {
         Row(
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
-            DropDownMenu(
-                items = LessonNumber.values().toList(),
-                selectedItem = changeState.lessonNumber,
-                label = AppTheme.stringResources.changesLessonNumber,
+            PagingDropDownMenu(
+                lazyPagingItems = pagedGroups,
+                state = changeLesson.group,
+                enabled = canAddGroups,
+                label = AppTheme.stringResources.changesGroupNumber,
                 itemLabel = { item ->
                     item.number.toString()
+                }
+            ) { state ->
+                onGroup(state)
+                if (state.selectedItem == null || state.selectedItem == changeLesson.group.selectedItem)
+                    return@PagingDropDownMenu
+                onAddGroup(state.selectedItem)
+            }
+
+            Spacer(width = 16.px)
+
+            Row(
+                attrs = {
+                    style {
+                        display(DisplayStyle.Flex)
+                        flexWrap(FlexWrap.Wrap)
+                        maxWidth(400.px)
+                    }
+                }
+            ) groupsRow@{
+                changeLesson.selectedGroups.forEach { selectedGroup ->
+                    Text(
+                        attrs = {
+                            style {
+                                backgroundColor(AppTheme.colors.primary)
+                                color(AppTheme.colors.onPrimary)
+                                padding(5.px)
+                                margin(4.px)
+                                borderRadius(Shape.large)
+                            }
+
+                            onClick {
+                                onRemoveGroup(selectedGroup)
+                            }
+                        },
+                        text = selectedGroup.number.toString(),
+                        fontSize = Typography.bodyLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                if (changeLesson.selectedGroups.isNotEmpty()) return@groupsRow
+
+                Text(text = AppTheme.stringResources.createChangesGroupIsNotSelected)
+            }
+        }
+
+        Spacer(height = 16.px)
+
+        Row(
+            verticalAlignment = Alignment.Vertical.CenterVertically
+        ) {
+            DropDownMenu(
+                items = ChangeLessonNumberOption.values().toList(),
+                selectedItem = changeLesson.lessonNumber,
+                label = AppTheme.stringResources.changesLessonNumber,
+                itemLabel = { item ->
+                    item.toTextRepresentation()
                 }
             ) { item ->
                 onLessonNumber(item)
@@ -219,27 +304,27 @@ private fun Change(
             Spacer(width = 16.px)
 
             PagingDropDownMenu(
-                lazyPagingItems = pagedClassrooms,
-                state = changeState.classroom,
-                label = AppTheme.stringResources.changesClassroomName,
-                itemLabel = { item ->
-                    item.name
-                }
-            ) { state ->
-                onClassroom(state)
-            }
-
-            Spacer(width = 16.px)
-
-            PagingDropDownMenu(
                 lazyPagingItems = pagedSubjects,
-                state = changeState.subject,
+                state = changeLesson.subject,
                 label = AppTheme.stringResources.changesSubject,
                 itemLabel = { item ->
                     item.name
                 }
             ) { state ->
                 onSubject(state)
+            }
+
+            Spacer(width = 16.px)
+
+            PagingDropDownMenu(
+                lazyPagingItems = pagedClassrooms,
+                state = changeLesson.classroom,
+                label = AppTheme.stringResources.changesClassroomName,
+                itemLabel = { item ->
+                    item.name
+                }
+            ) { state ->
+                onClassroom(state)
             }
 
             Spacer(width = 16.px)
@@ -255,22 +340,9 @@ private fun Change(
         Spacer(height = 16.px)
 
         Row {
-            DropDownMenu(
-                items = WeekAlternation.values().toList(),
-                selectedItem = changeState.weekAlternation,
-                label = AppTheme.stringResources.changesWeekAlternation,
-                itemLabel = { item ->
-                    item.toTextRepresentation()
-                }
-            ) { item ->
-                onWeekAlternation(item)
-            }
-
-            Spacer(width = 16.px)
-
             PagingDropDownMenu(
                 lazyPagingItems = pagedTeachers,
-                state = changeState.teacher,
+                state = changeLesson.teacher,
                 label = AppTheme.stringResources.changesTeacher,
                 itemLabel = { item ->
                     item.toTextRepresentation()
@@ -282,7 +354,7 @@ private fun Change(
             Spacer(width = 16.px)
 
             OutlinedTextField(
-                value = changeState.eventName.text,
+                value = changeLesson.eventName.text,
                 label = AppTheme.stringResources.changesEventName
             ) { text ->
                 onEventName(text)

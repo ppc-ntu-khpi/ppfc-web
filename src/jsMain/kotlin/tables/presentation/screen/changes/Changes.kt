@@ -14,7 +14,6 @@ import coreui.theme.AppTheme
 import coreui.util.*
 import org.jetbrains.compose.web.css.*
 import tables.presentation.common.mapper.toTextRepresentation
-import tables.presentation.common.model.WeekAlternationOption
 import tables.presentation.compose.*
 import kotlin.js.Date
 
@@ -63,20 +62,17 @@ fun Changes() {
                 )
             }
 
-
             is ChangesDialog.EditChange -> {
-                /*
-                EditchangesItemDialog(
+                EditChangeDialog(
                     isLoading = viewState.isSaving,
-                    changes = dialog.change,
-                    onSave = { changes ->
-                        viewModel.saveChanges(changes = changes)
+                    change = dialog.change,
+                    onSave = { change ->
+                        viewModel.saveChange(change = change)
                     },
                     onClose = {
                         viewModel.dialog(dialog = null)
                     }
                 )
-                 */
             }
 
             is ChangesDialog.ConfirmDeletion -> {
@@ -154,19 +150,6 @@ fun Changes() {
             ) { state ->
                 viewModel.setFilterGroup(filterGroup = state)
             }
-
-            Spacer(width = 10.px)
-
-            DropDownMenu(
-                items = WeekAlternationOption.values().toList(),
-                selectedItem = viewState.filterWeekAlternation,
-                label = AppTheme.stringResources.changesFilterByWeekAlternation,
-                itemLabel = { item ->
-                    item.toTextRepresentation()
-                }
-            ) { item ->
-                viewModel.setFilterWeekAlternation(filterWeekAlternation = item)
-            }
         }
 
         Spacer(height = 16.px)
@@ -201,6 +184,10 @@ fun Changes() {
                     }
 
                     item {
+                        Text(text = AppTheme.stringResources.changesDayNumber)
+                    }
+
+                    item {
                         Text(text = AppTheme.stringResources.changesWeekAlternation)
                     }
                 }
@@ -232,7 +219,11 @@ fun Changes() {
                     }
 
                     item {
-                        Text(text = item.lessonNumber.number.toString())
+                        Text(text = item.lessonNumber?.number?.toString() ?: "")
+                    }
+
+                    item {
+                        Text(text = item.dayNumber.toTextRepresentation())
                     }
 
                     item {

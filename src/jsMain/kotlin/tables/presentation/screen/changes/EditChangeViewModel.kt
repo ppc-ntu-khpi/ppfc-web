@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Vitalii Kozyr
  */
 
-package tables.presentation.screen.schedule
+package tables.presentation.screen.changes
 
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
@@ -18,10 +18,11 @@ import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
 import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
-import tables.presentation.screen.schedule.model.ScheduleItemState
-import tables.presentation.screen.schedule.model.ScheduleLessonNumberOption
+import tables.presentation.screen.changes.model.ChangeLessonNumberOption
+import tables.presentation.screen.changes.model.ChangeState
+import kotlin.js.Date
 
-class EditScheduleItemViewModel(
+class EditChangeViewModel(
     private val observePagedGroups: ObservePagedGroups,
     private val observePagedClassrooms: ObservePagedClassrooms,
     private val observePagedTeachers: ObservePagedTeachers,
@@ -30,13 +31,11 @@ class EditScheduleItemViewModel(
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    private val _scheduleItemState = MutableStateFlow(ScheduleItemState.Empty)
-    private val isFormBlank = _scheduleItemState.map { scheduleItemState ->
-        scheduleItemState.group.selectedItem == null
-                || scheduleItemState.classroom.selectedItem == null
-                || scheduleItemState.teacher.selectedItem == null
-                || (scheduleItemState.subject.selectedItem == null
-                && scheduleItemState.eventName == TextFieldState.Empty)
+    private val _changeState = MutableStateFlow(ChangeState.Empty)
+    private val isFormBlank = _changeState.map { changeState ->
+        changeState.group.selectedItem == null
+                || (changeState.subject.selectedItem == null
+                && changeState.eventName == TextFieldState.Empty)
     }
 
     val pagedGroups: Flow<PagingData<Group>> =
@@ -51,18 +50,18 @@ class EditScheduleItemViewModel(
     val pagedSubjects: Flow<PagingData<Subject>> =
         observePagedSubjects.flow.cachedIn(coroutineScope)
 
-    val state: StateFlow<EditScheduleItemViewState> = combine(
-        _scheduleItemState,
+    val state: StateFlow<EditChangeViewState> = combine(
+        _changeState,
         isFormBlank
-    ) { scheduleItemState, isFormBlank ->
-        EditScheduleItemViewState(
-            scheduleItemState = scheduleItemState,
+    ) { changeState, isFormBlank ->
+        EditChangeViewState(
+            changeState = changeState,
             isFormBlank = isFormBlank
         )
     }.stateIn(
         scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-        initialValue = EditScheduleItemViewState.Empty,
+        initialValue = EditChangeViewState.Empty,
     )
 
     init {
@@ -71,19 +70,19 @@ class EditScheduleItemViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        _scheduleItemState.map { it.group }.onSearchQuery { searchQuery ->
+        _changeState.map { it.group }.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.classroom }.onSearchQuery { searchQuery ->
+        _changeState.map { it.classroom }.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.teacher }.onSearchQuery { searchQuery ->
+        _changeState.map { it.teacher }.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.subject }.onSearchQuery { searchQuery ->
+        _changeState.map { it.subject }.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }
@@ -132,30 +131,32 @@ class EditScheduleItemViewModel(
         )
     }
 
-    fun loadScheduleItemState(scheduleItemState: ScheduleItemState) {
-        _scheduleItemState.value = scheduleItemState
+    fun loadChangeState(changeState: ChangeState) {
+        _changeState.value = changeState
+        println(changeState.teacher.selectedItem == Teacher.Empty)
+        println(changeState.classroom.selectedItem == Classroom.Empty)
     }
 
     fun setGroup(group: PagingDropDownMenuState<Group>) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(group = group)
         }
     }
 
     fun setClassroom(classroom: PagingDropDownMenuState<Classroom>) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(classroom = classroom)
         }
     }
 
     fun setTeacher(teacher: PagingDropDownMenuState<Teacher>) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(teacher = teacher)
         }
     }
 
     fun setEventName(eventName: String) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(
                 eventName = it.eventName.copy(text = eventName),
                 subject = PagingDropDownMenuState.Empty()
@@ -164,7 +165,7 @@ class EditScheduleItemViewModel(
     }
 
     fun setSubject(subject: PagingDropDownMenuState<Subject>) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(
                 subject = subject,
                 eventName = TextFieldState.Empty
@@ -172,20 +173,26 @@ class EditScheduleItemViewModel(
         }
     }
 
+    fun setDate(date: Date) {
+        _changeState.update {
+            it.copy(date = date)
+        }
+    }
+
     fun setDayNumber(dayNumber: DayNumber) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(dayNumber = dayNumber)
         }
     }
 
-    fun setLessonNumber(lessonNumber: ScheduleLessonNumberOption) {
-        _scheduleItemState.update {
+    fun setLessonNumber(lessonNumber: ChangeLessonNumberOption) {
+        _changeState.update {
             it.copy(lessonNumber = lessonNumber)
         }
     }
 
     fun setWeekAlternation(weekAlternation: WeekAlternation) {
-        _scheduleItemState.update {
+        _changeState.update {
             it.copy(weekAlternation = weekAlternation)
         }
     }

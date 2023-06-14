@@ -14,8 +14,8 @@ data class CreateScheduleItemsViewState(
         Id.random() to ScheduleLessonState.Empty
     ),
     val isFormBlank: Boolean = true,
-    val canAddItems: Boolean = true,
-    val canRemoveItems: Boolean = false
+    val canAddLessons: Boolean = true,
+    val canRemoveLessons: Boolean = false
 ) {
     companion object {
         val Empty = CreateScheduleItemsViewState()

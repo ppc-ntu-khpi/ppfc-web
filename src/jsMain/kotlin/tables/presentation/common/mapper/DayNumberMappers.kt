@@ -7,6 +7,7 @@ package tables.presentation.common.mapper
 import coreui.theme.AppTheme
 import tables.domain.model.DayNumber
 import tables.presentation.common.model.DayNumberOption
+import kotlin.js.Date
 
 fun DayNumberOption.toTextRepresentation() = when(this) {
     DayNumberOption.ALL -> AppTheme.stringResources.dayNumberAll
@@ -38,4 +39,15 @@ fun DayNumberOption.toDomain(): DayNumber? = when(this) {
     DayNumberOption.N5 -> DayNumber.N5
     DayNumberOption.N6 -> DayNumber.N6
     DayNumberOption.N7 -> DayNumber.N7
+}
+
+fun Date.toDayNumber(): DayNumber = when(this.getDay()) {
+    0 -> DayNumber.N7
+    1 -> DayNumber.N1
+    2 -> DayNumber.N2
+    3 -> DayNumber.N3
+    4 -> DayNumber.N4
+    5 -> DayNumber.N5
+    6 -> DayNumber.N6
+    else -> DayNumber.N1
 }

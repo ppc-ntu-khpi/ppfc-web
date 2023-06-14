@@ -14,7 +14,7 @@ data class Change(
     val subject: Subject = Subject.Empty,
     val eventName: String? = null,
     val isSubject: Boolean = false,
-    val lessonNumber: LessonNumber = LessonNumber.N0,
+    val lessonNumber: LessonNumber? = LessonNumber.N0,
     val dayNumber: DayNumber = DayNumber.N1,
     val date: Date = Date(),
     val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR

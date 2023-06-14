@@ -23,6 +23,7 @@ fun <T> DialogHost(
                 maxWidth(100.vw - (20.px * 2))
                 maxHeight(100.vh - (20.px * 2))
                 overflowY(Overflow.Auto)
+                overflowX(Overflow.Hidden)
             }
 
             applyAttrs(attrs)

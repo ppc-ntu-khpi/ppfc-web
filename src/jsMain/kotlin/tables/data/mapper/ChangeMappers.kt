@@ -8,19 +8,16 @@ import infrastructure.extensions.dateFromString
 import infrastructure.extensions.toISO8601String
 import tables.data.model.ChangeRequest
 import tables.data.model.ChangeResponse
-import tables.domain.model.Change
-import tables.domain.model.Id
-import tables.domain.model.Subject
-import tables.domain.model.Teacher
+import tables.domain.model.*
 import kotlin.js.Date
 
 fun Change.toRequest() = ChangeRequest(
     groupId = group.id.value,
-    classroomId = classroom.id.value,
+    classroomId = if(classroom == Classroom.Empty) null else classroom.id.value,
     teacherId = if(teacher == Teacher.Empty) null else teacher.id.value,
     subjectId = if(subject == Subject.Empty) null else subject.id.value,
     eventName = eventName,
-    lessonNumber = lessonNumber.toNumber(),
+    lessonNumber = lessonNumber?.toNumber(),
     dayNumber = dayNumber.toNumber() ,
     date = date.toISO8601String(),
     isNumerator = weekAlternation.isNumerator
@@ -29,11 +26,11 @@ fun Change.toRequest() = ChangeRequest(
 fun ChangeResponse.toDomain() = Change(
     id = Id.Value(value = id),
     group = group.toDomain(),
-    classroom = classroom.toDomain(),
+    classroom = classroom?.toDomain() ?: Classroom.Empty,
     teacher = teacher?.toDomain() ?: Teacher.Empty,
     subject = subject?.toDomain() ?: Subject.Empty,
     eventName = eventName,
-    lessonNumber = lessonNumber.toLessonNumber(),
+    lessonNumber = lessonNumber?.toLessonNumber(),
     dayNumber = dayNumber.toDayNumber(),
     date = dateFromString(date) ?: Date(),
     weekAlternation = isNumerator.toWeekAlternation()

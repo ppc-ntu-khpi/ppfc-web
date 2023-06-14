@@ -18,8 +18,12 @@ import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
 import tables.extensions.onItem
 import tables.extensions.onSearchQuery
+import tables.presentation.common.mapper.toDayNumber
 import tables.presentation.compose.PagingDropDownMenuState
-import tables.presentation.screen.changes.model.ChangeState
+import tables.presentation.screen.changes.mapper.toDomain
+import tables.presentation.screen.changes.model.ChangeLessonNumberOption
+import tables.presentation.screen.changes.model.ChangeLessonState
+import tables.presentation.screen.changes.model.ChangesCommonLessonState
 import kotlin.js.Date
 
 class CreateChangesViewModel(
@@ -31,20 +35,23 @@ class CreateChangesViewModel(
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    private val _changesStates = MutableStateFlow(listOf(ChangeState.Empty))
-    private val isFormBlank = _changesStates.map { changesStates ->
-        changesStates.any { changeState ->
-            changeState.group.selectedItem == null
-                    || changeState.classroom.selectedItem == null
-                    || (changeState.subject.selectedItem == null
-                    && changeState.eventName == TextFieldState.Empty)
+    private val _changesCommonLesson = MutableStateFlow(ChangesCommonLessonState.Empty)
+    private val _changesLessons = MutableStateFlow(
+        mapOf(Id.random() to ChangeLessonState.Empty)
+    )
+    private val isFormBlank = _changesLessons.map { changesLessons ->
+        changesLessons.values.any { changeLesson ->
+            isChangeLessonNotValid(changeLesson = changeLesson)
         }
     }
-    private val canAddItems = _changesStates.map { changesStates ->
-        changesStates.size < LessonNumber.values().size * 2
+    private val canAddLessons = _changesLessons.map { changesLessons ->
+        changesLessons.size < 100
     }
-    private val canRemoveItems = _changesStates.map { changesStates ->
-        changesStates.size > 1
+    private val canRemoveLessons = _changesLessons.map { changesLessons ->
+        changesLessons.size > 1
+    }
+    private val canAddGroups = _changesLessons.map { changesLessons ->
+        changesLessons.map { it.key to (it.value.selectedGroups.size < 20) }.toMap()
     }
 
     val pagedGroups: Flow<PagingData<Group>> =
@@ -59,17 +66,21 @@ class CreateChangesViewModel(
     val pagedSubjects: Flow<PagingData<Subject>> =
         observePagedSubjects.flow.cachedIn(coroutineScope)
 
-    val state: StateFlow<CreateChangesViewState> = combine(
-        _changesStates,
+    val state: StateFlow<CreateChangesViewState> = core.extensions.combine(
+        _changesCommonLesson,
+        _changesLessons,
         isFormBlank,
-        canAddItems,
-        canRemoveItems
-    ) { changesStates, isFormBlank, canAddItems, canRemoveItems ->
+        canAddLessons,
+        canRemoveLessons,
+        canAddGroups
+    ) { changesCommonLesson, changesLessons, isFormBlank, canAddItems, canRemoveItems, canAddGroups ->
         CreateChangesViewState(
-            changesStates = changesStates,
+            changesCommonLesson = changesCommonLesson,
+            changesLessons = changesLessons,
             isFormBlank = isFormBlank,
-            canAddItems = canAddItems,
-            canRemoveItems = canRemoveItems
+            canAddLessons = canAddItems,
+            canRemoveLessons = canRemoveItems,
+            canAddGroups = canAddGroups
         )
     }.stateIn(
         scope = coroutineScope,
@@ -83,25 +94,24 @@ class CreateChangesViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        val pagingGroups = _changesStates.map { items -> items.map { it.group } }
+        val pagingGroups = _changesLessons.map { items -> items.values.map { it.group } }
         pagingGroups.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingGroups.onItem { observePagedGroups() }.launchIn(coroutineScope)
 
-        val pagingClassrooms = _changesStates.map { items -> items.map { it.classroom } }
+        val pagingClassrooms = _changesLessons.map { items -> items.values.map { it.classroom } }
         pagingClassrooms.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        val pagingTeachers = _changesStates.map { items -> items.map { it.teacher } }
+        val pagingTeachers = _changesLessons.map { items -> items.values.map { it.teacher } }
         pagingTeachers.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
 
-        val pagingSubjects = _changesStates.map { items -> items.map { it.subject } }
+        val pagingSubjects = _changesLessons.map { items -> items.values.map { it.subject } }
         pagingSubjects.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
@@ -152,101 +162,130 @@ class CreateChangesViewModel(
         )
     }
 
-    fun addChange() {
-        _changesStates.update { items ->
-            if (items.size >= LessonNumber.values().size * 2) return@update items
-            val lastLessonNumberOrdinal = items.lastOrNull()?.lessonNumber?.ordinal ?: 0
-            val nextLessonNumber = LessonNumber.values().getOrElse(lastLessonNumberOrdinal + 1) {
-                LessonNumber.N5
+    private fun isChangeLessonNotValid(changeLesson: ChangeLessonState): Boolean {
+        return changeLesson.selectedGroups.isEmpty()
+                || (changeLesson.subject.selectedItem == null
+                && changeLesson.eventName == TextFieldState.Empty)
+    }
+
+    fun getChanges(): List<Change>? {
+        val changesCommonLesson = _changesCommonLesson.value
+        val changesLessons = _changesLessons.value
+
+        val changes = mutableListOf<Change>()
+
+        changesLessons.forEach { (_, changeLesson) ->
+            if (isChangeLessonNotValid(changeLesson = changeLesson)) return null
+            changeLesson.selectedGroups.forEach { group ->
+                changes += changeLesson.toDomain(
+                    date = changesCommonLesson.date,
+                    dayNumber = changesCommonLesson.dayNumber,
+                    weekAlternation = changesCommonLesson.weekAlternation,
+                    group = group
+                )
             }
-            items + ChangeState.Empty.copy(
-                group = items.first().group,
-                date = items.first().date,
-                lessonNumber = nextLessonNumber
-            )
+        }
+
+        return changes
+    }
+
+    fun addChange() {
+        _changesLessons.update { items ->
+            if (items.size >= 100) return@update items
+            items + (Id.random() to ChangeLessonState.Empty)
         }
     }
 
-    fun removeChange(index: Long) {
-        _changesStates.update { items ->
+    fun removeChange(id: Id.Value) {
+        _changesLessons.update { items ->
             if (items.size <= 1) return@update items
-            items.filterIndexed { itemIndex, _ -> itemIndex.toLong() != index }
-        }
-    }
-
-    fun setGroup(group: PagingDropDownMenuState<Group>) {
-        _changesStates.update { items ->
-            items.map { item ->
-                item.copy(group = group)
+            items.filterNot { item ->
+                item.key == id
             }
         }
     }
 
     fun setDate(date: Date) {
-        _changesStates.update { items ->
-            items.map { item ->
-                item.copy(date = date)
-            }
+        _changesCommonLesson.update { item ->
+            item.copy(
+                date = date,
+                dayNumber = date.toDayNumber()
+            )
         }
     }
 
-    fun setClassroom(index: Long, classroom: PagingDropDownMenuState<Classroom>) {
-        _changesStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(classroom = classroom)
-            }
+    fun setDayNumber(dayNumber: DayNumber) {
+        _changesCommonLesson.update { item ->
+            item.copy(dayNumber = dayNumber)
         }
     }
 
-    fun setTeacher(index: Long, teacher: PagingDropDownMenuState<Teacher>) {
-        _changesStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(teacher = teacher)
-            }
+    fun setWeekAlternation(weekAlternation: WeekAlternation) {
+        _changesCommonLesson.update { item ->
+            item.copy(weekAlternation = weekAlternation)
         }
     }
 
-    fun setEventName(index: Long, eventName: String) {
-        _changesStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(
-                    eventName = item.eventName.copy(text = eventName),
-                    subject = PagingDropDownMenuState.Empty()
-                )
-            }
+    fun addGroup(id: Id.Value, group: Group) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            if (item.selectedGroups.size >= 20) return@update items
+            items + (id to item.copy(selectedGroups = item.selectedGroups + group))
         }
     }
 
-    fun setSubject(index: Long, subject: PagingDropDownMenuState<Subject>) {
-        _changesStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(
-                    subject = subject,
-                    eventName = TextFieldState.Empty
-                )
-            }
+    fun removeGroup(id: Id.Value, group: Group) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(selectedGroups = item.selectedGroups - group))
         }
     }
 
-    fun setLessonNumber(index: Long, lessonNumber: LessonNumber) {
-        _changesStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(lessonNumber = lessonNumber)
-            }
+    fun setGroup(id: Id.Value, group: PagingDropDownMenuState<Group>) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(group = group.copy(selectedItem = null)))
         }
     }
 
-    fun setWeekAlternation(index: Long, weekAlternation: WeekAlternation) {
-        _changesStates.update { items ->
-            items.mapIndexed { itemIndex, item ->
-                if (itemIndex.toLong() != index) return@mapIndexed item
-                item.copy(weekAlternation = weekAlternation)
-            }
+    fun setClassroom(id: Id.Value, classroom: PagingDropDownMenuState<Classroom>) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(classroom = classroom))
+        }
+    }
+
+    fun setTeacher(id: Id.Value, teacher: PagingDropDownMenuState<Teacher>) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(teacher = teacher))
+        }
+    }
+
+    fun setEventName(id: Id.Value, eventName: String) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(
+                eventName = item.eventName.copy(text = eventName),
+                subject = PagingDropDownMenuState.Empty()
+            ))
+        }
+    }
+
+    fun setSubject(id: Id.Value, subject: PagingDropDownMenuState<Subject>) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(
+                subject = subject,
+                eventName = TextFieldState.Empty
+            ))
+        }
+    }
+
+    fun setLessonNumber(id: Id.Value, lessonNumber: ChangeLessonNumberOption) {
+        _changesLessons.update { items ->
+            val item = items[id] ?: return@update items
+            items + (id to item.copy(lessonNumber = lessonNumber))
         }
     }
 
