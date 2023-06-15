@@ -295,11 +295,15 @@ val tablesModule = module {
     }
 
     single {
+        ExportChangesToDocument(get())
+    }
+
+    single {
         ObservePagedChanges(get())
     }
 
     factory {
-        ChangesViewModel(get(), get(), get(), get(), get(), get(), get())
+        ChangesViewModel(get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory {

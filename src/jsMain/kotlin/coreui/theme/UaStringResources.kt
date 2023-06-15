@@ -15,6 +15,7 @@ val uaStringResources = StringResources(
     timeoutException = "Ваш запит перевищив час очікування. Будь ласка, перевірте Інтернет-з'єднання та спробуйте ще раз.",
     newPasswordRequiredChallengeFailed = "Час зміни пароля вичерпано. Вам необхідно увійти в обліковий запис ще раз.",
     formIsNotValidException = "Форма не дійсна.",
+    noChangesException = "Зміни на цю дату відсутні.",
 
     passwordIsNotInvalid = "Пароль повинен мати довжину не менше 8 символів і містити принаймні одну велику літеру та одну цифру.",
 

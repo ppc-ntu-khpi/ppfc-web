@@ -23,6 +23,7 @@ data class StringResources(
     val timeoutException: String,
     val newPasswordRequiredChallengeFailed: String,
     val formIsNotValidException: String,
+    val noChangesException: String,
 
     val passwordIsNotInvalid: String,
 

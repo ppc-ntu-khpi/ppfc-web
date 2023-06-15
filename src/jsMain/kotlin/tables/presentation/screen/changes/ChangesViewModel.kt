@@ -16,9 +16,7 @@ import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import tables.domain.interactor.DeleteChanges
-import tables.domain.interactor.SaveChange
-import tables.domain.interactor.SaveChanges
+import tables.domain.interactor.*
 import tables.domain.model.Change
 import tables.domain.model.Group
 import tables.domain.model.Id
@@ -36,6 +34,7 @@ class ChangesViewModel(
     private val saveChange: SaveChange,
     private val saveChanges: SaveChanges,
     private val deleteChanges: DeleteChanges,
+    private val exportChangesToDocument: ExportChangesToDocument,
     private val apiCommonErrorMapper: ApiCommonErrorMapper,
     private val tablesCommonErrorMapper: TablesCommonErrorMapper
 ) {
@@ -212,6 +211,28 @@ class ChangesViewModel(
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
             errorMapper = apiCommonErrorMapper
+        ) { message ->
+            sendEvent(
+                event = ChangesViewEvent.Message(
+                    message = UiMessage(message = message)
+                )
+            )
+        }.collect()
+    }
+
+    fun exportChangesToDocument() = launchWithLoader(loadingState) {
+        exportChangesToDocument(
+            params = ExportChangesToDocument.Params(date = _filterDate.value)
+        ).onSuccess { document ->
+            sendEvent(event = ChangesViewEvent.ChangesExported(document = document))
+        }.withErrorMapper(
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper + ErrorMapper { cause ->
+                when(cause) {
+                    is NoChangesException -> AppTheme.stringResources.noChangesException
+                    else -> null
+                }
+            }
         ) { message ->
             sendEvent(
                 event = ChangesViewEvent.Message(

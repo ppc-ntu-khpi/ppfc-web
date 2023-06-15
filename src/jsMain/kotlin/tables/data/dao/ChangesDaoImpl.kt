@@ -5,11 +5,15 @@
 package tables.data.dao
 
 import api.ApiClient
+import core.domain.UnexpectedErrorException
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import tables.data.model.ChangeRequest
 import tables.data.model.ChangeResponse
+import tables.data.model.GenerateChangesDocumentResponse
+import tables.domain.interactor.NoChangesException
+import tables.domain.model.File
 
 class ChangesDaoImpl(
     private val apiClient: ApiClient
@@ -49,6 +53,24 @@ class ChangesDaoImpl(
             if (groupId != null) parameter("groupId", groupId)
             if (teacherId != null) parameter("teacherId", teacherId)
         }.body()
+    }
+
+    override suspend fun exportChangesToDocument(date: String): File {
+        val response: GenerateChangesDocumentResponse = apiClient.client.get("$PATH/generateWordDocument") {
+            parameter("date", date)
+        }.body()
+
+        if(response.error != null) {
+            if(response.error == "NO_CHANGES") throw NoChangesException()
+            throw UnexpectedErrorException()
+        }
+
+        if(response.fileName == null || response.fileBytes == null) throw UnexpectedErrorException()
+
+        return File(
+            fileName = response.fileName,
+            fileBytes = response.fileBytes
+        )
     }
 
     private companion object {

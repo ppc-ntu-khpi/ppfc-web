@@ -10,8 +10,10 @@ import coreui.compose.base.Alignment
 import coreui.compose.base.Column
 import coreui.compose.base.Row
 import coreui.compose.base.Spacer
+import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
 import coreui.util.*
+import infrastructure.util.downloadFileUri
 import org.jetbrains.compose.web.css.*
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.*
@@ -37,6 +39,9 @@ fun Changes() {
                 is ChangesViewEvent.Message -> uiMessage = event.message
                 is ChangesViewEvent.ChangeSaved -> viewModel.dialog(dialog = null)
                 is ChangesViewEvent.ChangeDeleted -> viewModel.dialog(dialog = null)
+                is ChangesViewEvent.ChangesExported -> {
+                    downloadFileUri(file = event.document)
+                }
             }
         },
         onClear = { id ->
@@ -149,6 +154,14 @@ fun Changes() {
                 }
             ) { state ->
                 viewModel.setFilterGroup(filterGroup = state)
+            }
+
+            Spacer(width = 10.px)
+
+            IconButton(
+                icon = AppIconClass.Export
+            ) {
+                viewModel.exportChangesToDocument()
             }
         }
 

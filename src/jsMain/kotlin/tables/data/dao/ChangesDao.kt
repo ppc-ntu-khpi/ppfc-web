@@ -6,6 +6,7 @@ package tables.data.dao
 
 import tables.data.model.ChangeRequest
 import tables.data.model.ChangeResponse
+import tables.domain.model.File
 
 interface ChangesDao {
     suspend fun saveChange(changeRequest: ChangeRequest)
@@ -14,6 +15,9 @@ interface ChangesDao {
 
     suspend fun deleteChanges(ids: Set<Long>)
 
+    /**
+     * @param date Format: yyyy-mm-dd.
+     */
     suspend fun getChanges(
         limit: Long,
         offset: Long,
@@ -22,4 +26,9 @@ interface ChangesDao {
         groupId: Long?,
         teacherId: Long?
     ): List<ChangeResponse>
+
+    /**
+     * @param date Format: yyyy-mm-dd.
+     */
+    suspend fun exportChangesToDocument(date: String): File
 }

@@ -78,4 +78,8 @@ class ChangesRepositoryImpl(
             )
         }
     }
+
+    override suspend fun exportChangesToDocument(date: Date): File {
+        return changesDao.exportChangesToDocument(date = date.toISO8601String())
+    }
 }

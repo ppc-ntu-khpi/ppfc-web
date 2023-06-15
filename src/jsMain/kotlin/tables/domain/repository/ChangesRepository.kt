@@ -20,4 +20,6 @@ interface ChangesRepository {
         group: Group?,
         teacher: Teacher?
     ): PagingSource<Long, Change>
+
+    suspend fun exportChangesToDocument(date: Date): File
 }
