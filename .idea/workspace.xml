@@ -7,21 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Update: override equals and hashCode methods">
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/GroupsFlowLayout.kt" afterDir="false" />
+    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Fix: add missing 'dayNumber' property">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/ChangeMappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/mapper/ChangeMappers.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/model/ChangeResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Change.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/model/Change.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/mapper/ChangeMappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/mapper/ChangeMappers.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveChanges.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveChanges.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,7 +223,7 @@
       <workItem from="1686859583765" duration="126000" />
       <workItem from="1686861316417" duration="3925000" />
       <workItem from="1686914272652" duration="1406000" />
-      <workItem from="1686942970560" duration="7729000" />
+      <workItem from="1686942970560" duration="9342000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1684319346467</created>
@@ -440,7 +428,21 @@
       <option name="project" value="LOCAL" />
       <updated>1686950584446</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Update: change 'Change' model and update UI">
+      <created>1686951764814</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1686951764814</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Fix: add missing 'dayNumber' property">
+      <created>1686952859847</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1686952859847</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,7 +469,9 @@
     <MESSAGE value="Feat: changes Word document generation" />
     <MESSAGE value="Feat: Word document generation for schedule changes" />
     <MESSAGE value="Update: override equals and hashCode methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: override equals and hashCode methods" />
+    <MESSAGE value="Update: change 'Change' model and update UI" />
+    <MESSAGE value="Fix: add missing 'dayNumber' property" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: add missing 'dayNumber' property" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
