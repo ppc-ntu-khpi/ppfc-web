@@ -15,8 +15,8 @@ fun Date.toISO8601String(): String = try {
     Date().toISOString()
 }.substringBefore('T')
 
-fun dateFromString(dateString: String): Date? = Date(dateString).let { date ->
-    if(date.toString() == "Invalid Date") {
+fun Date.Companion.dateFromString(dateString: String): Date? = Date(dateString).let { date ->
+    if (date.toString() == "Invalid Date") {
         null
     } else {
         date

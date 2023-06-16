@@ -88,7 +88,7 @@ fun DatePicker(
 
                 onChange { listener ->
                     listener.target.blur()
-                    onDateChange(dateFromString(listener.value) ?: Date())
+                    onDateChange(Date.dateFromString(listener.value) ?: Date())
                 }
             },
             value = date.toISO8601String()

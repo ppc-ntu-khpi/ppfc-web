@@ -32,6 +32,6 @@ fun ChangeResponse.toDomain() = Change(
     eventName = eventName,
     lessonNumber = lessonNumber?.toLessonNumber(),
     dayNumber = dayNumber.toDayNumber(),
-    date = dateFromString(date) ?: Date(),
+    date = Date.dateFromString(date) ?: Date(),
     weekAlternation = isNumerator.toWeekAlternation()
 )
