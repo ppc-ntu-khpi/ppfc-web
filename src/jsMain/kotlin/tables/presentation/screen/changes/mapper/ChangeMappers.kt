@@ -36,6 +36,7 @@ fun ChangeState.toDomain() = Change(
     eventName = eventName.text,
     lessonNumber = lessonNumber.toDomain(),
     date = date,
+    dayNumber = dayNumber,
     weekAlternation = weekAlternation
 )
 
@@ -51,5 +52,6 @@ fun Change.toState() = ChangeState(
     eventName = TextFieldState.Empty.copy(text = eventName ?: ""),
     lessonNumber = lessonNumber.toChangeState(),
     date = date,
+    dayNumber = dayNumber,
     weekAlternation = weekAlternation
 )
