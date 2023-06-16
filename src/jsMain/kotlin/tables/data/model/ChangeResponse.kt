@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ChangeResponse(
     val id: Long,
-    val group: GroupResponse,
+    val groups: Set<GroupResponse>,
     val classroom: ClassroomResponse?,
     val teacher: TeacherResponse?,
     val subject: SubjectResponse?,

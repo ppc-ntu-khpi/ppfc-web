@@ -216,7 +216,7 @@ fun Changes() {
                     }
                 ) {
                     item {
-                        Text(text = item.group.number.toString())
+                        Text(text = item.groups.joinToString(separator = ",") { it.number.toString() })
                     }
 
                     item {

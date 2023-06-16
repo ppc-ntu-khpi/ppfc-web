@@ -11,7 +11,6 @@ import coreui.compose.*
 import coreui.compose.base.*
 import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
-import coreui.theme.Shape
 import coreui.theme.Typography
 import coreui.util.LazyPagingItems
 import coreui.util.collectAsLazyPagingItems
@@ -249,39 +248,8 @@ private fun ChangeLesson(
 
             Spacer(width = 16.px)
 
-            Row(
-                attrs = {
-                    style {
-                        display(DisplayStyle.Flex)
-                        flexWrap(FlexWrap.Wrap)
-                        maxWidth(400.px)
-                    }
-                }
-            ) groupsRow@{
-                changeLesson.selectedGroups.forEach { selectedGroup ->
-                    Text(
-                        attrs = {
-                            style {
-                                backgroundColor(AppTheme.colors.primary)
-                                color(AppTheme.colors.onPrimary)
-                                padding(5.px)
-                                margin(4.px)
-                                borderRadius(Shape.large)
-                            }
-
-                            onClick {
-                                onRemoveGroup(selectedGroup)
-                            }
-                        },
-                        text = selectedGroup.number.toString(),
-                        fontSize = Typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                if (changeLesson.selectedGroups.isNotEmpty()) return@groupsRow
-
-                Text(text = AppTheme.stringResources.createChangesGroupIsNotSelected)
+            GroupsFlowLayout(groups = changeLesson.selectedGroups.toList()) { group ->
+                onRemoveGroup(group)
             }
         }
 

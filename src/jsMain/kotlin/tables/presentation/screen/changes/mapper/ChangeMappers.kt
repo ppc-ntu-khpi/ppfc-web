@@ -14,10 +14,9 @@ import kotlin.js.Date
 fun ChangeLessonState.toDomain(
     date: Date,
     dayNumber: DayNumber,
-    weekAlternation: WeekAlternation,
-    group: Group
+    weekAlternation: WeekAlternation
 ) = Change(
-    group = group,
+    groups = selectedGroups,
     classroom = classroom.selectedItem ?: Classroom.Empty,
     teacher = teacher.selectedItem ?: Teacher.Empty,
     subject = subject.selectedItem ?: Subject.Empty,
@@ -30,7 +29,7 @@ fun ChangeLessonState.toDomain(
 
 fun ChangeState.toDomain() = Change(
     id = id,
-    group = group.selectedItem ?: Group.Empty,
+    groups = selectedGroups,
     classroom = classroom.selectedItem ?: Classroom.Empty,
     teacher = teacher.selectedItem ?: Teacher.Empty,
     subject = subject.selectedItem ?: Subject.Empty,
@@ -42,8 +41,7 @@ fun ChangeState.toDomain() = Change(
 
 fun Change.toState() = ChangeState(
     id = id,
-    group = PagingDropDownMenuState.Empty<Group>()
-        .copy(selectedItem = group.takeIf { it != Group.Empty }),
+    selectedGroups = groups,
     classroom = PagingDropDownMenuState.Empty<Classroom>()
         .copy(selectedItem = classroom.takeIf { it != Classroom.Empty }),
     teacher = PagingDropDownMenuState.Empty<Teacher>()

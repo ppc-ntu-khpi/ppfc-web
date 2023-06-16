@@ -7,6 +7,7 @@ package tables.presentation.screen.changes
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
+import core.extensions.combine
 import coreui.model.TextFieldState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +67,7 @@ class CreateChangesViewModel(
     val pagedSubjects: Flow<PagingData<Subject>> =
         observePagedSubjects.flow.cachedIn(coroutineScope)
 
-    val state: StateFlow<CreateChangesViewState> = core.extensions.combine(
+    val state: StateFlow<CreateChangesViewState> = combine(
         _changesCommonLesson,
         _changesLessons,
         isFormBlank,
@@ -172,21 +173,15 @@ class CreateChangesViewModel(
         val changesCommonLesson = _changesCommonLesson.value
         val changesLessons = _changesLessons.value
 
-        val changes = mutableListOf<Change>()
-
-        changesLessons.forEach { (_, changeLesson) ->
+        return changesLessons.map { (_, changeLesson) ->
             if (isChangeLessonNotValid(changeLesson = changeLesson)) return null
-            changeLesson.selectedGroups.forEach { group ->
-                changes += changeLesson.toDomain(
-                    date = changesCommonLesson.date,
-                    dayNumber = changesCommonLesson.dayNumber,
-                    weekAlternation = changesCommonLesson.weekAlternation,
-                    group = group
-                )
-            }
-        }
 
-        return changes
+            changeLesson.toDomain(
+                date = changesCommonLesson.date,
+                dayNumber = changesCommonLesson.dayNumber,
+                weekAlternation = changesCommonLesson.weekAlternation
+            )
+        }
     }
 
     fun addChange() {

@@ -8,7 +8,8 @@ import tables.presentation.screen.changes.model.ChangeState
 
 data class EditChangeViewState(
     val changeState: ChangeState = ChangeState.Empty,
-    val isFormBlank: Boolean = true
+    val isFormBlank: Boolean = true,
+    val canAddGroups: Boolean = false
 ) {
     companion object {
         val Empty = EditChangeViewState()

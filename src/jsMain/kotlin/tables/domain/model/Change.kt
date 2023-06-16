@@ -8,7 +8,7 @@ import kotlin.js.Date
 
 data class Change(
     val id: Id = Id.Empty,
-    val group: Group = Group.Empty,
+    val groups: Set<Group> = emptySet(),
     val classroom: Classroom = Classroom.Empty,
     val teacher: Teacher = Teacher.Empty,
     val subject: Subject = Subject.Empty,

@@ -61,22 +61,36 @@ fun EditChangeDialog(
         Spacer(height = 16.px)
 
         Row(
+            verticalAlignment = Alignment.Vertical.CenterVertically
+        ) groupsRow@ {
+            PagingDropDownMenu(
+                lazyPagingItems = pagedGroups,
+                state = viewState.changeState.group,
+                enabled = viewState.canAddGroups,
+                label = AppTheme.stringResources.changesGroupNumber,
+                itemLabel = { item ->
+                    item.number.toString()
+                }
+            ) { state ->
+                viewModel.setGroup(group = state)
+                if (state.selectedItem == null
+                    || state.selectedItem == viewState.changeState.group.selectedItem) return@PagingDropDownMenu
+                viewModel.addGroup(group = state.selectedItem)
+            }
+
+            Spacer(width = 16.px)
+
+            GroupsFlowLayout(groups = viewState.changeState.selectedGroups.toList()) { group ->
+                viewModel.removeGroup(group = group)
+            }
+        }
+
+        Spacer(height = 16.px)
+
+        Row(
             horizontalArrangement = Arrangement.Horizontal.SpaceBetween
         ) {
             Column {
-                PagingDropDownMenu(
-                    lazyPagingItems = pagedGroups,
-                    state = viewState.changeState.group,
-                    label = AppTheme.stringResources.changesGroupNumber,
-                    itemLabel = { item ->
-                        item.number.toString()
-                    }
-                ) { state ->
-                    viewModel.setGroup(group = state)
-                }
-
-                Spacer(height = 16.px)
-
                 PagingDropDownMenu(
                     lazyPagingItems = pagedClassrooms,
                     state = viewState.changeState.classroom,

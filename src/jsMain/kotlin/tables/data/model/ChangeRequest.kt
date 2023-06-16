@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChangeRequest(
-    val groupId: Long,
+    val groupsIds: Set<Long>,
     val classroomId: Long?,
     val teacherId: Long?,
     val subjectId: Long?,

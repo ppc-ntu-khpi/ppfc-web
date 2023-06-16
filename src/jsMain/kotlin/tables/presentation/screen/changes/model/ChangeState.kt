@@ -13,6 +13,7 @@ import kotlin.js.Date
 data class ChangeState(
     val id: Id = Id.Empty,
     val group: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
+    val selectedGroups: Set<Group> = emptySet(),
     val classroom: PagingDropDownMenuState<Classroom> = PagingDropDownMenuState.Empty(),
     val teacher: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
     val subject: PagingDropDownMenuState<Subject> = PagingDropDownMenuState.Empty(),

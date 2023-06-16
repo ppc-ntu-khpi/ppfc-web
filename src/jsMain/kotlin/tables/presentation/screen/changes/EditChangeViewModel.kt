@@ -33,9 +33,12 @@ class EditChangeViewModel(
 
     private val _changeState = MutableStateFlow(ChangeState.Empty)
     private val isFormBlank = _changeState.map { changeState ->
-        changeState.group.selectedItem == null
+        changeState.selectedGroups.isEmpty()
                 || (changeState.subject.selectedItem == null
                 && changeState.eventName == TextFieldState.Empty)
+    }
+    private val canAddGroups = _changeState.map { change ->
+        change.selectedGroups.size < 20
     }
 
     val pagedGroups: Flow<PagingData<Group>> =
@@ -52,11 +55,13 @@ class EditChangeViewModel(
 
     val state: StateFlow<EditChangeViewState> = combine(
         _changeState,
-        isFormBlank
-    ) { changeState, isFormBlank ->
+        isFormBlank,
+        canAddGroups
+    ) { changeState, isFormBlank, canAddGroups ->
         EditChangeViewState(
             changeState = changeState,
-            isFormBlank = isFormBlank
+            isFormBlank = isFormBlank,
+            canAddGroups = canAddGroups
         )
     }.stateIn(
         scope = coroutineScope,
@@ -133,13 +138,24 @@ class EditChangeViewModel(
 
     fun loadChangeState(changeState: ChangeState) {
         _changeState.value = changeState
-        println(changeState.teacher.selectedItem == Teacher.Empty)
-        println(changeState.classroom.selectedItem == Classroom.Empty)
+    }
+
+    fun addGroup(group: Group) {
+        _changeState.update { item ->
+            if (item.selectedGroups.size >= 20) return@update item
+            item.copy(selectedGroups =  item.selectedGroups + group)
+        }
+    }
+
+    fun removeGroup(group: Group) {
+        _changeState.update { item ->
+            item.copy(selectedGroups = item.selectedGroups - group)
+        }
     }
 
     fun setGroup(group: PagingDropDownMenuState<Group>) {
         _changeState.update {
-            it.copy(group = group)
+            it.copy(group = group.copy(selectedItem = null))
         }
     }
 
