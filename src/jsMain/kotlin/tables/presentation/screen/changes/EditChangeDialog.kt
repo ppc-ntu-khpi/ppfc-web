@@ -142,7 +142,8 @@ fun EditChangeDialog(
 
             Column {
                 DatePicker(
-                    date = viewState.changeState.date
+                    date = viewState.changeState.date,
+                    label = AppTheme.stringResources.changesDate
                 ) { date ->
                     viewModel.setDate(date = date)
                 }

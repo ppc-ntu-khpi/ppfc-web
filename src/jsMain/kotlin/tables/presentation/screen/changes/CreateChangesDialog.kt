@@ -56,7 +56,8 @@ fun CreateChangesDialog(
                 verticalAlignment = Alignment.Vertical.CenterVertically
             ) {
                 DatePicker(
-                    date = viewState.changesCommonLesson.date
+                    date = viewState.changesCommonLesson.date,
+                    label = AppTheme.stringResources.changesDate
                 ) { date ->
                     viewModel.setDate(date = date)
                 }

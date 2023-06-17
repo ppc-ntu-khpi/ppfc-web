@@ -40,6 +40,7 @@ val uaStringResources = StringResources(
     navigationGroups = "Групи",
     navigationTeachers = "Викладачі",
     navigationUsers = "Користувачі",
+    navigationOther = "Інше",
 
     tableDialogDeleteTitle = "Видалення",
     tableDialogEditTitle = "Редагування",
@@ -110,7 +111,7 @@ val uaStringResources = StringResources(
     changesWeekAlternation = "Чергування",
     changesFilterByGroupLabel = "Група",
     changesFilterByTeacherLabel = "Викладач",
-    changesFilterByDate = "Дата",
+    changesDate = "Дата",
     changesFilterByWeekAlternation = "Чергування",
     changesAddSubject = "Додати заняття",
     changesLessons = "Заняття",
@@ -128,4 +129,6 @@ val uaStringResources = StringResources(
     weekAlternationAll = "Всі",
     weekAlternationNumerator = "Чисельник",
     weekAlternationDenominator = "Знаменник",
+
+    otherBellSchedule = "Розклад дзвінків",
 )

@@ -5,8 +5,10 @@
 package coreui.compose
 
 import androidx.compose.runtime.*
+import coreui.compose.base.Alignment
 import coreui.compose.base.Box
-import coreui.compose.base.Spacer
+import coreui.extensions.elementContext
+import coreui.extensions.getActualBackgroundColor
 import coreui.theme.AppStyleSheet.style
 import coreui.theme.AppSvgIcon
 import coreui.theme.AppTheme
@@ -18,6 +20,7 @@ import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.DateInput
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLDivElement
 import kotlin.js.Date
 
@@ -29,6 +32,7 @@ private val datePickerFieldHeight = 45.px
 fun DatePicker(
     date: Date,
     attrs: AttrBuilderContext<HTMLDivElement>? = null,
+    label: String,
     onDateChange: (date: Date) -> Unit
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -55,15 +59,16 @@ fun DatePicker(
             }
 
             applyAttrs(attrs)
-        }
+        },
+        contentAlignment = Alignment.Box.CenterStart
     ) {
-        Spacer(width = 16.px)
-
         DateInput(
             attrs = {
                 style {
                     width(100.percent)
                     height(100.percent)
+                    marginLeft(14.px)
+                    marginRight(14.px)
                     backgroundColor(Color.transparent)
                     fontSize(Typography.bodyLarge)
                     color(AppTheme.colors.onSurfaceVariant)
@@ -94,6 +99,40 @@ fun DatePicker(
             value = date.toISO8601String()
         )
 
-        Spacer(width = 16.px)
+        var labelElement by remember { mutableStateOf<Element?>(null) }
+        var labelBackgroundColor by remember { mutableStateOf(Color.transparent.toString()) }
+        LaunchedEffect(AppTheme.colors) {
+            labelBackgroundColor = labelElement?.getActualBackgroundColor() ?: return@LaunchedEffect
+        }
+
+        Text(
+            attrs = {
+                elementContext { element ->
+                    labelElement = element
+                }
+
+                style {
+                    marginLeft(14.px)
+                    paddingLeft(3.px)
+                    paddingRight(3.px)
+                    position(Position.Absolute)
+                    pointerEvents(PointerEvents.None)
+                    borderRadius(Shape.extraSmall)
+
+                    if (isFocused) {
+                        color(AppTheme.colors.primary)
+                    } else {
+                        color(AppTheme.colors.outline)
+                    }
+
+                    transform {
+                        translate(0.percent, -(datePickerFieldHeight / 2.0f))
+                    }
+                    fontSize(Typography.bodyMedium)
+                    backgroundColor(labelBackgroundColor)
+                }
+            },
+            text = label
+        )
     }
 }

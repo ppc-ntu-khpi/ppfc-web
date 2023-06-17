@@ -48,6 +48,7 @@ data class StringResources(
     val navigationGroups: String,
     val navigationTeachers: String,
     val navigationUsers: String,
+    val navigationOther: String,
 
     val tableDialogDeleteTitle: String,
     val tableDialogEditTitle: String,
@@ -118,7 +119,7 @@ data class StringResources(
     val changesWeekAlternation: String,
     val changesFilterByGroupLabel: String,
     val changesFilterByTeacherLabel: String,
-    val changesFilterByDate: String,
+    val changesDate: String,
     val changesFilterByWeekAlternation: String,
     val changesAddSubject: String,
     val changesLessons: String,
@@ -136,4 +137,6 @@ data class StringResources(
     val weekAlternationAll: String,
     val weekAlternationNumerator: String,
     val weekAlternationDenominator: String,
+
+    val otherBellSchedule: String,
 )

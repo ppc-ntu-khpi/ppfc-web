@@ -157,7 +157,8 @@ fun Changes() {
             Spacer(width = 10.px)
 
             DatePicker(
-                date = viewState.filterDate
+                date = viewState.filterDate,
+                label = AppTheme.stringResources.changesDate
             ) { date ->
                 viewModel.setFilterDate(filterDate = date)
             }
