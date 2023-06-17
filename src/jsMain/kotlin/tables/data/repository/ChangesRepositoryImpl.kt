@@ -37,6 +37,7 @@ class ChangesRepositoryImpl(
 
     override suspend fun deleteAllChanges() {
         changesDao.deleteAllChanges()
+        changesPagingSource?.invalidate()
     }
 
     override fun getChangesPagingSource(
