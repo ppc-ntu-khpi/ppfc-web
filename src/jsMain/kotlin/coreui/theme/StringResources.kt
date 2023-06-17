@@ -55,6 +55,7 @@ data class StringResources(
     val tableAdd: String,
     val tableDelete: String,
     val tableDeleteRowsWarning: String,
+    val tableDeleteAllRowsWarning: String,
     val tableDeleteRowsConfirm: String,
     val tableDeleteRowsCancel: String,
     val tableManageItemDialogSave: String,

@@ -17,4 +17,5 @@ sealed class AppIconClass(val value: String) {
     object ArrowDown : AppIconClass(value = "fa-solid fa-angle-down")
     object Cancel : AppIconClass(value = "fa-solid fa-xmark")
     object Export : AppIconClass(value = "fa-solid fa-file-export")
+    object DeleteAll : AppIconClass(value = "fa-solid fa-file-circle-xmark")
 }

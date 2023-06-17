@@ -10,4 +10,5 @@ sealed interface ChangesDialog {
     object CreateChanges : ChangesDialog
     class EditChange(val change: Change) : ChangesDialog
     class ConfirmDeletion(val itemsNumber: Long) : ChangesDialog
+    object ConfirmDeletionOfAll : ChangesDialog
 }

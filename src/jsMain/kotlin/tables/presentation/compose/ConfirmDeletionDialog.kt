@@ -22,7 +22,7 @@ import org.jetbrains.compose.web.css.width
 @Composable
 fun ConfirmDeletionDialog(
     isLoading: Boolean,
-    itemsNumber: Long,
+    itemsNumber: Long? = null,
     onConfirm: () -> Unit,
     onClose: () -> Unit
 ) {
@@ -41,7 +41,12 @@ fun ConfirmDeletionDialog(
 
         Spacer(height = 16.px)
 
-        Text(text = AppTheme.stringResources.tableDeleteRowsWarning.replace("{1}", itemsNumber.toString()))
+        val warning = if(itemsNumber == null) {
+            AppTheme.stringResources.tableDeleteAllRowsWarning
+        } else {
+            AppTheme.stringResources.tableDeleteRowsWarning.replace("{1}", itemsNumber.toString())
+        }
+        Text(text = warning)
 
         Spacer(height = 16.px)
 

@@ -37,6 +37,10 @@ class ChangesDaoImpl(
         apiClient.client.delete("$PATH/${ids.joinToString(",")}")
     }
 
+    override suspend fun deleteAllChanges() {
+        apiClient.client.delete("$PATH/all")
+    }
+
     override suspend fun getChanges(
         limit: Long,
         offset: Long,

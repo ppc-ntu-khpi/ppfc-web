@@ -295,6 +295,10 @@ val tablesModule = module {
     }
 
     single {
+        DeleteAllChanges(get())
+    }
+
+    single {
         ExportChangesToDocument(get())
     }
 
@@ -303,7 +307,7 @@ val tablesModule = module {
     }
 
     factory {
-        ChangesViewModel(get(), get(), get(), get(), get(), get(), get(), get())
+        ChangesViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory {

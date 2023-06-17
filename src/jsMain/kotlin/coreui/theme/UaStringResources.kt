@@ -47,6 +47,7 @@ val uaStringResources = StringResources(
     tableAdd = "Додати",
     tableDelete = "Видалити",
     tableDeleteRowsWarning = "Ви збираєтесь видалити {1} запис(ів). Це призведе до видалення пов'язаних записів.",
+    tableDeleteAllRowsWarning = "Ви збираєтесь видалити усі записи. Це призведе до видалення пов'язаних записів.",
     tableDeleteRowsConfirm = "Підтвердити",
     tableDeleteRowsCancel = "Скасувати",
     tableManageItemDialogSave = "Зберегти",

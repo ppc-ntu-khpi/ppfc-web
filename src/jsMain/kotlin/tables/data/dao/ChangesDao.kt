@@ -15,6 +15,8 @@ interface ChangesDao {
 
     suspend fun deleteChanges(ids: Set<Long>)
 
+    suspend fun deleteAllChanges()
+
     /**
      * @param date Format: yyyy-mm-dd.
      */

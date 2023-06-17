@@ -93,6 +93,18 @@ fun Changes() {
                     }
                 )
             }
+
+            is ChangesDialog.ConfirmDeletionOfAll -> {
+                ConfirmDeletionDialog(
+                    isLoading = viewState.isDeleting,
+                    onConfirm = {
+                        viewModel.deleteAllChanges()
+                    },
+                    onClose = {
+                        viewModel.dialog(dialog = null)
+                    }
+                )
+            }
         }
     }
 
@@ -132,6 +144,14 @@ fun Changes() {
                 enabled = selectedRowsNumber > 0
             ) {
                 Text(text = AppTheme.stringResources.tableDelete)
+            }
+
+            Spacer(width = 10.px)
+
+            IconButton(
+                icon = AppIconClass.DeleteAll
+            ) {
+                viewModel.dialog(dialog = ChangesDialog.ConfirmDeletionOfAll)
             }
 
             Spacer(width = 10.px)

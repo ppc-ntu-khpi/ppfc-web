@@ -7,17 +7,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Refactor: rename variables that hold object of type 'PagingDropDownMenuState'">
+    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Refactor: change the way the load is triggered in paging dropdown menus">
+      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/DeleteAllChanges.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/extensions/FlowPagingDropDownMenu.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/AppIconClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/AppIconClass.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/StringResources.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/coreui/theme/UaStringResources.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDaoImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDaoImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/compose/ConfirmDeletionDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/compose/ConfirmDeletionDialog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/Changes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/CreateScheduleItemsViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/EditScheduleItemViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/EditScheduleItemViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/ScheduleViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/ScheduleViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/teachers/ManageTeacherViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/teachers/ManageTeacherViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/teachers/TeachersViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/teachers/TeachersViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +109,7 @@
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.37471265",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "editor.preferences.import",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -132,8 +136,8 @@
       <recent name="tables.presentation.screen" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
-      <recent name="tables.data.model" />
       <recent name="tables.domain.interactor" />
+      <recent name="tables.data.model" />
       <recent name="tables.presentation.screen.changes" />
       <recent name="tables.presentation.screen.changes.model" />
       <recent name="tables.presentation.screen.schedule.model" />
@@ -232,7 +236,7 @@
       <workItem from="1686861316417" duration="3925000" />
       <workItem from="1686914272652" duration="1406000" />
       <workItem from="1686942970560" duration="11201000" />
-      <workItem from="1686954817549" duration="17453000" />
+      <workItem from="1686954817549" duration="20782000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1684319346467</created>
@@ -500,7 +504,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687010281223</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Refactor: change the way the load is triggered in paging dropdown menus">
+      <created>1687018410091</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1687018410091</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +546,8 @@
     <MESSAGE value="Feat: add automatic day increment" />
     <MESSAGE value="Feat: add progress indicators" />
     <MESSAGE value="Refactor: rename variables that hold object of type 'PagingDropDownMenuState'" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor: rename variables that hold object of type 'PagingDropDownMenuState'" />
+    <MESSAGE value="Refactor: change the way the load is triggered in paging dropdown menus" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor: change the way the load is triggered in paging dropdown menus" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -34,6 +34,7 @@ class ChangesViewModel(
     private val saveChange: SaveChange,
     private val saveChanges: SaveChanges,
     private val deleteChanges: DeleteChanges,
+    private val deleteAllChanges: DeleteAllChanges,
     private val exportChangesToDocument: ExportChangesToDocument,
     private val apiCommonErrorMapper: ApiCommonErrorMapper,
     private val tablesCommonErrorMapper: TablesCommonErrorMapper
@@ -203,6 +204,23 @@ class ChangesViewModel(
         deleteChanges(
             params = DeleteChanges.Params(ids = idsToDelete)
         ).onSuccess {
+            sendEvent(
+                event = ChangesViewEvent.ChangeDeleted
+            )
+        }.withErrorMapper(
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper
+        ) { message ->
+            sendEvent(
+                event = ChangesViewEvent.Message(
+                    message = UiMessage(message = message)
+                )
+            )
+        }.collect()
+    }
+
+    fun deleteAllChanges() = launchWithLoader(deletingLoadingState) {
+        deleteAllChanges(Unit).onSuccess {
             sendEvent(
                 event = ChangesViewEvent.ChangeDeleted
             )

@@ -13,6 +13,8 @@ interface ChangesRepository {
 
     suspend fun deleteChanges(ids: Set<Id>)
 
+    suspend fun deleteAllChanges()
+
     fun getChangesPagingSource(
         pageSize: Long,
         date: Date?,
