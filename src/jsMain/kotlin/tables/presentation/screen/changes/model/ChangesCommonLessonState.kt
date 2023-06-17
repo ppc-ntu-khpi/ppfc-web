@@ -4,6 +4,7 @@
 
 package tables.presentation.screen.changes.model
 
+import tables.domain.interactor.calculateWeekAlternation
 import tables.domain.model.DayNumber
 import tables.domain.model.WeekAlternation
 import tables.presentation.common.mapper.toDayNumber
@@ -12,7 +13,7 @@ import kotlin.js.Date
 data class ChangesCommonLessonState(
     val dayNumber: DayNumber = Date().toDayNumber(),
     val date: Date = Date(),
-    val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR
+    val weekAlternation: WeekAlternation = Date().calculateWeekAlternation()
 ) {
     companion object {
         val Empty = ChangesCommonLessonState()

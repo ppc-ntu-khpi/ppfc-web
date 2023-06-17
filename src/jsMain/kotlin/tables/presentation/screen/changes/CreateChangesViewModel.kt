@@ -12,6 +12,7 @@ import coreui.model.TextFieldState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import tables.domain.interactor.calculateWeekAlternation
 import tables.domain.model.*
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
@@ -204,7 +205,8 @@ class CreateChangesViewModel(
         _changesCommonLesson.update { item ->
             item.copy(
                 date = date,
-                dayNumber = date.toDayNumber()
+                dayNumber = date.toDayNumber(),
+                weekAlternation = date.calculateWeekAlternation()
             )
         }
     }

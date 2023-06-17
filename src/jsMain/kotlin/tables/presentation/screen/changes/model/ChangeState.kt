@@ -5,6 +5,7 @@
 package tables.presentation.screen.changes.model
 
 import coreui.model.TextFieldState
+import tables.domain.interactor.calculateWeekAlternation
 import tables.domain.model.*
 import tables.presentation.common.mapper.toDayNumber
 import tables.presentation.compose.PagingDropDownMenuState
@@ -21,7 +22,7 @@ data class ChangeState(
     val lessonNumber: ChangeLessonNumberOption = ChangeLessonNumberOption.NOTHING,
     val dayNumber: DayNumber = Date().toDayNumber(),
     val date: Date = Date(),
-    val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR
+    val weekAlternation: WeekAlternation = Date().calculateWeekAlternation()
 ) {
     companion object {
         val Empty = ChangeState()

@@ -11,6 +11,7 @@ import coreui.model.TextFieldState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import tables.domain.interactor.calculateWeekAlternation
 import tables.domain.model.*
 import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
@@ -191,7 +192,10 @@ class EditChangeViewModel(
 
     fun setDate(date: Date) {
         _changeState.update {
-            it.copy(date = date)
+            it.copy(
+                date = date,
+                weekAlternation = date.calculateWeekAlternation()
+            )
         }
     }
 
