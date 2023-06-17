@@ -12,6 +12,8 @@ interface ScheduleRepository {
 
     suspend fun deleteScheduleItems(ids: Set<Id>)
 
+    suspend fun deleteAllScheduleItems()
+
     fun getSchedulePagingSource(
         pageSize: Long,
         dayNumber: DayNumber?,

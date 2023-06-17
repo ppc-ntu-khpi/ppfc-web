@@ -33,6 +33,10 @@ class ScheduleDaoImpl(
         apiClient.client.delete("$PATH/${ids.joinToString(",")}")
     }
 
+    override suspend fun deleteAllScheduleItems() {
+        apiClient.client.delete("$PATH/all")
+    }
+
     override suspend fun getScheduleItems(
         limit: Long,
         offset: Long,

@@ -258,11 +258,15 @@ val tablesModule = module {
     }
 
     single {
+        DeleteAllScheduleItems(get())
+    }
+
+    single {
         ObservePagedSchedule(get())
     }
 
     factory {
-        ScheduleViewModel(get(), get(), get(), get(), get(), get(), get(), get())
+        ScheduleViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory {

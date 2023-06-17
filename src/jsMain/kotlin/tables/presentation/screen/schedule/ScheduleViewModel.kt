@@ -16,6 +16,7 @@ import coreui.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import tables.domain.interactor.DeleteAllScheduleItems
 import tables.domain.interactor.DeleteScheduleItems
 import tables.domain.interactor.SaveScheduleItem
 import tables.domain.interactor.SaveScheduleItems
@@ -36,6 +37,7 @@ class ScheduleViewModel(
     private val saveScheduleItem: SaveScheduleItem,
     private val saveScheduleItems: SaveScheduleItems,
     private val deleteScheduleItems: DeleteScheduleItems,
+    private val deleteAllScheduleItems: DeleteAllScheduleItems,
     private val apiCommonErrorMapper: ApiCommonErrorMapper,
     private val tablesCommonErrorMapper: TablesCommonErrorMapper
 ) {
@@ -244,6 +246,23 @@ class ScheduleViewModel(
         deleteScheduleItems(
             params = DeleteScheduleItems.Params(ids = idsToDelete)
         ).onSuccess {
+            sendEvent(
+                event = ScheduleViewEvent.ScheduleItemDeleted
+            )
+        }.withErrorMapper(
+            defaultMessage = AppTheme.stringResources.unexpectedErrorException,
+            errorMapper = apiCommonErrorMapper
+        ) { message ->
+            sendEvent(
+                event = ScheduleViewEvent.Message(
+                    message = UiMessage(message = message)
+                )
+            )
+        }.collect()
+    }
+
+    fun deleteAllScheduleItems() = launchWithLoader(deletingLoadingState) {
+        deleteAllScheduleItems(Unit).onSuccess {
             sendEvent(
                 event = ScheduleViewEvent.ScheduleItemDeleted
             )

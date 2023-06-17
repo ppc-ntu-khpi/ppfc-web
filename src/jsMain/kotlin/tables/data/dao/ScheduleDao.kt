@@ -14,6 +14,8 @@ interface ScheduleDao {
 
     suspend fun deleteScheduleItems(ids: Set<Long>)
 
+    suspend fun deleteAllScheduleItems()
+
     suspend fun getScheduleItems(
         limit: Long,
         offset: Long,

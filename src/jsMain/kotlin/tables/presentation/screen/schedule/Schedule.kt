@@ -10,6 +10,7 @@ import coreui.compose.base.Alignment
 import coreui.compose.base.Column
 import coreui.compose.base.Row
 import coreui.compose.base.Spacer
+import coreui.theme.AppIconClass
 import coreui.theme.AppTheme
 import coreui.util.*
 import org.jetbrains.compose.web.css.*
@@ -91,6 +92,18 @@ fun Schedule() {
                     }
                 )
             }
+
+            is ScheduleDialog.ConfirmDeletionOfAll -> {
+                ConfirmDeletionDialog(
+                    isLoading = viewState.isDeleting,
+                    onConfirm = {
+                        viewModel.deleteAllScheduleItems()
+                    },
+                    onClose = {
+                        viewModel.dialog(dialog = null)
+                    }
+                )
+            }
         }
     }
 
@@ -130,6 +143,14 @@ fun Schedule() {
                 enabled = selectedRowsNumber > 0
             ) {
                 Text(text = AppTheme.stringResources.tableDelete)
+            }
+
+            Spacer(width = 10.px)
+
+            IconButton(
+                icon = AppIconClass.DeleteAll
+            ) {
+                viewModel.dialog(dialog = ScheduleDialog.ConfirmDeletionOfAll)
             }
 
             Spacer(width = 10.px)

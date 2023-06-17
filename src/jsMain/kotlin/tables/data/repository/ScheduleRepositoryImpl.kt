@@ -33,6 +33,11 @@ class ScheduleRepositoryImpl(
         schedulePagingSource?.invalidate()
     }
 
+    override suspend fun deleteAllScheduleItems() {
+        scheduleDao.deleteAllScheduleItems()
+        schedulePagingSource?.invalidate()
+    }
+
     override fun getSchedulePagingSource(
         pageSize: Long,
         dayNumber: DayNumber?,
