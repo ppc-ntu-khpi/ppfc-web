@@ -13,6 +13,7 @@ import coreui.extensions.onSuccess
 import coreui.extensions.withErrorMapper
 import coreui.theme.AppTheme
 import coreui.util.*
+import infrastructure.extensions.plusDays
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -48,7 +49,7 @@ class ChangesViewModel(
     private val _dialog = MutableStateFlow<ChangesDialog?>(null)
     private val _rowsSelection = MutableStateFlow(mapOf<Id, Boolean>())
     private val _filterGroup = MutableStateFlow(PagingDropDownMenuState.Empty<Group>())
-    private val _filterDate = MutableStateFlow(Date())
+    private val _filterDate = MutableStateFlow(Date().plusDays(1))
 
     val pagedChanges: Flow<PagingData<Change>> =
         observePagedChanges.flow.onEach {

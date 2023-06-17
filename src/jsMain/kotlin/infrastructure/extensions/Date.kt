@@ -5,6 +5,7 @@
 package infrastructure.extensions
 
 import kotlin.js.Date
+import kotlin.time.Duration.Companion.days
 
 /**
  * Pattern: yyyy-mm-dd.
@@ -21,4 +22,8 @@ fun Date.Companion.dateFromString(dateString: String): Date? = Date(dateString).
     } else {
         date
     }
+}
+
+infix fun Date.plusDays(days: Long): Date {
+    return Date(this.getTime() + days.days.inWholeMilliseconds)
 }

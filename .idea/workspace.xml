@@ -7,13 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Update: make 'dateFromString' method an extension of 'Date' class">
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/CalculateWeekAlternation.kt" afterDir="false" />
+    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Feat: add automatic calculation of week alternation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/infrastructure/extensions/Date.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/infrastructure/extensions/Date.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/CreateChangesViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/EditChangeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangeState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/ChangesViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangesCommonLessonState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/changes/model/ChangesCommonLessonState.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -229,7 +226,7 @@
       <workItem from="1686861316417" duration="3925000" />
       <workItem from="1686914272652" duration="1406000" />
       <workItem from="1686942970560" duration="11201000" />
-      <workItem from="1686954817549" duration="6363000" />
+      <workItem from="1686954817549" duration="7203000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1684319346467</created>
@@ -469,7 +466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686955358560</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Feat: add automatic calculation of week alternation">
+      <created>1686999191404</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1686999191404</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -500,7 +504,8 @@
     <MESSAGE value="Update: save changes sequentially to preserve order" />
     <MESSAGE value="WIP" />
     <MESSAGE value="Update: make 'dateFromString' method an extension of 'Date' class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: make 'dateFromString' method an extension of 'Date' class" />
+    <MESSAGE value="Feat: add automatic calculation of week alternation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: add automatic calculation of week alternation" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
