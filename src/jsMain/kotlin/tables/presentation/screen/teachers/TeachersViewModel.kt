@@ -69,7 +69,7 @@ class TeachersViewModel(
         TeachersViewState(
             searchQuery = searchQuery,
             rowsSelection = rowsSelection,
-            filterDiscipline = filterDiscipline,
+            filterDisciplinesMenu = filterDiscipline,
             isLoading = isLoading,
             isSaving = isSaving,
             isDeleting = isDeleting,
@@ -128,8 +128,8 @@ class TeachersViewModel(
         }
     }
 
-    fun setFilterDiscipline(filterDiscipline: PagingDropDownMenuState<Discipline>) {
-        _filterDiscipline.value = filterDiscipline
+    fun setFilterDiscipline(filterDisciplinesMenu: PagingDropDownMenuState<Discipline>) {
+        _filterDiscipline.value = filterDisciplinesMenu
     }
 
     fun setRowSelection(id: Id, isSelected: Boolean) {

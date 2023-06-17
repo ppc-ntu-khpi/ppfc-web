@@ -71,7 +71,7 @@ class ChangesViewModel(
     ) { rowsSelection, filterGroup, filterDate, isLoading, isSaving, isDeleting, dialog, event ->
         ChangesViewState(
             rowsSelection = rowsSelection,
-            filterGroup = filterGroup,
+            filterGroupsMenu = filterGroup,
             filterDate = filterDate,
             isLoading = isLoading,
             isSaving = isSaving,
@@ -129,9 +129,9 @@ class ChangesViewModel(
         )
     }
 
-    fun setFilterGroup(filterGroup: PagingDropDownMenuState<Group>) {
+    fun setFilterGroup(filterGroupsMenu: PagingDropDownMenuState<Group>) {
         _filterGroup.update {
-            filterGroup
+            filterGroupsMenu
         }
     }
 

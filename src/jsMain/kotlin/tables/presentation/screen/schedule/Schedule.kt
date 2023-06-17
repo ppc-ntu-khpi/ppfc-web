@@ -136,26 +136,26 @@ fun Schedule() {
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedGroups,
-                state = viewState.filterGroup,
+                state = viewState.filterGroupsMenu,
                 label = AppTheme.stringResources.scheduleFilterByGroupLabel,
                 itemLabel = { item ->
                     item.number.toString()
                 }
             ) { state ->
-                viewModel.setFilterGroup(filterGroup = state)
+                viewModel.setFilterGroup(filterGroupsMenu = state)
             }
 
             Spacer(width = 10.px)
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedTeachers,
-                state = viewState.filterTeacher,
+                state = viewState.filterTeachersMenu,
                 label = AppTheme.stringResources.scheduleFilterByTeacherLabel,
                 itemLabel = { item ->
                     item.toTextRepresentation()
                 }
             ) { state ->
-                viewModel.setFilterTeacher(filterTeacher = state)
+                viewModel.setFilterTeacher(filterTeachersMenu = state)
             }
 
             Spacer(width = 10.px)

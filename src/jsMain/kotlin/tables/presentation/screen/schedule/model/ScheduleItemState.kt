@@ -10,10 +10,10 @@ import tables.presentation.compose.PagingDropDownMenuState
 
 data class ScheduleItemState(
     val id: Id = Id.Empty,
-    val group: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
-    val classroom: PagingDropDownMenuState<Classroom> = PagingDropDownMenuState.Empty(),
-    val teacher: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
-    val subject: PagingDropDownMenuState<Subject> = PagingDropDownMenuState.Empty(),
+    val groupsMenu: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
+    val classroomsMenu: PagingDropDownMenuState<Classroom> = PagingDropDownMenuState.Empty(),
+    val teachersMenu: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
+    val subjectsMenu: PagingDropDownMenuState<Subject> = PagingDropDownMenuState.Empty(),
     val eventName: TextFieldState = TextFieldState.Empty,
     val lessonNumber: ScheduleLessonNumberOption = ScheduleLessonNumberOption.N1,
     val dayNumber: DayNumber = DayNumber.N1,

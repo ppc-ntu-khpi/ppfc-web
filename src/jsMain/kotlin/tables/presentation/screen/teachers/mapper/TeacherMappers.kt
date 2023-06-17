@@ -15,7 +15,7 @@ fun TeacherState.toDomain() = Teacher(
     firstName = firstName.text,
     lastName = lastName.text,
     middleName = middleName.text,
-    discipline = discipline.selectedItem ?: Discipline.Empty,
+    discipline = disciplinesMenu.selectedItem ?: Discipline.Empty,
     isHeadTeacher = isHeadTeacher
 )
 
@@ -24,7 +24,7 @@ fun Teacher.toState() = TeacherState(
     firstName = TextFieldState.Empty.copy(text = firstName),
     lastName = TextFieldState.Empty.copy(text = lastName),
     middleName = TextFieldState.Empty.copy(text = middleName),
-    discipline = PagingDropDownMenuState.Empty<Discipline>()
+    disciplinesMenu = PagingDropDownMenuState.Empty<Discipline>()
         .copy(selectedItem = discipline.takeIf { it != Discipline.Empty }),
     isHeadTeacher = isHeadTeacher
 )

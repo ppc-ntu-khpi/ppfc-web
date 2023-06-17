@@ -96,24 +96,24 @@ class CreateChangesViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        val pagingGroups = _changesLessons.map { items -> items.values.map { it.group } }
+        val pagingGroups = _changesLessons.map { items -> items.values.map { it.groupsMenu } }
         pagingGroups.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        val pagingClassrooms = _changesLessons.map { items -> items.values.map { it.classroom } }
+        val pagingClassrooms = _changesLessons.map { items -> items.values.map { it.classroomsMenu } }
         pagingClassrooms.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        val pagingTeachers = _changesLessons.map { items -> items.values.map { it.teacher } }
+        val pagingTeachers = _changesLessons.map { items -> items.values.map { it.teachersMenu } }
         pagingTeachers.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
 
-        val pagingSubjects = _changesLessons.map { items -> items.values.map { it.subject } }
+        val pagingSubjects = _changesLessons.map { items -> items.values.map { it.subjectsMenu } }
         pagingSubjects.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
@@ -166,7 +166,7 @@ class CreateChangesViewModel(
 
     private fun isChangeLessonNotValid(changeLesson: ChangeLessonState): Boolean {
         return changeLesson.selectedGroups.isEmpty()
-                || (changeLesson.subject.selectedItem == null
+                || (changeLesson.subjectsMenu.selectedItem == null
                 && changeLesson.eventName == TextFieldState.Empty)
     }
 
@@ -238,24 +238,24 @@ class CreateChangesViewModel(
         }
     }
 
-    fun setGroup(id: Id.Value, group: PagingDropDownMenuState<Group>) {
+    fun setGroup(id: Id.Value, groupsMenu: PagingDropDownMenuState<Group>) {
         _changesLessons.update { items ->
             val item = items[id] ?: return@update items
-            items + (id to item.copy(group = group.copy(selectedItem = null)))
+            items + (id to item.copy(groupsMenu = groupsMenu.copy(selectedItem = null)))
         }
     }
 
-    fun setClassroom(id: Id.Value, classroom: PagingDropDownMenuState<Classroom>) {
+    fun setClassroom(id: Id.Value, classroomsMenu: PagingDropDownMenuState<Classroom>) {
         _changesLessons.update { items ->
             val item = items[id] ?: return@update items
-            items + (id to item.copy(classroom = classroom))
+            items + (id to item.copy(classroomsMenu = classroomsMenu))
         }
     }
 
-    fun setTeacher(id: Id.Value, teacher: PagingDropDownMenuState<Teacher>) {
+    fun setTeacher(id: Id.Value, teachersMenu: PagingDropDownMenuState<Teacher>) {
         _changesLessons.update { items ->
             val item = items[id] ?: return@update items
-            items + (id to item.copy(teacher = teacher))
+            items + (id to item.copy(teachersMenu = teachersMenu))
         }
     }
 
@@ -264,16 +264,16 @@ class CreateChangesViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(
                 eventName = item.eventName.copy(text = eventName),
-                subject = PagingDropDownMenuState.Empty()
+                subjectsMenu = PagingDropDownMenuState.Empty()
             ))
         }
     }
 
-    fun setSubject(id: Id.Value, subject: PagingDropDownMenuState<Subject>) {
+    fun setSubject(id: Id.Value, subjectsMenu: PagingDropDownMenuState<Subject>) {
         _changesLessons.update { items ->
             val item = items[id] ?: return@update items
             items + (id to item.copy(
-                subject = subject,
+                subjectsMenu = subjectsMenu,
                 eventName = TextFieldState.Empty
             ))
         }

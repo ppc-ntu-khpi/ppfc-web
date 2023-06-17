@@ -146,13 +146,13 @@ fun Changes() {
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedGroups,
-                state = viewState.filterGroup,
+                state = viewState.filterGroupsMenu,
                 label = AppTheme.stringResources.changesFilterByGroupLabel,
                 itemLabel = { item ->
                     item.number.toString()
                 }
             ) { state ->
-                viewModel.setFilterGroup(filterGroup = state)
+                viewModel.setFilterGroup(filterGroupsMenu = state)
             }
 
             Spacer(width = 10.px)

@@ -65,39 +65,39 @@ fun EditScheduleItemDialog(
             Column {
                 PagingDropDownMenu(
                     lazyPagingItems = pagedGroups,
-                    state = viewState.scheduleItemState.group,
+                    state = viewState.scheduleItemState.groupsMenu,
                     label = AppTheme.stringResources.scheduleGroupNumber,
                     itemLabel = { item ->
                         item.number.toString()
                     }
                 ) { state ->
-                    viewModel.setGroup(group = state)
+                    viewModel.setGroup(groupsMenu = state)
                 }
 
                 Spacer(height = 16.px)
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedClassrooms,
-                    state = viewState.scheduleItemState.classroom,
+                    state = viewState.scheduleItemState.classroomsMenu,
                     label = AppTheme.stringResources.scheduleClassroomName,
                     itemLabel = { item ->
                         item.name
                     }
                 ) { state ->
-                    viewModel.setClassroom(classroom = state)
+                    viewModel.setClassroom(classroomsMenu = state)
                 }
 
                 Spacer(height = 16.px)
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedSubjects,
-                    state = viewState.scheduleItemState.subject,
+                    state = viewState.scheduleItemState.subjectsMenu,
                     label = AppTheme.stringResources.scheduleSubject,
                     itemLabel = { item ->
                         item.name
                     }
                 ) { state ->
-                    viewModel.setSubject(subject = state)
+                    viewModel.setSubject(subjectsMenu = state)
                 }
 
                 Spacer(height = 16.px)
@@ -113,13 +113,13 @@ fun EditScheduleItemDialog(
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedTeachers,
-                    state = viewState.scheduleItemState.teacher,
+                    state = viewState.scheduleItemState.teachersMenu,
                     label = AppTheme.stringResources.scheduleTeacher,
                     itemLabel = { item ->
                         item.toTextRepresentation()
                     }
                 ) { state ->
-                    viewModel.setTeacher(teacher = state)
+                    viewModel.setTeacher(teachersMenu = state)
                 }
             }
 

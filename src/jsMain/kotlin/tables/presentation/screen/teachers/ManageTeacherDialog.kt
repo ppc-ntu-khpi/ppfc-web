@@ -94,13 +94,13 @@ fun ManageTeacherDialog(
             Column {
                 PagingDropDownMenu(
                     lazyPagingItems = pagedDisciplines,
-                    state = viewState.teacherState.discipline,
+                    state = viewState.teacherState.disciplinesMenu,
                     label = AppTheme.stringResources.teachersFilterByDisciplineLabel,
                     itemLabel = { item ->
                         item.name
                     }
                 ) { state ->
-                    viewModel.setDiscipline(discipline = state)
+                    viewModel.setDiscipline(disciplinesMenu = state)
                 }
 
                 Spacer(height = 16.px)

@@ -65,16 +65,16 @@ fun EditChangeDialog(
         ) groupsRow@ {
             PagingDropDownMenu(
                 lazyPagingItems = pagedGroups,
-                state = viewState.changeState.group,
+                state = viewState.changeState.groupsMenu,
                 enabled = viewState.canAddGroups,
                 label = AppTheme.stringResources.changesGroupNumber,
                 itemLabel = { item ->
                     item.number.toString()
                 }
             ) { state ->
-                viewModel.setGroup(group = state)
+                viewModel.setGroup(groupsMenu = state)
                 if (state.selectedItem == null
-                    || state.selectedItem == viewState.changeState.group.selectedItem) return@PagingDropDownMenu
+                    || state.selectedItem == viewState.changeState.groupsMenu.selectedItem) return@PagingDropDownMenu
                 viewModel.addGroup(group = state.selectedItem)
             }
 
@@ -93,26 +93,26 @@ fun EditChangeDialog(
             Column {
                 PagingDropDownMenu(
                     lazyPagingItems = pagedClassrooms,
-                    state = viewState.changeState.classroom,
+                    state = viewState.changeState.classroomsMenu,
                     label = AppTheme.stringResources.changesClassroomName,
                     itemLabel = { item ->
                         item.name
                     }
                 ) { state ->
-                    viewModel.setClassroom(classroom = state)
+                    viewModel.setClassroom(classroomsMenu = state)
                 }
 
                 Spacer(height = 16.px)
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedSubjects,
-                    state = viewState.changeState.subject,
+                    state = viewState.changeState.subjectsMenu,
                     label = AppTheme.stringResources.changesSubject,
                     itemLabel = { item ->
                         item.name
                     }
                 ) { state ->
-                    viewModel.setSubject(subject = state)
+                    viewModel.setSubject(subjectsMenu = state)
                 }
 
                 Spacer(height = 16.px)
@@ -128,13 +128,13 @@ fun EditChangeDialog(
 
                 PagingDropDownMenu(
                     lazyPagingItems = pagedTeachers,
-                    state = viewState.changeState.teacher,
+                    state = viewState.changeState.teachersMenu,
                     label = AppTheme.stringResources.changesTeacher,
                     itemLabel = { item ->
                         item.toTextRepresentation()
                     }
                 ) { state ->
-                    viewModel.setTeacher(teacher = state)
+                    viewModel.setTeacher(teachersMenu = state)
                 }
             }
 

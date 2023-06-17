@@ -32,10 +32,10 @@ class EditScheduleItemViewModel(
 
     private val _scheduleItemState = MutableStateFlow(ScheduleItemState.Empty)
     private val isFormBlank = _scheduleItemState.map { scheduleItemState ->
-        scheduleItemState.group.selectedItem == null
-                || scheduleItemState.classroom.selectedItem == null
-                || scheduleItemState.teacher.selectedItem == null
-                || (scheduleItemState.subject.selectedItem == null
+        scheduleItemState.groupsMenu.selectedItem == null
+                || scheduleItemState.classroomsMenu.selectedItem == null
+                || scheduleItemState.teachersMenu.selectedItem == null
+                || (scheduleItemState.subjectsMenu.selectedItem == null
                 && scheduleItemState.eventName == TextFieldState.Empty)
     }
 
@@ -71,19 +71,19 @@ class EditScheduleItemViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        _scheduleItemState.map { it.group }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.groupsMenu }.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.classroom }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.classroomsMenu }.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.teacher }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.teachersMenu }.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.subject }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.subjectsMenu }.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }
@@ -136,21 +136,21 @@ class EditScheduleItemViewModel(
         _scheduleItemState.value = scheduleItemState
     }
 
-    fun setGroup(group: PagingDropDownMenuState<Group>) {
+    fun setGroup(groupsMenu: PagingDropDownMenuState<Group>) {
         _scheduleItemState.update {
-            it.copy(group = group)
+            it.copy(groupsMenu = groupsMenu)
         }
     }
 
-    fun setClassroom(classroom: PagingDropDownMenuState<Classroom>) {
+    fun setClassroom(classroomsMenu: PagingDropDownMenuState<Classroom>) {
         _scheduleItemState.update {
-            it.copy(classroom = classroom)
+            it.copy(classroomsMenu = classroomsMenu)
         }
     }
 
-    fun setTeacher(teacher: PagingDropDownMenuState<Teacher>) {
+    fun setTeacher(teachersMenu: PagingDropDownMenuState<Teacher>) {
         _scheduleItemState.update {
-            it.copy(teacher = teacher)
+            it.copy(teachersMenu = teachersMenu)
         }
     }
 
@@ -158,15 +158,15 @@ class EditScheduleItemViewModel(
         _scheduleItemState.update {
             it.copy(
                 eventName = it.eventName.copy(text = eventName),
-                subject = PagingDropDownMenuState.Empty()
+                subjectsMenu = PagingDropDownMenuState.Empty()
             )
         }
     }
 
-    fun setSubject(subject: PagingDropDownMenuState<Subject>) {
+    fun setSubject(subjectsMenu: PagingDropDownMenuState<Subject>) {
         _scheduleItemState.update {
             it.copy(
-                subject = subject,
+                subjectsMenu = subjectsMenu,
                 eventName = TextFieldState.Empty
             )
         }

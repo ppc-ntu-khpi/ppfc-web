@@ -12,9 +12,9 @@ import tables.domain.model.WeekAlternation
 import tables.presentation.compose.PagingDropDownMenuState
 
 data class ScheduleLessonState(
-    val classroom: PagingDropDownMenuState<Classroom> = PagingDropDownMenuState.Empty(),
-    val teacher: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
-    val subject: PagingDropDownMenuState<Subject> = PagingDropDownMenuState.Empty(),
+    val classroomsMenu: PagingDropDownMenuState<Classroom> = PagingDropDownMenuState.Empty(),
+    val teachersMenu: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
+    val subjectsMenu: PagingDropDownMenuState<Subject> = PagingDropDownMenuState.Empty(),
     val eventName: TextFieldState = TextFieldState.Empty,
     val lessonNumber: ScheduleLessonNumberOption = ScheduleLessonNumberOption.N1,
     val weekAlternation: WeekAlternation = WeekAlternation.NUMERATOR

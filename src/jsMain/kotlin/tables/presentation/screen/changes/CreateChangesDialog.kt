@@ -119,16 +119,16 @@ fun CreateChangesDialog(
                         viewModel.setLessonNumber(id = id, lessonNumber = it)
                     },
                     onGroup = {
-                        viewModel.setGroup(id = id, group = it)
+                        viewModel.setGroup(id = id, groupsMenu = it)
                     },
                     onClassroom = {
-                        viewModel.setClassroom(id = id, classroom = it)
+                        viewModel.setClassroom(id = id, classroomsMenu = it)
                     },
                     onTeacher = {
-                        viewModel.setTeacher(id = id, teacher = it)
+                        viewModel.setTeacher(id = id, teachersMenu = it)
                     },
                     onSubject = {
-                        viewModel.setSubject(id = id, subject = it)
+                        viewModel.setSubject(id = id, subjectsMenu = it)
                     },
                     onEventName = {
                         viewModel.setEventName(id = id, eventName = it)
@@ -216,10 +216,10 @@ private fun ChangeLesson(
     pagedTeachers: LazyPagingItems<Teacher>,
     pagedSubjects: LazyPagingItems<Subject>,
     onLessonNumber: (lessonNumber: ChangeLessonNumberOption) -> Unit,
-    onGroup: (group: PagingDropDownMenuState<Group>) -> Unit,
-    onClassroom: (classroom: PagingDropDownMenuState<Classroom>) -> Unit,
-    onTeacher: (teacher: PagingDropDownMenuState<Teacher>) -> Unit,
-    onSubject: (subject: PagingDropDownMenuState<Subject>) -> Unit,
+    onGroup: (groupsMenu: PagingDropDownMenuState<Group>) -> Unit,
+    onClassroom: (classroomsMenu: PagingDropDownMenuState<Classroom>) -> Unit,
+    onTeacher: (teachersMenu: PagingDropDownMenuState<Teacher>) -> Unit,
+    onSubject: (subjectsMenu: PagingDropDownMenuState<Subject>) -> Unit,
     onEventName: (eventName: String) -> Unit,
     onAddGroup: (group: Group) -> Unit,
     onRemoveGroup: (group: Group) -> Unit,
@@ -233,7 +233,7 @@ private fun ChangeLesson(
         ) {
             PagingDropDownMenu(
                 lazyPagingItems = pagedGroups,
-                state = changeLesson.group,
+                state = changeLesson.groupsMenu,
                 enabled = canAddGroups,
                 label = AppTheme.stringResources.changesGroupNumber,
                 itemLabel = { item ->
@@ -241,7 +241,7 @@ private fun ChangeLesson(
                 }
             ) { state ->
                 onGroup(state)
-                if (state.selectedItem == null || state.selectedItem == changeLesson.group.selectedItem)
+                if (state.selectedItem == null || state.selectedItem == changeLesson.groupsMenu.selectedItem)
                     return@PagingDropDownMenu
                 onAddGroup(state.selectedItem)
             }
@@ -273,7 +273,7 @@ private fun ChangeLesson(
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedSubjects,
-                state = changeLesson.subject,
+                state = changeLesson.subjectsMenu,
                 label = AppTheme.stringResources.changesSubject,
                 itemLabel = { item ->
                     item.name
@@ -286,7 +286,7 @@ private fun ChangeLesson(
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedClassrooms,
-                state = changeLesson.classroom,
+                state = changeLesson.classroomsMenu,
                 label = AppTheme.stringResources.changesClassroomName,
                 itemLabel = { item ->
                     item.name
@@ -310,7 +310,7 @@ private fun ChangeLesson(
         Row {
             PagingDropDownMenu(
                 lazyPagingItems = pagedTeachers,
-                state = changeLesson.teacher,
+                state = changeLesson.teachersMenu,
                 label = AppTheme.stringResources.changesTeacher,
                 itemLabel = { item ->
                     item.toTextRepresentation()

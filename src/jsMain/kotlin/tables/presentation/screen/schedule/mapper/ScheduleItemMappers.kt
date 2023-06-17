@@ -15,9 +15,9 @@ fun ScheduleLessonState.toDomain(
     dayNumber: DayNumber
 ) = ScheduleItem(
     group = group,
-    classroom = classroom.selectedItem ?: Classroom.Empty,
-    teacher = teacher.selectedItem ?: Teacher.Empty,
-    subject = subject.selectedItem ?: Subject.Empty,
+    classroom = classroomsMenu.selectedItem ?: Classroom.Empty,
+    teacher = teachersMenu.selectedItem ?: Teacher.Empty,
+    subject = subjectsMenu.selectedItem ?: Subject.Empty,
     eventName = eventName.text,
     lessonNumber = lessonNumber.toDomain(),
     dayNumber = dayNumber,
@@ -26,10 +26,10 @@ fun ScheduleLessonState.toDomain(
 
 fun ScheduleItemState.toDomain() = ScheduleItem(
     id = id,
-    group = group.selectedItem ?: Group.Empty,
-    classroom = classroom.selectedItem ?: Classroom.Empty,
-    teacher = teacher.selectedItem ?: Teacher.Empty,
-    subject = subject.selectedItem ?: Subject.Empty,
+    group = groupsMenu.selectedItem ?: Group.Empty,
+    classroom = classroomsMenu.selectedItem ?: Classroom.Empty,
+    teacher = teachersMenu.selectedItem ?: Teacher.Empty,
+    subject = subjectsMenu.selectedItem ?: Subject.Empty,
     eventName = eventName.text,
     lessonNumber = lessonNumber.toDomain(),
     dayNumber = dayNumber,
@@ -38,13 +38,13 @@ fun ScheduleItemState.toDomain() = ScheduleItem(
 
 fun ScheduleItem.toState() = ScheduleItemState(
     id = id,
-    group = PagingDropDownMenuState.Empty<Group>()
+    groupsMenu = PagingDropDownMenuState.Empty<Group>()
         .copy(selectedItem = group.takeIf { it != Group.Empty }),
-    classroom = PagingDropDownMenuState.Empty<Classroom>()
+    classroomsMenu = PagingDropDownMenuState.Empty<Classroom>()
         .copy(selectedItem = classroom.takeIf { it != Classroom.Empty }),
-    teacher = PagingDropDownMenuState.Empty<Teacher>()
+    teachersMenu = PagingDropDownMenuState.Empty<Teacher>()
         .copy(selectedItem = teacher.takeIf { it != Teacher.Empty }),
-    subject = PagingDropDownMenuState.Empty<Subject>()
+    subjectsMenu = PagingDropDownMenuState.Empty<Subject>()
         .copy(selectedItem = subject.takeIf { it != Subject.Empty }),
     eventName = TextFieldState.Empty.copy(text = eventName ?: ""),
     lessonNumber = lessonNumber.toScheduleState(),

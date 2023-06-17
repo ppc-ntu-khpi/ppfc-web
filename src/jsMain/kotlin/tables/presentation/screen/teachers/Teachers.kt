@@ -129,13 +129,13 @@ fun Teachers() {
 
             PagingDropDownMenu(
                 lazyPagingItems = pagedDisciplines,
-                state = viewState.filterDiscipline,
+                state = viewState.filterDisciplinesMenu,
                 label = AppTheme.stringResources.teachersFilterByDisciplineLabel,
                 itemLabel = { item ->
                     item.name
                 }
             ) { state ->
-                viewModel.setFilterDiscipline(filterDiscipline = state)
+                viewModel.setFilterDiscipline(filterDisciplinesMenu = state)
             }
         }
 

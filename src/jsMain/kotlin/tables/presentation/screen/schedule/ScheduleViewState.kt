@@ -14,8 +14,8 @@ import tables.presentation.compose.PagingDropDownMenuState
 
 data class ScheduleViewState(
     val rowsSelection: Map<Id, Boolean> = emptyMap(),
-    val filterGroup: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
-    val filterTeacher: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
+    val filterGroupsMenu: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
+    val filterTeachersMenu: PagingDropDownMenuState<Teacher> = PagingDropDownMenuState.Empty(),
     val filterDayNumber: DayNumberOption = DayNumberOption.ALL,
     val filterWeekAlternation: WeekAlternationOption = WeekAlternationOption.ALL,
     val isLoading: Boolean = false,

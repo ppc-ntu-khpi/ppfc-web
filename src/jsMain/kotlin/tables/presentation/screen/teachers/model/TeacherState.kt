@@ -14,7 +14,7 @@ data class TeacherState(
     val firstName: TextFieldState = TextFieldState.Empty,
     val lastName: TextFieldState = TextFieldState.Empty,
     val middleName: TextFieldState = TextFieldState.Empty,
-    val discipline: PagingDropDownMenuState<Discipline> = PagingDropDownMenuState.Empty(),
+    val disciplinesMenu: PagingDropDownMenuState<Discipline> = PagingDropDownMenuState.Empty(),
     val isHeadTeacher: Boolean = false
 ) {
     companion object {

@@ -12,7 +12,7 @@ import kotlin.js.Date
 
 data class ChangesViewState(
     val rowsSelection: Map<Id, Boolean> = emptyMap(),
-    val filterGroup: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
+    val filterGroupsMenu: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
     val filterDate: Date = Date(),
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,

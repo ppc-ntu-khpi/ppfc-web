@@ -27,7 +27,7 @@ class ManageTeacherViewModel(
         teacherState.firstName.text.isBlank()
                 || teacherState.lastName.text.isBlank()
                 || teacherState.middleName.text.isBlank()
-                || teacherState.discipline.selectedItem == null
+                || teacherState.disciplinesMenu.selectedItem == null
     }
 
     val pagedDisciplines: Flow<PagingData<Discipline>> =
@@ -48,7 +48,7 @@ class ManageTeacherViewModel(
     )
 
     init {
-        _teacherState.map { it.discipline }.onSearchQuery { searchQuery ->
+        _teacherState.map { it.disciplinesMenu }.onSearchQuery { searchQuery ->
             observePagedDisciplines(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }
@@ -107,9 +107,9 @@ class ManageTeacherViewModel(
         }
     }
 
-    fun setDiscipline(discipline: PagingDropDownMenuState<Discipline>) {
+    fun setDiscipline(disciplinesMenu: PagingDropDownMenuState<Discipline>) {
         _teacherState.update {
-            it.copy(discipline = discipline)
+            it.copy(disciplinesMenu = disciplinesMenu)
         }
     }
 

@@ -35,7 +35,7 @@ class EditChangeViewModel(
     private val _changeState = MutableStateFlow(ChangeState.Empty)
     private val isFormBlank = _changeState.map { changeState ->
         changeState.selectedGroups.isEmpty()
-                || (changeState.subject.selectedItem == null
+                || (changeState.subjectsMenu.selectedItem == null
                 && changeState.eventName == TextFieldState.Empty)
     }
     private val canAddGroups = _changeState.map { change ->
@@ -76,19 +76,19 @@ class EditChangeViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        _changeState.map { it.group }.onSearchQuery { searchQuery ->
+        _changeState.map { it.groupsMenu }.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _changeState.map { it.classroom }.onSearchQuery { searchQuery ->
+        _changeState.map { it.classroomsMenu }.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _changeState.map { it.teacher }.onSearchQuery { searchQuery ->
+        _changeState.map { it.teachersMenu }.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _changeState.map { it.subject }.onSearchQuery { searchQuery ->
+        _changeState.map { it.subjectsMenu }.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }
@@ -154,21 +154,21 @@ class EditChangeViewModel(
         }
     }
 
-    fun setGroup(group: PagingDropDownMenuState<Group>) {
+    fun setGroup(groupsMenu: PagingDropDownMenuState<Group>) {
         _changeState.update {
-            it.copy(group = group.copy(selectedItem = null))
+            it.copy(groupsMenu = groupsMenu.copy(selectedItem = null))
         }
     }
 
-    fun setClassroom(classroom: PagingDropDownMenuState<Classroom>) {
+    fun setClassroom(classroomsMenu: PagingDropDownMenuState<Classroom>) {
         _changeState.update {
-            it.copy(classroom = classroom)
+            it.copy(classroomsMenu = classroomsMenu)
         }
     }
 
-    fun setTeacher(teacher: PagingDropDownMenuState<Teacher>) {
+    fun setTeacher(teachersMenu: PagingDropDownMenuState<Teacher>) {
         _changeState.update {
-            it.copy(teacher = teacher)
+            it.copy(teachersMenu = teachersMenu)
         }
     }
 
@@ -176,15 +176,15 @@ class EditChangeViewModel(
         _changeState.update {
             it.copy(
                 eventName = it.eventName.copy(text = eventName),
-                subject = PagingDropDownMenuState.Empty()
+                subjectsMenu = PagingDropDownMenuState.Empty()
             )
         }
     }
 
-    fun setSubject(subject: PagingDropDownMenuState<Subject>) {
+    fun setSubject(subjectsMenu: PagingDropDownMenuState<Subject>) {
         _changeState.update {
             it.copy(
-                subject = subject,
+                subjectsMenu = subjectsMenu,
                 eventName = TextFieldState.Empty
             )
         }

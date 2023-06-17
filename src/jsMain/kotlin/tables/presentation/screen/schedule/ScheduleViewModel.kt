@@ -79,8 +79,8 @@ class ScheduleViewModel(
     ) { rowsSelection, filterGroup, filterTeacher, filterDayNumber, filterWeekAlternation, isLoading, isSaving, isDeleting, dialog, event ->
         ScheduleViewState(
             rowsSelection = rowsSelection,
-            filterGroup = filterGroup,
-            filterTeacher = filterTeacher,
+            filterGroupsMenu = filterGroup,
+            filterTeachersMenu = filterTeacher,
             filterDayNumber = filterDayNumber,
             filterWeekAlternation = filterWeekAlternation,
             isLoading = isLoading,
@@ -161,15 +161,15 @@ class ScheduleViewModel(
         )
     }
 
-    fun setFilterGroup(filterGroup: PagingDropDownMenuState<Group>) {
+    fun setFilterGroup(filterGroupsMenu: PagingDropDownMenuState<Group>) {
         _filterGroup.update {
-            filterGroup
+            filterGroupsMenu
         }
     }
 
-    fun setFilterTeacher(filterTeacher: PagingDropDownMenuState<Teacher>) {
+    fun setFilterTeacher(filterTeachersMenu: PagingDropDownMenuState<Teacher>) {
         _filterTeacher.update {
-            filterTeacher
+            filterTeachersMenu
         }
     }
 

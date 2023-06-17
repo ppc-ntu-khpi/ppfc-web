@@ -91,24 +91,24 @@ class CreateScheduleItemsViewModel(
         observePagedTeachers()
         observePagedSubjects()
 
-        val pagingGroups = _scheduleCommonLesson.map { it.group }
+        val pagingGroups = _scheduleCommonLesson.map { it.groupsMenu }
         pagingGroups.onSearchQuery { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        val pagingClassrooms = _scheduleLessons.map { items -> items.values.map { it.classroom } }
+        val pagingClassrooms = _scheduleLessons.map { items -> items.values.map { it.classroomsMenu } }
         pagingClassrooms.onSearchQuery { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        val pagingTeachers = _scheduleLessons.map { items -> items.values.map { it.teacher } }
+        val pagingTeachers = _scheduleLessons.map { items -> items.values.map { it.teachersMenu } }
         pagingTeachers.onSearchQuery { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
         pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
 
-        val pagingSubjects = _scheduleLessons.map { items -> items.values.map { it.subject } }
+        val pagingSubjects = _scheduleLessons.map { items -> items.values.map { it.subjectsMenu } }
         pagingSubjects.onSearchQuery { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
@@ -160,13 +160,13 @@ class CreateScheduleItemsViewModel(
     }
 
     private fun isScheduleCommonLessonNotValid(scheduleCommonLesson: ScheduleCommonLessonState): Boolean {
-        return scheduleCommonLesson.group.selectedItem == null
+        return scheduleCommonLesson.groupsMenu.selectedItem == null
     }
 
     private fun isScheduleLessonNotValid(scheduleLesson: ScheduleLessonState): Boolean {
-        return scheduleLesson.classroom.selectedItem == null
-                || scheduleLesson.teacher.selectedItem == null
-                || (scheduleLesson.subject.selectedItem == null
+        return scheduleLesson.classroomsMenu.selectedItem == null
+                || scheduleLesson.teachersMenu.selectedItem == null
+                || (scheduleLesson.subjectsMenu.selectedItem == null
                 && scheduleLesson.eventName == TextFieldState.Empty)
     }
 
@@ -178,7 +178,7 @@ class CreateScheduleItemsViewModel(
         return scheduleLessons.values.map { item ->
             if (isScheduleLessonNotValid(scheduleLesson = item)) return null
             item.toDomain(
-                group = scheduleCommonLesson.group.selectedItem!!,
+                group = scheduleCommonLesson.groupsMenu.selectedItem!!,
                 dayNumber = scheduleCommonLesson.dayNumber
             )
         }
@@ -204,9 +204,9 @@ class CreateScheduleItemsViewModel(
         }
     }
 
-    fun setGroup(group: PagingDropDownMenuState<Group>) {
+    fun setGroup(groupsMenu: PagingDropDownMenuState<Group>) {
         _scheduleCommonLesson.update { item ->
-            item.copy(group = group)
+            item.copy(groupsMenu = groupsMenu)
         }
     }
 
@@ -216,17 +216,17 @@ class CreateScheduleItemsViewModel(
         }
     }
 
-    fun setClassroom(id: Id.Value, classroom: PagingDropDownMenuState<Classroom>) {
+    fun setClassroom(id: Id.Value, classroomsMenu: PagingDropDownMenuState<Classroom>) {
         _scheduleLessons.update { items ->
             val item = items[id] ?: return@update items
-            items + (id to item.copy(classroom = classroom))
+            items + (id to item.copy(classroomsMenu = classroomsMenu))
         }
     }
 
-    fun setTeacher(id: Id.Value, teacher: PagingDropDownMenuState<Teacher>) {
+    fun setTeacher(id: Id.Value, teachersMenu: PagingDropDownMenuState<Teacher>) {
         _scheduleLessons.update { items ->
             val item = items[id] ?: return@update items
-            items + (id to item.copy(teacher = teacher))
+            items + (id to item.copy(teachersMenu = teachersMenu))
         }
     }
 
@@ -235,16 +235,16 @@ class CreateScheduleItemsViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(
                 eventName = item.eventName.copy(text = eventName),
-                subject = PagingDropDownMenuState.Empty()
+                subjectsMenu = PagingDropDownMenuState.Empty()
             ))
         }
     }
 
-    fun setSubject(id: Id.Value, subject: PagingDropDownMenuState<Subject>) {
+    fun setSubject(id: Id.Value, subjectsMenu: PagingDropDownMenuState<Subject>) {
         _scheduleLessons.update { items ->
             val item = items[id] ?: return@update items
             items + (id to item.copy(
-                subject = subject,
+                subjectsMenu = subjectsMenu,
                 eventName = TextFieldState.Empty
             ))
         }

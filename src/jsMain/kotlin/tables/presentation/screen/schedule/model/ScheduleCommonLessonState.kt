@@ -9,7 +9,7 @@ import tables.domain.model.Group
 import tables.presentation.compose.PagingDropDownMenuState
 
 data class ScheduleCommonLessonState(
-    val group: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
+    val groupsMenu: PagingDropDownMenuState<Group> = PagingDropDownMenuState.Empty(),
     val dayNumber: DayNumber = DayNumber.N1
 ) {
     companion object {
