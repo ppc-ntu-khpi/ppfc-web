@@ -17,7 +17,6 @@ import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
-import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.changes.model.ChangeLessonNumberOption
 import tables.presentation.screen.changes.model.ChangeState
@@ -71,24 +70,19 @@ class EditChangeViewModel(
     )
 
     init {
-        observePagedGroups()
-        observePagedClassrooms()
-        observePagedTeachers()
-        observePagedSubjects()
-
-        _changeState.map { it.groupsMenu }.onSearchQuery { searchQuery ->
+        _changeState.map { it.groupsMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _changeState.map { it.classroomsMenu }.onSearchQuery { searchQuery ->
+        _changeState.map { it.classroomsMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _changeState.map { it.teachersMenu }.onSearchQuery { searchQuery ->
+        _changeState.map { it.teachersMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _changeState.map { it.subjectsMenu }.onSearchQuery { searchQuery ->
+        _changeState.map { it.subjectsMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }

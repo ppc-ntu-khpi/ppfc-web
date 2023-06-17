@@ -16,7 +16,6 @@ import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
-import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.schedule.model.ScheduleItemState
 import tables.presentation.screen.schedule.model.ScheduleLessonNumberOption
@@ -66,24 +65,19 @@ class EditScheduleItemViewModel(
     )
 
     init {
-        observePagedGroups()
-        observePagedClassrooms()
-        observePagedTeachers()
-        observePagedSubjects()
-
-        _scheduleItemState.map { it.groupsMenu }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.groupsMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.classroomsMenu }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.classroomsMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.teachersMenu }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.teachersMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _scheduleItemState.map { it.subjectsMenu }.onSearchQuery { searchQuery ->
+        _scheduleItemState.map { it.subjectsMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }

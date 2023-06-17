@@ -24,7 +24,6 @@ import tables.domain.model.Id
 import tables.domain.model.Teacher
 import tables.domain.observer.ObservePagedChanges
 import tables.domain.observer.ObservePagedGroups
-import tables.extensions.onSearchQuery
 import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.compose.PagingDropDownMenuState
 import kotlin.js.Date
@@ -96,9 +95,7 @@ class ChangesViewModel(
             )
         }.launchIn(coroutineScope)
 
-        observePagedGroups()
-
-        _filterGroup.onSearchQuery { searchQuery ->
+        _filterGroup.map { it.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }
@@ -229,7 +226,7 @@ class ChangesViewModel(
         }.withErrorMapper(
             defaultMessage = AppTheme.stringResources.unexpectedErrorException,
             errorMapper = apiCommonErrorMapper + ErrorMapper { cause ->
-                when(cause) {
+                when (cause) {
                     is NoChangesException -> AppTheme.stringResources.noChangesException
                     else -> null
                 }

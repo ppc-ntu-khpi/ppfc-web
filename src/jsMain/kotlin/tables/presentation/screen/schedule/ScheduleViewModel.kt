@@ -23,7 +23,6 @@ import tables.domain.model.*
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSchedule
 import tables.domain.observer.ObservePagedTeachers
-import tables.extensions.onSearchQuery
 import tables.presentation.common.mapper.TablesCommonErrorMapper
 import tables.presentation.common.mapper.toDomain
 import tables.presentation.common.model.DayNumberOption
@@ -110,14 +109,11 @@ class ScheduleViewModel(
             )
         }.launchIn(coroutineScope)
 
-        observePagedGroups()
-        observePagedTeachers()
-
-        _filterGroup.onSearchQuery { searchQuery ->
+        _filterGroup.map { it.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        _filterTeacher.onSearchQuery { searchQuery ->
+        _filterTeacher.map { it.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }

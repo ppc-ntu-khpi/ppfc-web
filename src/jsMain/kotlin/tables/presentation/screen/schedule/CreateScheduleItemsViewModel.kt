@@ -16,8 +16,6 @@ import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
-import tables.extensions.onItem
-import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.schedule.mapper.toDomain
 import tables.presentation.screen.schedule.model.ScheduleCommonLessonState
@@ -65,6 +63,11 @@ class CreateScheduleItemsViewModel(
     val pagedSubjects: Flow<PagingData<Subject>> =
         observePagedSubjects.flow.cachedIn(coroutineScope)
 
+    private val _groupsSearchQuery = MutableStateFlow("")
+    private val _classroomsSearchQuery = MutableStateFlow("")
+    private val _teachersSearchQuery = MutableStateFlow("")
+    private val _subjectsSearchQuery = MutableStateFlow("")
+
     val state: StateFlow<CreateScheduleItemsViewState> = combine(
         _scheduleCommonLesson,
         _scheduleLessons,
@@ -86,33 +89,21 @@ class CreateScheduleItemsViewModel(
     )
 
     init {
-        observePagedGroups()
-        observePagedClassrooms()
-        observePagedTeachers()
-        observePagedSubjects()
-
-        val pagingGroups = _scheduleCommonLesson.map { it.groupsMenu }
-        pagingGroups.onSearchQuery { searchQuery ->
+        _groupsSearchQuery.onEach { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        val pagingClassrooms = _scheduleLessons.map { items -> items.values.map { it.classroomsMenu } }
-        pagingClassrooms.onSearchQuery { searchQuery ->
+        _classroomsSearchQuery.onEach { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        val pagingTeachers = _scheduleLessons.map { items -> items.values.map { it.teachersMenu } }
-        pagingTeachers.onSearchQuery { searchQuery ->
+        _teachersSearchQuery.onEach { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
 
-        val pagingSubjects = _scheduleLessons.map { items -> items.values.map { it.subjectsMenu } }
-        pagingSubjects.onSearchQuery { searchQuery ->
+        _subjectsSearchQuery.onEach { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingSubjects.onItem { observePagedSubjects() }.launchIn(coroutineScope)
     }
 
     private fun observePagedGroups(
@@ -193,6 +184,11 @@ class CreateScheduleItemsViewModel(
             }
             items + (Id.random() to ScheduleLessonState.Empty.copy(lessonNumber = nextLessonNumber))
         }
+
+        _groupsSearchQuery.value = ""
+        _classroomsSearchQuery.value = ""
+        _teachersSearchQuery.value = ""
+        _subjectsSearchQuery.value = ""
     }
 
     fun removeScheduleItem(id: Id.Value) {
@@ -208,6 +204,7 @@ class CreateScheduleItemsViewModel(
         _scheduleCommonLesson.update { item ->
             item.copy(groupsMenu = groupsMenu)
         }
+        _groupsSearchQuery.value = groupsMenu.searchQuery
     }
 
     fun setDayNumber(dayNumber: DayNumber) {
@@ -221,6 +218,7 @@ class CreateScheduleItemsViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(classroomsMenu = classroomsMenu))
         }
+        _classroomsSearchQuery.value = classroomsMenu.searchQuery
     }
 
     fun setTeacher(id: Id.Value, teachersMenu: PagingDropDownMenuState<Teacher>) {
@@ -228,6 +226,7 @@ class CreateScheduleItemsViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(teachersMenu = teachersMenu))
         }
+        _teachersSearchQuery.value = teachersMenu.searchQuery
     }
 
     fun setEventName(id: Id.Value, eventName: String) {
@@ -248,6 +247,7 @@ class CreateScheduleItemsViewModel(
                 eventName = TextFieldState.Empty
             ))
         }
+        _subjectsSearchQuery.value = subjectsMenu.searchQuery
     }
 
     fun setLessonNumber(id: Id.Value, lessonNumber: ScheduleLessonNumberOption) {

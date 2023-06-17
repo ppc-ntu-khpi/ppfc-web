@@ -18,8 +18,6 @@ import tables.domain.observer.ObservePagedClassrooms
 import tables.domain.observer.ObservePagedGroups
 import tables.domain.observer.ObservePagedSubjects
 import tables.domain.observer.ObservePagedTeachers
-import tables.extensions.onItem
-import tables.extensions.onSearchQuery
 import tables.presentation.common.mapper.toDayNumber
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.changes.mapper.toDomain
@@ -68,6 +66,11 @@ class CreateChangesViewModel(
     val pagedSubjects: Flow<PagingData<Subject>> =
         observePagedSubjects.flow.cachedIn(coroutineScope)
 
+    private val _groupsSearchQuery = MutableStateFlow("")
+    private val _classroomsSearchQuery = MutableStateFlow("")
+    private val _teachersSearchQuery = MutableStateFlow("")
+    private val _subjectsSearchQuery = MutableStateFlow("")
+
     val state: StateFlow<CreateChangesViewState> = combine(
         _changesCommonLesson,
         _changesLessons,
@@ -91,33 +94,21 @@ class CreateChangesViewModel(
     )
 
     init {
-        observePagedGroups()
-        observePagedClassrooms()
-        observePagedTeachers()
-        observePagedSubjects()
-
-        val pagingGroups = _changesLessons.map { items -> items.values.map { it.groupsMenu } }
-        pagingGroups.onSearchQuery { searchQuery ->
+        _groupsSearchQuery.onEach { searchQuery ->
             observePagedGroups(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
 
-        val pagingClassrooms = _changesLessons.map { items -> items.values.map { it.classroomsMenu } }
-        pagingClassrooms.onSearchQuery { searchQuery ->
+        _classroomsSearchQuery.onEach { searchQuery ->
             observePagedClassrooms(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingClassrooms.onItem { observePagedClassrooms() }.launchIn(coroutineScope)
 
-        val pagingTeachers = _changesLessons.map { items -> items.values.map { it.teachersMenu } }
-        pagingTeachers.onSearchQuery { searchQuery ->
+        _teachersSearchQuery.onEach { searchQuery ->
             observePagedTeachers(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingTeachers.onItem { observePagedTeachers() }.launchIn(coroutineScope)
 
-        val pagingSubjects = _changesLessons.map { items -> items.values.map { it.subjectsMenu } }
-        pagingSubjects.onSearchQuery { searchQuery ->
+        _subjectsSearchQuery.onEach { searchQuery ->
             observePagedSubjects(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
-        pagingSubjects.onItem { observePagedSubjects() }.launchIn(coroutineScope)
     }
 
     private fun observePagedGroups(
@@ -190,6 +181,11 @@ class CreateChangesViewModel(
             if (items.size >= 100) return@update items
             items + (Id.random() to ChangeLessonState.Empty)
         }
+
+        _groupsSearchQuery.value = ""
+        _classroomsSearchQuery.value = ""
+        _teachersSearchQuery.value = ""
+        _subjectsSearchQuery.value = ""
     }
 
     fun removeChange(id: Id.Value) {
@@ -243,6 +239,7 @@ class CreateChangesViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(groupsMenu = groupsMenu.copy(selectedItem = null)))
         }
+        _groupsSearchQuery.value = groupsMenu.searchQuery
     }
 
     fun setClassroom(id: Id.Value, classroomsMenu: PagingDropDownMenuState<Classroom>) {
@@ -250,6 +247,7 @@ class CreateChangesViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(classroomsMenu = classroomsMenu))
         }
+        _classroomsSearchQuery.value = classroomsMenu.searchQuery
     }
 
     fun setTeacher(id: Id.Value, teachersMenu: PagingDropDownMenuState<Teacher>) {
@@ -257,6 +255,7 @@ class CreateChangesViewModel(
             val item = items[id] ?: return@update items
             items + (id to item.copy(teachersMenu = teachersMenu))
         }
+        _teachersSearchQuery.value = teachersMenu.searchQuery
     }
 
     fun setEventName(id: Id.Value, eventName: String) {
@@ -277,6 +276,7 @@ class CreateChangesViewModel(
                 eventName = TextFieldState.Empty
             ))
         }
+        _subjectsSearchQuery.value = subjectsMenu.searchQuery
     }
 
     fun setLessonNumber(id: Id.Value, lessonNumber: ChangeLessonNumberOption) {

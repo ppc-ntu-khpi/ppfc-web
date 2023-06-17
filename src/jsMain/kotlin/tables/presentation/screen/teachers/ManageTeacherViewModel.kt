@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import tables.domain.model.Discipline
 import tables.domain.observer.ObservePagedDisciplines
-import tables.extensions.onSearchQuery
 import tables.presentation.compose.PagingDropDownMenuState
 import tables.presentation.screen.teachers.model.TeacherState
 
@@ -48,7 +47,7 @@ class ManageTeacherViewModel(
     )
 
     init {
-        _teacherState.map { it.disciplinesMenu }.onSearchQuery { searchQuery ->
+        _teacherState.map { it.disciplinesMenu.searchQuery }.distinctUntilChanged().onEach { searchQuery ->
             observePagedDisciplines(searchQuery = searchQuery)
         }.launchIn(coroutineScope)
     }
