@@ -15,10 +15,7 @@ import coreui.util.*
 import org.jetbrains.compose.web.css.*
 import tables.domain.model.User
 import tables.presentation.common.mapper.toTextRepresentation
-import tables.presentation.compose.ConfirmDeletionDialog
-import tables.presentation.compose.PagingTable
-import tables.presentation.compose.item
-import tables.presentation.compose.row
+import tables.presentation.compose.*
 
 @Composable
 fun Users() {
@@ -44,6 +41,8 @@ fun Users() {
             viewModel.clearEvent(id = id)
         }
     )
+
+    FullscreenProgressIndicator(visible = viewState.isLoading)
 
     UiMessageHost(message = uiMessage)
 

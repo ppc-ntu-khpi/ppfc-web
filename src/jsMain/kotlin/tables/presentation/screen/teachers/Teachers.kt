@@ -42,6 +42,8 @@ fun Teachers() {
         }
     )
 
+    FullscreenProgressIndicator(visible = viewState.isLoading)
+
     UiMessageHost(message = uiMessage)
 
     DialogHost(

@@ -46,6 +46,8 @@ fun Schedule() {
         }
     )
 
+    FullscreenProgressIndicator(visible = viewState.isLoading)
+
     UiMessageHost(message = uiMessage)
 
     DialogHost(

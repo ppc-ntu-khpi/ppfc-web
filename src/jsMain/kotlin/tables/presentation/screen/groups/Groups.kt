@@ -42,6 +42,8 @@ fun Groups() {
         }
     )
 
+    FullscreenProgressIndicator(visible = viewState.isLoading)
+
     UiMessageHost(message = uiMessage)
 
     DialogHost(

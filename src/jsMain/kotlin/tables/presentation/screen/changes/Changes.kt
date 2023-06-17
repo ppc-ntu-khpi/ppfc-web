@@ -17,7 +17,6 @@ import infrastructure.util.downloadFileUri
 import org.jetbrains.compose.web.css.*
 import tables.presentation.common.mapper.toTextRepresentation
 import tables.presentation.compose.*
-import kotlin.js.Date
 
 @Composable
 fun Changes() {
@@ -48,6 +47,8 @@ fun Changes() {
             viewModel.clearEvent(id = id)
         }
     )
+
+    FullscreenProgressIndicator(visible = viewState.isLoading)
 
     UiMessageHost(message = uiMessage)
 
@@ -94,8 +95,6 @@ fun Changes() {
             }
         }
     }
-
-    Date
 
     Column(
         attrs = {

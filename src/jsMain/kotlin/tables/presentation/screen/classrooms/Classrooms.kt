@@ -13,10 +13,7 @@ import coreui.compose.base.Spacer
 import coreui.theme.AppTheme
 import coreui.util.*
 import org.jetbrains.compose.web.css.*
-import tables.presentation.compose.ConfirmDeletionDialog
-import tables.presentation.compose.PagingTable
-import tables.presentation.compose.item
-import tables.presentation.compose.row
+import tables.presentation.compose.*
 
 @Composable
 fun Classrooms() {
@@ -43,6 +40,8 @@ fun Classrooms() {
             viewModel.clearEvent(id = id)
         }
     )
+
+    FullscreenProgressIndicator(visible = viewState.isLoading)
 
     UiMessageHost(message = uiMessage)
 
