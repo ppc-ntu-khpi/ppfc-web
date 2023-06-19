@@ -7,13 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Feat: add label to the date picker">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDaoImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDaoImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveChanges.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveChanges.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" afterDir="false" />
+    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Performance: improve the way multiple changes are saved">
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDaoImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDaoImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ScheduleRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ScheduleRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveScheduleItems.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveScheduleItems.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ScheduleRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ScheduleRepository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +268,7 @@
       <workItem from="1686954817549" duration="21638000" />
       <workItem from="1687192881921" duration="65000" />
       <workItem from="1687194084192" duration="235000" />
-      <workItem from="1687198599588" duration="4492000" />
+      <workItem from="1687198599588" duration="5243000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1684319346467</created>
@@ -551,7 +550,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687024438440</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Performance: improve the way multiple changes are saved">
+      <created>1687204433899</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1687204433899</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -588,7 +594,8 @@
     <MESSAGE value="Refactor: rename variables that hold object of type 'PagingDropDownMenuState'" />
     <MESSAGE value="Refactor: change the way the load is triggered in paging dropdown menus" />
     <MESSAGE value="Feat: add functionality to delete all changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat: add functionality to delete all changes" />
+    <MESSAGE value="Performance: improve the way multiple changes are saved" />
+    <option name="LAST_COMMIT_MESSAGE" value="Performance: improve the way multiple changes are saved" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -6,23 +6,29 @@ package tables.domain.interactor
 
 import core.domain.Interactor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import tables.domain.model.ScheduleItem
+import tables.domain.model.Subject
+import tables.domain.repository.ScheduleRepository
 
 class SaveScheduleItems(
-    private val saveScheduleItem: SaveScheduleItem
+    private val scheduleRepository: ScheduleRepository
 ) : Interactor<SaveScheduleItems.Params, Unit>() {
 
     override suspend fun doWork(params: Params): Unit = withContext(Dispatchers.Default) {
-        params.scheduleItems.map { scheduleItem ->
-            async {
-                saveScheduleItem.executeSync(
-                    params = SaveScheduleItem.Params(scheduleItem = scheduleItem)
-                )
+        val scheduleItemsToSave = params.scheduleItems.map { scheduleItem ->
+            val scheduleItemToSave = scheduleItem.copy(
+                eventName = scheduleItem.eventName.takeUnless { it.isNullOrBlank() }
+            )
+
+            when {
+                scheduleItemToSave.eventName != null -> scheduleItemToSave.copy(isSubject = false)
+                scheduleItemToSave.subject != Subject.Empty -> scheduleItemToSave.copy(isSubject = true)
+                else -> throw FormIsNotValidException()
             }
-        }.awaitAll()
+        }
+
+        scheduleRepository.saveScheduleItems(scheduleItems = scheduleItemsToSave)
     }
 
     data class Params(val scheduleItems: List<ScheduleItem>)

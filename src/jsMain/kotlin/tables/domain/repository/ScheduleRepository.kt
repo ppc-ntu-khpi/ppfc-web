@@ -10,6 +10,8 @@ import tables.domain.model.*
 interface ScheduleRepository {
     suspend fun saveScheduleItem(scheduleItem: ScheduleItem)
 
+    suspend fun saveScheduleItems(scheduleItems: List<ScheduleItem>)
+
     suspend fun deleteScheduleItems(ids: Set<Id>)
 
     suspend fun deleteAllScheduleItems()

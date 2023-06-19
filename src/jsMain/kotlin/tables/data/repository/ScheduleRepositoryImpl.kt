@@ -21,10 +21,24 @@ class ScheduleRepositoryImpl(
 
     override suspend fun saveScheduleItem(scheduleItem: ScheduleItem) {
         if (scheduleItem.id is Id.Value) {
-            scheduleDao.updateSchedule(scheduleRequest = scheduleItem.toRequest(), id = scheduleItem.id.value)
+            scheduleDao.updateScheduleItem(scheduleRequest = scheduleItem.toRequest(), id = scheduleItem.id.value)
         } else {
             scheduleDao.saveScheduleItem(scheduleRequest = scheduleItem.toRequest())
         }
+        schedulePagingSource?.invalidate()
+    }
+
+    override suspend fun saveScheduleItems(scheduleItems: List<ScheduleItem>) {
+        val (save, update) = scheduleItems.partition { it.id is Id.Empty }
+
+        if (save.isNotEmpty()) {
+            scheduleDao.saveScheduleItems(scheduleRequests = save.map { it.toRequest() })
+        }
+
+        if (update.isNotEmpty()) {
+            scheduleDao.updateScheduleItems(scheduleRequests = update.associate { it.id.value to it.toRequest() })
+        }
+
         schedulePagingSource?.invalidate()
     }
 

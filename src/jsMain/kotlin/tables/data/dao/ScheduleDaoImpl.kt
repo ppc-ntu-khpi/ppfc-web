@@ -22,10 +22,24 @@ class ScheduleDaoImpl(
         }
     }
 
-    override suspend fun updateSchedule(scheduleRequest: ScheduleRequest, id: Long) {
+    override suspend fun saveScheduleItems(scheduleRequests: List<ScheduleRequest>) {
+        apiClient.client.post("$PATH/multiple") {
+            contentType(ContentType.Application.Json)
+            setBody(scheduleRequests)
+        }
+    }
+
+    override suspend fun updateScheduleItem(scheduleRequest: ScheduleRequest, id: Long) {
         apiClient.client.put("$PATH/$id") {
             contentType(ContentType.Application.Json)
             setBody(scheduleRequest)
+        }
+    }
+
+    override suspend fun updateScheduleItems(scheduleRequests: Map<Long, ScheduleRequest>) {
+        apiClient.client.put("$PATH/multiple") {
+            contentType(ContentType.Application.Json)
+            setBody(scheduleRequests)
         }
     }
 
