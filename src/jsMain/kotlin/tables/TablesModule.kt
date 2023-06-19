@@ -246,11 +246,15 @@ val tablesModule = module {
     }
 
     single {
-        SaveScheduleItem(get())
+        ProcessAndValidateScheduleItem()
     }
 
     single {
-        SaveScheduleItems(get())
+        SaveScheduleItem(get(), get())
+    }
+
+    single {
+        SaveScheduleItems(get(), get())
     }
 
     single {
@@ -287,11 +291,15 @@ val tablesModule = module {
     }
 
     single {
-        SaveChange(get())
+        ProcessAndValidateChange()
     }
 
     single {
-        SaveChanges(get())
+        SaveChange(get(), get())
+    }
+
+    single {
+        SaveChanges(get(), get())
     }
 
     single {

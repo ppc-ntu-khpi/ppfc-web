@@ -8,27 +8,19 @@ import core.domain.Interactor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tables.domain.model.Change
-import tables.domain.model.Subject
 import tables.domain.repository.ChangesRepository
 
 class SaveChange(
-    private val changesRepository: ChangesRepository
+    private val changesRepository: ChangesRepository,
+    private val processAndValidateChange: ProcessAndValidateChange
 ) : Interactor<SaveChange.Params, Unit>() {
 
     override suspend fun doWork(params: Params): Unit = withContext(Dispatchers.Default) {
-        var changeToSave = params.change.copy(
-            eventName = params.change.eventName.takeUnless { it.isNullOrBlank() }
+        val change = processAndValidateChange.executeSync(
+            params = ProcessAndValidateChange.Params(change = params.change)
         )
 
-        changeToSave = when {
-            changeToSave.eventName != null -> changeToSave.copy(isSubject = false)
-            changeToSave.subject != Subject.Empty -> changeToSave.copy(isSubject = true)
-            else -> throw FormIsNotValidException()
-        }
-
-        changesRepository.saveChange(
-            change = changeToSave
-        )
+        changesRepository.saveChange(change = change)
     }
 
     data class Params(val change: Change)
