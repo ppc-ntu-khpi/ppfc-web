@@ -8,6 +8,8 @@ import androidx.paging.PagingState
 import app.cash.paging.PagingSource
 import core.domain.ApiException
 import infrastructure.extensions.toISO8601String
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import tables.data.dao.ChangesDao
 import tables.data.mapper.toDomain
 import tables.data.mapper.toRequest
@@ -27,6 +29,20 @@ class ChangesRepositoryImpl(
         } else {
             changesDao.saveChange(changeRequest = change.toRequest())
         }
+        changesPagingSource?.invalidate()
+    }
+
+    override suspend fun saveChanges(changes: List<Change>): Unit = withContext(Dispatchers.Default) {
+        val (save, update) = changes.partition { it.id is Id.Empty }
+
+        if (save.isNotEmpty()) {
+            changesDao.saveChanges(changesRequests = save.map { it.toRequest() })
+        }
+
+        if (update.isNotEmpty()) {
+            changesDao.updateChanges(changesRequests = update.associate { it.id.value to it.toRequest() })
+        }
+
         changesPagingSource?.invalidate()
     }
 

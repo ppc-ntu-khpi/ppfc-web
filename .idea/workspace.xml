@@ -7,17 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Feat: add functionality to delete all changes">
-      <change afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/DeleteAllScheduleItems.kt" afterDir="false" />
+    <list default="true" id="a7530122-77e0-40b8-8aaf-d21f1893a7c6" name="Changes" comment="Feat: add label to the date picker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/TablesModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDaoImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ScheduleDaoImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ScheduleRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ScheduleRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ScheduleRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ScheduleRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/Schedule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/Schedule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/ScheduleDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/ScheduleDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/ScheduleViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/presentation/screen/schedule/ScheduleViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDaoImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/dao/ChangesDaoImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/data/repository/ChangesRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveChanges.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/interactor/SaveChanges.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/jsMain/kotlin/tables/domain/repository/ChangesRepository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +33,23 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Web" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Web" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Web" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -140,6 +152,27 @@
     </key>
   </component>
   <component name="RunManager" selected="Gradle.Web [jsBrowserRun]">
+    <configuration name="Web [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="Web [jsBrowserRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -206,6 +239,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.Web [jsBrowserRun]" />
+        <item itemvalue="Gradle.Web [build]" />
         <item itemvalue="Gradle.Web [kotlinUpgradeYarnLock]" />
         <item itemvalue="Gradle.Web [kotlinStoreYarnLock]" />
       </list>
@@ -233,6 +267,9 @@
       <workItem from="1686914272652" duration="1406000" />
       <workItem from="1686942970560" duration="11201000" />
       <workItem from="1686954817549" duration="21638000" />
+      <workItem from="1687192881921" duration="65000" />
+      <workItem from="1687194084192" duration="235000" />
+      <workItem from="1687198599588" duration="4492000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1684319346467</created>

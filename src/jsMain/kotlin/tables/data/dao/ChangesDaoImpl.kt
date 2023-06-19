@@ -26,10 +26,24 @@ class ChangesDaoImpl(
         }
     }
 
+    override suspend fun saveChanges(changesRequests: List<ChangeRequest>) {
+        apiClient.client.post("$PATH/multiple") {
+            contentType(ContentType.Application.Json)
+            setBody(changesRequests)
+        }
+    }
+
     override suspend fun updateChange(changeRequest: ChangeRequest, id: Long) {
         apiClient.client.put("$PATH/$id") {
             contentType(ContentType.Application.Json)
             setBody(changeRequest)
+        }
+    }
+
+    override suspend fun updateChanges(changesRequests: Map<Long, ChangeRequest>) {
+        apiClient.client.put("$PATH/multiple") {
+            contentType(ContentType.Application.Json)
+            setBody(changesRequests)
         }
     }
 

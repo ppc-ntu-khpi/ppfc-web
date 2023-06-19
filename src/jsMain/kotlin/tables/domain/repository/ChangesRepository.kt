@@ -11,6 +11,8 @@ import kotlin.js.Date
 interface ChangesRepository {
     suspend fun saveChange(change: Change)
 
+    suspend fun saveChanges(changes: List<Change>)
+
     suspend fun deleteChanges(ids: Set<Id>)
 
     suspend fun deleteAllChanges()

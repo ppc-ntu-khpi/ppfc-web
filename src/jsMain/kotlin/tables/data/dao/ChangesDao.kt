@@ -11,7 +11,11 @@ import tables.domain.model.File
 interface ChangesDao {
     suspend fun saveChange(changeRequest: ChangeRequest)
 
+    suspend fun saveChanges(changesRequests: List<ChangeRequest>)
+
     suspend fun updateChange(changeRequest: ChangeRequest, id: Long)
+
+    suspend fun updateChanges(changesRequests: Map<Long, ChangeRequest>)
 
     suspend fun deleteChanges(ids: Set<Long>)
 
