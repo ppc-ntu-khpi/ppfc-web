@@ -5,7 +5,7 @@
 package tables.data.mapper
 
 import infrastructure.extensions.dateFromString
-import infrastructure.extensions.toISO8601String
+import infrastructure.extensions.toISO8601DateString
 import tables.data.model.ChangeRequest
 import tables.data.model.ChangeResponse
 import tables.domain.model.*
@@ -19,7 +19,7 @@ fun Change.toRequest() = ChangeRequest(
     eventName = eventName,
     lessonNumber = lessonNumber?.toNumber(),
     dayNumber = dayNumber.toNumber() ,
-    date = date.toISO8601String(),
+    date = date.toISO8601DateString(),
     isNumerator = weekAlternation.isNumerator
 )
 

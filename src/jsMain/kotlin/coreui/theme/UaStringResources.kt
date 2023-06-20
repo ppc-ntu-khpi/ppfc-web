@@ -42,6 +42,12 @@ val uaStringResources = StringResources(
     navigationUsers = "Користувачі",
     navigationOther = "Інше",
 
+    tablesShowAccessKeyTitle = "Код доступу",
+    tablesShowAccessKeyExpiresAt = "Дійсний до {1}.",
+    tablesShowAccessKeyClose = "Закрити",
+    tablesShowAccessKeyErrorLoading = "Помилка завантаження.",
+    tablesShowAccessKeyRetry = "Повторити",
+
     tableDialogDeleteTitle = "Видалення",
     tableDialogEditTitle = "Редагування",
     tableRecordsNotFound = "Записів не знайдено.",

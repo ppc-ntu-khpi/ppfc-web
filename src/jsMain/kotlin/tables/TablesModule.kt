@@ -27,6 +27,7 @@ import tables.presentation.screen.schedule.EditScheduleItemViewModel
 import tables.presentation.screen.schedule.ScheduleViewModel
 import tables.presentation.screen.subjects.ManageSubjectViewModel
 import tables.presentation.screen.subjects.SubjectsViewModel
+import tables.presentation.screen.tables.AccessKeyViewModel
 import tables.presentation.screen.tables.TablesViewModel
 import tables.presentation.screen.teachers.ManageTeacherViewModel
 import tables.presentation.screen.teachers.TeachersViewModel
@@ -39,6 +40,10 @@ val tablesModule = module {
 
     factory {
         TablesViewModel(get(), get(), get())
+    }
+
+    factory {
+        AccessKeyViewModel(get(), get())
     }
 
     /* Classrooms */
@@ -328,5 +333,18 @@ val tablesModule = module {
 
     factory {
         EditChangeViewModel(get(), get(), get(), get())
+    }
+
+    /* Access key */
+    single<AccessKeyDao> {
+        AccessKeyDaoImpl(get())
+    }
+
+    single<AccessKeyRepository> {
+        AccessKeyRepositoryImpl(get())
+    }
+
+    single {
+        GenerateAccessKey(get())
     }
 }

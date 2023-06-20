@@ -50,6 +50,12 @@ data class StringResources(
     val navigationUsers: String,
     val navigationOther: String,
 
+    val tablesShowAccessKeyTitle: String,
+    val tablesShowAccessKeyExpiresAt: String,
+    val tablesShowAccessKeyClose: String,
+    val tablesShowAccessKeyErrorLoading: String,
+    val tablesShowAccessKeyRetry: String,
+
     val tableDialogDeleteTitle: String,
     val tableDialogEditTitle: String,
     val tableRecordsNotFound: String,

@@ -4,7 +4,6 @@
 
 package tables.presentation.screen.tables
 
-import app.main.MainViewState
 import core.domain.interactor.SaveColorScheme
 import core.domain.model.ColorSchemeMode
 import core.domain.observer.ObservePreferences
@@ -21,16 +20,20 @@ class TablesViewModel(
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    val state: StateFlow<MainViewState> = combine(
-        observePreferences.flow
-    ) { preferences ->
-        MainViewState(
-            preferences = preferences.first()
+    private val _dialog = MutableStateFlow<TablesDialog?>(null)
+
+    val state: StateFlow<TablesViewState> = combine(
+        observePreferences.flow,
+        _dialog,
+    ) { preferences, dialog ->
+        TablesViewState(
+            preferences = preferences,
+            dialog = dialog,
         )
     }.stateIn(
         scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-        initialValue = MainViewState.Empty,
+        initialValue = TablesViewState.Empty,
     )
 
     init {
@@ -47,5 +50,9 @@ class TablesViewModel(
 
     fun logOut() {
         logOut(Unit).launchIn(coroutineScope)
+    }
+
+    fun dialog(dialog: TablesDialog?) {
+        _dialog.value = dialog
     }
 }

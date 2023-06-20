@@ -7,7 +7,7 @@ package tables.data.repository
 import androidx.paging.PagingState
 import app.cash.paging.PagingSource
 import core.domain.ApiException
-import infrastructure.extensions.toISO8601String
+import infrastructure.extensions.toISO8601DateString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tables.data.dao.ChangesDao
@@ -82,7 +82,7 @@ class ChangesRepositoryImpl(
                 changesDao.getChanges(
                     limit = pageSize,
                     offset = offset,
-                    date = date?.toISO8601String(),
+                    date = date?.toISO8601DateString(),
                     isNumerator = weekAlternation?.isNumerator,
                     groupId = group?.id?.value,
                     teacherId = teacher?.id?.value
@@ -101,6 +101,6 @@ class ChangesRepositoryImpl(
     }
 
     override suspend fun exportChangesToDocument(date: Date): File {
-        return changesDao.exportChangesToDocument(date = date.toISO8601String())
+        return changesDao.exportChangesToDocument(date = date.toISO8601DateString())
     }
 }

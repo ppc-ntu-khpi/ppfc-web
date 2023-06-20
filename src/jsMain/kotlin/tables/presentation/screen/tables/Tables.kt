@@ -7,20 +7,35 @@ package tables.presentation.screen.tables
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import coreui.compose.DialogHost
 import coreui.compose.base.Box
 import coreui.compose.base.Column
+import coreui.util.rememberGet
 import coreui.util.rememberNavController
 import org.jetbrains.compose.web.css.*
-import org.koin.compose.getKoin
 import tables.presentation.compose.TablesTopBar
 import tables.presentation.navigation.TablesNavHost
 import tables.presentation.navigation.TablesScreen
 
 @Composable
 fun Tables() {
-    val viewModel: TablesViewModel = getKoin().get()
+    val viewModel: TablesViewModel by rememberGet()
     val viewState by viewModel.state.collectAsState()
     val navController by rememberNavController(root = TablesScreen.Changes)
+
+    DialogHost(
+        dialog = viewState.dialog
+    ) { dialog ->
+        when (dialog) {
+            is TablesDialog.ShowAccessKey -> {
+                ShowAccessKeyDialog(
+                    onClose = {
+                        viewModel.dialog(dialog = null)
+                    }
+                )
+            }
+        }
+    }
 
     Box(
         attrs = {
@@ -53,6 +68,9 @@ fun Tables() {
                 },
                 onColorSchemeModeChanged = { colorSchemeMode ->
                     viewModel.setColorSchemeMode(colorSchemeMode = colorSchemeMode)
+                },
+                onGenerateAccessKey = {
+                    viewModel.dialog(dialog = TablesDialog.ShowAccessKey)
                 },
                 onLogOut = {
                     viewModel.logOut()

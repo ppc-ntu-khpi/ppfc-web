@@ -15,7 +15,7 @@ import coreui.theme.AppTheme
 import coreui.theme.Shape
 import coreui.theme.Typography
 import infrastructure.extensions.dateFromString
-import infrastructure.extensions.toISO8601String
+import infrastructure.extensions.toISO8601DateString
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.AttrBuilderContext
@@ -96,7 +96,7 @@ fun DatePicker(
                     onDateChange(Date.dateFromString(listener.value) ?: Date())
                 }
             },
-            value = date.toISO8601String()
+            value = date.toISO8601DateString()
         )
 
         var labelElement by remember { mutableStateOf<Element?>(null) }

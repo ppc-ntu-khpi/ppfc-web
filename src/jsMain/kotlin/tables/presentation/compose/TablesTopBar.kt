@@ -28,6 +28,7 @@ fun TablesTopBar(
     colorSchemeMode: ColorSchemeMode,
     onScreenSelected: (screen: TablesScreen) -> Unit,
     onColorSchemeModeChanged: (colorSchemeMode: ColorSchemeMode) -> Unit,
+    onGenerateAccessKey: () -> Unit,
     onLogOut: () -> Unit
 ) {
     Surface(
@@ -96,6 +97,17 @@ fun TablesTopBar(
                         ColorSchemeMode.LIGHT
                     }
                     onColorSchemeModeChanged(newColorSchemeMode)
+                }
+
+                IconButton(
+                    attrs = {
+                        style {
+                            margin(5.px)
+                        }
+                    },
+                    icon = AppIconClass.Key
+                ) {
+                    onGenerateAccessKey()
                 }
 
                 IconButton(
